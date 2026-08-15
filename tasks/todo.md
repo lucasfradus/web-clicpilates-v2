@@ -5,15 +5,19 @@ Una fase por sesión. Marcar a medida que se completa.
 
 ---
 
-## Fase 0 — Higiene del sitio actual (repo `clic-pilates-landing`)
+## Fase 0 — Higiene del sitio actual (repo `clic-pilates-landing`) ✅ (15-ago-2026)
 
-No depende de nada. Hacer primero.
+Rama `fix/seo-higiene`, commiteada y **sin pushear** (worktree en
+`c:/Users/lucas/Clic/.worktrees/landing-seo-fase0`).
 
-- [ ] `metadataBase` → `https://www.clicpilates.com` (hoy apunta a `clic-landing.vercel.app`, el canonical está mal en todo el sitio)
-- [ ] Verificar Search Console para el dominio real y reemplazar `'your-google-verification-code'`
-- [ ] Sacar `maximumScale: 1` del export `viewport` (bloquea el pinch-zoom)
-- [ ] Sacar el array `keywords` (Google los ignora, e incluyen `yoga` y `meditación`, que no se ofrecen)
-- [ ] `noindex` o Vercel Authentication en el dominio de preview
+- [x] `metadataBase` → `https://www.clicpilates.com` (apuntaba a `clic-landing.vercel.app`, que además hoy devuelve 404)
+- [x] Canonical autorreferencial en cada ruta. **No estaba en el checklist y era lo más grave**: el `canonical: '/'` vivía en el layout raíz y los hijos heredan `alternates`, así que `/sede/nunez` se declaraba duplicado de la home
+- [x] Sacar `maximumScale: 1` — estaba en dos lugares, el export `viewport` y un `<meta>` hardcodeado en el `<head>` que lo pisaba
+- [x] Sacar el array `keywords`
+- [x] Sacar `verification.google`, que salía en producción con el placeholder literal
+- [x] `noindex` en los deploys de preview (`VERCEL_ENV !== 'production'`), verificado con un build de preview
+- [ ] **Necesita a Lucas**: verificar el dominio en Search Console (por DNS no toca código; si es por meta tag, va en `layout.tsx`)
+- [ ] **Decisión pendiente**: el sitio actual no tiene `sitemap.xml` ni `robots.txt`. No se puede "enviar el sitemap" porque no existe. Son ~30 líneas si se quiere sumar mientras el sitio viejo siga vivo
 
 ## Fase 1 — Esqueleto ✅ (15-ago-2026)
 
