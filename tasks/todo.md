@@ -13,6 +13,7 @@ código. Si no está en este archivo, no existe.
 | Qué | Dónde | Estado |
 |---|---|---|
 | Higiene de SEO del sitio actual | [clic-pilates-landing#6](https://github.com/lucasfradus/clic-pilates-landing/pull/6) | Esperando merge. Al mergear, deploya |
+| `?contexto=web` en el endpoint de sedes | [Clicnet#370](https://github.com/lucasfradus/Clicnet/pull/370) | Esperando merge. **Destraba la fase 2** |
 | `base` configurable en el SPA de reservas | rama `chore/base-path-rewrite` en `reservas-clientes-clic-v2` | Commiteada, **sin pushear** |
 | `base` configurable en el portal de clientes | rama `chore/base-path-rewrite` en `clic-webapp-clientes` | Commiteada, **sin pushear** |
 
@@ -28,9 +29,11 @@ hoy, así que se pueden mergear antes de publicar la web nueva.
       `www.clicpilates.com` responde temporal en vez de permanente; para un
       redirect de host canónico conviene permanente. Es config de dominio en
       Vercel, no código
-- [ ] **`/api/public/sedes?tipo=PILATES` devuelve hoy "Sede Test orig"** entre
-      las 11 sedes. La web nueva no puede publicarla: hay que excluir las sedes
-      de prueba en el `?contexto=web`, o marcar la sede como no publicable
+- [x] ~~Excluir las sedes de prueba del endpoint público~~ — **decidido el
+      15-ago: no se excluyen.** Lucas usa las sedes de prueba para testear y las
+      apaga desde el backoffice cuando terminan. El único interruptor es
+      `Sede.activa`. Implica que una sede de prueba activa se publica en el
+      sitio (y entra al sitemap): es el precio de tener un solo interruptor
 - [ ] **El sitio actual no tiene `sitemap.xml` ni `robots.txt`.** Decidir si se
       agregan mientras siga vivo (~30 líneas) o si se espera a la fase 6 de la
       web nueva
@@ -91,13 +94,21 @@ Decisiones de esta fase, por si hay que revisarlas:
 - `/estudios`, `/precios`, `/academy`, `/franquicias` y `/politicas` devuelven
   404 hasta las fases 3 y 5. Es preferible a publicar páginas vacías indexables.
 
-## Fase 2 — Capa de datos
+## Fase 2 — Capa de datos ← la que sigue
+
+Depende de que se mergee y deploye [Clicnet#370](https://github.com/lucasfradus/Clicnet/pull/370).
+Mientras tanto se puede desarrollar contra el backend del worktree
+`.claude/worktrees/sedes-contexto-web` levantado en otro puerto.
 
 - [ ] Cliente de API tipado reusando `reservas/src/types/index.ts`
+- [ ] `reservaOnline` no está en el tipo `Sede` de reservas (es nuevo, sale de
+      #370): decidir si se agrega allá o se extiende el tipo acá
 - [ ] `getSedes` / `getSede` / `getCatalogo` con `revalidate = 3600`
 - [ ] `getClases` del lado del cliente, sin cache
 - [ ] Skeletons con la misma altura que el contenido real (cuidar CLS)
 - [ ] Estados de error y vacío por sección
+- [ ] Sede sin `reservaOnline`: mostrar WhatsApp en vez del botón de reservar
+      (es para lo que existe el booleano)
 
 ## Fase 3 — Landings de sede ← la fase que más rinde
 
@@ -161,7 +172,7 @@ Decisiones de esta fase, por si hay que revisarlas:
 
 ## Backend (`Clicnet`) — en paralelo, destraba la fase 3
 
-- [ ] `?contexto=web` en `/api/public/sedes`: toda sede `activa` + booleano `reservaOnline`
+- [x] `?contexto=web` en `/api/public/sedes`: toda sede `activa` + booleano `reservaOnline` — [PR #370](https://github.com/lucasfradus/Clicnet/pull/370), esperando merge
 - [ ] Migración de `Sede`: `latitud`, `longitud`, `telefono`, `calle`, `localidad`, `provincia`, `codigoPostal`, `zona`
 - [ ] Exponer `updatedAt` para el `lastModified` del sitemap
 - [ ] Horarios de apertura del estudio (o derivarlos del mín/máx de la grilla)
