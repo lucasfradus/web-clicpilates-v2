@@ -1,0 +1,142 @@
+# Web nueva CLIC — tareas
+
+Plan completo en `docs/plan.md`. Contexto en `docs/contexto.md`.
+Una fase por sesión. Marcar a medida que se completa.
+
+---
+
+## Fase 0 — Higiene del sitio actual (repo `clic-pilates-landing`)
+
+No depende de nada. Hacer primero.
+
+- [ ] `metadataBase` → `https://www.clicpilates.com` (hoy apunta a `clic-landing.vercel.app`, el canonical está mal en todo el sitio)
+- [ ] Verificar Search Console para el dominio real y reemplazar `'your-google-verification-code'`
+- [ ] Sacar `maximumScale: 1` del export `viewport` (bloquea el pinch-zoom)
+- [ ] Sacar el array `keywords` (Google los ignora, e incluyen `yoga` y `meditación`, que no se ofrecen)
+- [ ] `noindex` o Vercel Authentication en el dominio de preview
+
+## Fase 1 — Esqueleto ✅ (15-ago-2026)
+
+- [x] Proyecto Next.js 16 (App Router, TypeScript, Turbopack)
+- [x] Copiar tokens de `reservas-clientes-clic-v2/src/styles/globals.css` → `src/styles/tokens.css`
+- [x] Fuentes con `next/font`: Poppins (200-700) + Prata, self-hosted
+- [x] Layout: header con estados transparente/sólido, footer, nav mobile
+- [x] `next.config.ts` con rewrites de `/reservar/*` y `/mi-cuenta/*`
+- [x] `base` configurable en el `vite.config.ts` de reservas y `basename` del router
+- [x] Ídem para el portal de clientes
+- [x] Logo SVG (vectorizado del PNG con `scripts/trace-logo.mjs`; el vectorial de verdad sigue pendiente)
+- [x] Definir `www` vs apex y redirigir el otro (`www`, con `301` desde el apex en `next.config.ts`)
+
+Verificado: `npm run build`, `npm run lint`, `npm run typecheck` y capturas en
+1440px y 390px de la home (header transparente), la home scrolleada (header
+sólido), el 404 (sólido sin JS, por `:has([data-hero])`) y el menú mobile.
+
+Decisiones de esta fase, por si hay que revisarlas:
+
+- El header transparente/sólido no usa JavaScript para saber si la página tiene
+  hero: lo resuelve `body:not(:has([data-hero]))` en CSS. Así el HTML del
+  servidor ya sale bien pintado y no parpadea al hidratar. El JS sólo agrega
+  `.hdr--scrolled`. Una página que quiera header transparente marca su hero con
+  `data-hero`.
+- Los dos estados del header salen de variables CSS y un solo bloque de
+  selectores, en vez de duplicar `.hdr--solid .algo` por cada hijo como hace el
+  prototipo.
+- `/reservar` y `/mi-cuenta` se enlazan con `<a>` y no con `<Link>` (ver
+  `src/components/enlace.tsx`): el routing de cliente de Next espera del otro
+  lado una respuesta que un Vite no devuelve.
+- El cambio de los SPAs quedó **commiteado y sin pushear**, en una rama
+  `chore/base-path-rewrite` por repo, y es no-destructivo: sin la variable
+  `VITE_BASE_PATH` el build sale idéntico al de hoy. Ver `docs/rewrites.md`.
+- La home tiene sólo el hero: es lo que el esqueleto necesitaba para probarse.
+  El contenido de marca es la fase 4.
+- `/estudios`, `/precios`, `/academy`, `/franquicias` y `/politicas` devuelven
+  404 hasta las fases 3 y 5. Es preferible a publicar páginas vacías indexables.
+
+## Fase 2 — Capa de datos
+
+- [ ] Cliente de API tipado reusando `reservas/src/types/index.ts`
+- [ ] `getSedes` / `getSede` / `getCatalogo` con `revalidate = 3600`
+- [ ] `getClases` del lado del cliente, sin cache
+- [ ] Skeletons con la misma altura que el contenido real (cuidar CLS)
+- [ ] Estados de error y vacío por sección
+
+## Fase 3 — Landings de sede ← la fase que más rinde
+
+- [ ] `/estudios` (índice)
+- [ ] `/estudios/[slug]` con `generateStaticParams`
+- [ ] `generateMetadata` por sede: title, description, canonical, OG
+- [ ] H1 por zona ("Pilates reformer en Núñez", no "Núñez")
+- [ ] Breadcrumbs visibles + `BreadcrumbList`
+- [ ] 5 FAQs por sede, visibles + `FAQPage`
+- [ ] JSON-LD `LocalBusiness` (bloqueado por la migración de `Sede`)
+- [ ] Grilla en vivo dentro de `<Suspense>`
+- [ ] Planes de la sede con el descuento de la clase de prueba visible
+- [ ] Galería usando `fotosDetalle[].foco` como `object-position`
+- [ ] Enlazado interno a sedes cercanas
+
+## Fase 4 — Home y marca
+
+- [ ] Hero con selector de sede y disponibilidad real
+- [ ] Sección manifiesto CLIC /klik/
+- [ ] Banda HACÉ EL CLIC
+- [ ] Método, niveles, testimonios, app, grilla de sedes
+- [ ] Sección de cómo funciona la clase de prueba
+- [ ] Reveals con `IntersectionObserver` + `prefers-reduced-motion`
+
+## Fase 5 — Resto de páginas
+
+- [ ] `/precios` con selector de sede
+- [ ] `/clases/initial-pilates`, `/clases/level-up-pilates`
+- [ ] `/academy`
+- [ ] `/franquicias` con formulario propio y su pixel
+- [ ] `/politicas` migrada desde la landing actual
+
+## Fase 6 — SEO técnico
+
+- [ ] `app/sitemap.ts` alimentado por las sedes
+- [ ] `app/robots.ts` con `/mi-cuenta` y `/reservar` excluidos
+- [ ] `301` desde `/sede/[slug]`, `/horarios/[sede]`, `/grilla/[sede]`
+- [ ] `301` desde `reservas.` y `clientes.` a las rutas nuevas
+- [ ] Canonical autorreferencial en toda ruta
+- [ ] Validar todo en Rich Results Test
+- [ ] Los nueve perfiles de Google apuntando a su landing
+
+## Fase 7 — Medición
+
+- [ ] Portar `reservas/src/lib/meta.ts` (pixel por `Sede.metaPixelId`)
+- [ ] Eventos: ViewContent, Search, AddToCart, InitiateCheckout, Purchase, Lead
+- [ ] Conversions API desde el webhook de Mercado Pago, con `event_id` compartido
+- [ ] Verificar deduplicación en Events Manager
+- [ ] GA4 con `sede` como dimensión personalizada
+- [ ] UTMs persistidos hasta el `CheckoutPlanPayload`
+
+## Fase 8 — QA y lanzamiento
+
+- [ ] Lighthouse móvil: LCP < 2,5 s / INP < 200 ms / CLS < 0,1
+- [ ] Teclado y lectores de pantalla
+- [ ] iOS y Android reales
+- [ ] Flujo completo end-to-end contra producción
+- [ ] Deploy con los `301` activos desde el minuto cero
+
+---
+
+## Backend (`Clicnet`) — en paralelo, destraba la fase 3
+
+- [ ] `?contexto=web` en `/api/public/sedes`: toda sede `activa` + booleano `reservaOnline`
+- [ ] Migración de `Sede`: `latitud`, `longitud`, `telefono`, `calle`, `localidad`, `provincia`, `codigoPostal`, `zona`
+- [ ] Exponer `updatedAt` para el `lastModified` del sitemap
+- [ ] Horarios de apertura del estudio (o derivarlos del mín/máx de la grilla)
+- [ ] Excluir la IP del servidor del rate limit, o API key de servicio
+
+---
+
+## Bloqueado — esperando material del dueño
+
+- [ ] Logo vectorial (SVG / AI / EPS) — mientras tanto hay un trazado del PNG,
+      hecho por `scripts/trace-logo.mjs`. Cuando llegue el original se reemplaza
+      `src/components/brand/logo-path.ts` y se borra el script
+- [ ] Fotos de espacios comunes: recepción, vestuarios, plano general de sala,
+      detalle de reformer, instructora corrigiendo, Academy enseñando
+- [ ] Testimonios reales con nombre y sede
+- [ ] Texto propio por sede (~300 palabras: qué tiene, cómo llegar, instructoras)
+- [ ] Confirmar 4.9 en Google, máximo por clase y cantidad de sedes activas

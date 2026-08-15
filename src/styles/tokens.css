@@ -1,0 +1,47 @@
+/* ============================================================================
+   Tokens — copiados tal cual de reservas-clientes-clic-v2/src/styles/globals.css.
+
+   Es la fuente del design system del proyecto (ver docs/contexto.md §2). No
+   inventar valores nuevos acá: si hace falta un color, primero se agrega allá.
+
+   Lo único propio de esta web son las tres últimas líneas: la serif editorial
+   (el portal de reservas no tiene títulos de marketing) y el ancho de
+   contenedor, más grande que el del portal porque acá hay grillas de tarjetas.
+   ========================================================================== */
+
+:root {
+  --bg: #edece7;
+  --surface: #fdfbfa;
+  --beige: #dfd4ca;
+  --beige-soft: #e8e0d6;
+  --taupe: #bcac9e;
+  --taupe-dark: #9a8a7c;
+  --ink: #2c2f34;
+  /* El ink de la pantalla de sede (hero, tarjeta de resumen). Vive acá para que
+     el footer pueda cerrar con el mismo color. */
+  --ink-deep: #23222b;
+  --ink-soft: #5a5d62;
+  --ink-mute: #9a9da2;
+  --line: #e0d8cd;
+  --line-soft: #ebe5db;
+  --sage: #8a9a82;
+  --sage-bg: #e6ebe2;
+  --terracotta: #b87560;
+  --terracotta-bg: #f0e0d8;
+
+  --shadow-soft: 0 18px 40px -18px rgba(44, 47, 52, 0.18), 0 6px 16px -8px rgba(44, 47, 52, 0.08);
+  --shadow-strong: 0 30px 60px -22px rgba(44, 47, 52, 0.4), 0 12px 25px -10px rgba(44, 47, 52, 0.25);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* --font-poppins y --font-prata las define next/font en el <html> (ver
+     src/app/layout.tsx). Los fallbacks quedan por si el CSS carga antes. */
+  --font-sans: var(--font-poppins), 'Poppins', system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-prata), 'Prata', Georgia, 'Times New Roman', serif;
+
+  --container: 1180px;
+}

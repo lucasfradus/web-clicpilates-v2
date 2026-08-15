@@ -1,0 +1,8 @@
+/* Único punto de entrada de estilos: lo importa src/app/layout.tsx.
+   El orden importa — tokens antes que todo, base antes que los componentes. */
+
+@import './tokens.css';
+@import './base.css';
+@import './header.css';
+@import './footer.css';
+@import './hero.css';

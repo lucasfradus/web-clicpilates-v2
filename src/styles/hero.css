@@ -1,0 +1,95 @@
+/* ============================================================================
+   Hero. La fase 4 le agrega el selector de sede con disponibilidad real, los
+   números de marca y los reveals; esto es el fondo y la tipografía, que son lo
+   que el header transparente necesita para apoyarse.
+
+   El degradado es provisorio a propósito: las imágenes genéricas de marca son
+   una dependencia pendiente (docs/plan.md §5). Cuando lleguen, `.hero__media`
+   pasa a ser un <Image> con el mismo tratamiento de gradiente encima.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--ink-deep);
+  color: #fff;
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #c9b39a, #a8927f 45%, #6f6558);
+  animation: kenburns 24s ease-in-out infinite alternate;
+}
+
+@keyframes kenburns {
+  from { transform: scale(1.02); }
+  to { transform: scale(1.12) translateY(-1.5%); }
+}
+
+.hero__media::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(58deg, transparent 0 26px, rgba(35, 34, 43, 0.05) 26px 27px);
+}
+
+/* El oscurecido no es decorativo: sostiene el contraste del texto blanco y del
+   header transparente sobre cualquier foto que entre después. */
+.hero__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    var(--ink-deep) 0%,
+    rgba(35, 34, 43, 0.9) 34%,
+    rgba(35, 34, 43, 0.5) 60%,
+    rgba(35, 34, 43, 0.25) 82%,
+    rgba(35, 34, 43, 0.5) 100%
+  );
+}
+
+.hero__inner {
+  position: relative;
+  padding-top: 140px;
+  padding-bottom: 56px;
+}
+
+.hero h1 {
+  margin-top: 18px;
+  font-family: var(--font-serif);
+  font-size: clamp(44px, 6.2vw, 86px);
+  line-height: 1.03;
+}
+
+.hero__sub {
+  max-width: 440px;
+  margin-top: 24px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.hero__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 38px;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: auto;
+  }
+
+  .hero__inner {
+    padding-top: 112px;
+    padding-bottom: 44px;
+  }
+}

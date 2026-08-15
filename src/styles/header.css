@@ -1,0 +1,226 @@
+/* ============================================================================
+   Header + navegación mobile.
+
+   El header tiene dos estados: transparente sobre un hero oscuro, y sólido
+   (beige translúcido, letra oscura) cuando se scrollea o cuando la página no
+   tiene hero.
+
+   Los dos estados se resuelven con variables y un solo bloque de selectores, en
+   vez de duplicar `.hdr--solid .algo` por cada hijo como hace el prototipo. Eso
+   deja una sola cosa que mantener cuando cambie la paleta.
+
+   El estado "esta página no tiene hero" sale de `:has()`, no de JavaScript: así
+   una página sin hero pinta el header sólido ya en el HTML del servidor, sin el
+   parpadeo de un efecto que corre después de hidratar. Cualquier página que
+   quiera el header transparente marca su hero con `data-hero`.
+   ========================================================================== */
+
+.hdr {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+
+  --hdr-h: 82px;
+  --hdr-logo-h: 26px;
+  --hdr-fg: rgba(255, 255, 255, 0.8);
+  --hdr-fg-strong: #fff;
+  --hdr-bg: transparent;
+  --hdr-line: transparent;
+  --hdr-blur: none;
+  --hdr-tag: rgba(255, 255, 255, 0.6);
+  --hdr-tag-line: rgba(255, 255, 255, 0.25);
+  --hdr-cta-bg: #fff;
+  --hdr-cta-fg: var(--ink-deep);
+
+  color: var(--hdr-fg);
+  background: var(--hdr-bg);
+  border-bottom: 1px solid var(--hdr-line);
+  backdrop-filter: var(--hdr-blur);
+  transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s, color 0.3s;
+}
+
+.hdr--scrolled,
+body:not(:has([data-hero])) .hdr {
+  --hdr-h: 66px;
+  --hdr-logo-h: 22px;
+  --hdr-fg: var(--ink-soft);
+  --hdr-fg-strong: var(--ink);
+  --hdr-bg: rgba(237, 236, 231, 0.88);
+  --hdr-line: rgba(35, 34, 43, 0.08);
+  --hdr-blur: saturate(160%) blur(10px);
+  --hdr-tag: var(--taupe-dark);
+  --hdr-tag-line: var(--line);
+  --hdr-cta-bg: var(--ink);
+  --hdr-cta-fg: var(--surface);
+}
+
+.hdr__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--hdr-h);
+  transition: height 0.3s;
+}
+
+.hdr__brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--hdr-fg-strong);
+}
+
+.hdr__logo {
+  height: var(--hdr-logo-h);
+  width: auto;
+  transition: height 0.3s;
+}
+
+.hdr__tag {
+  padding-left: 14px;
+  padding-top: 2px;
+  border-left: 1px solid var(--hdr-tag-line);
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--hdr-tag);
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.hdr__nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.hdr__link {
+  padding: 6px 0;
+  border-bottom: 1px solid transparent;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.hdr__link:hover,
+.hdr__link[aria-current='page'] {
+  color: var(--hdr-fg-strong);
+  border-bottom-color: currentColor;
+}
+
+.hdr__actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.hdr__login {
+  border-bottom: 1px solid transparent;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.hdr__login:hover {
+  color: var(--hdr-fg-strong);
+  border-bottom-color: currentColor;
+}
+
+.hdr__cta {
+  background: var(--hdr-cta-bg);
+  color: var(--hdr-cta-fg);
+}
+
+.hdr__burger {
+  display: none;
+  position: relative;
+  width: 26px;
+  height: 16px;
+  color: var(--hdr-fg-strong);
+}
+
+.hdr__burger span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: currentColor;
+  transition: 0.3s;
+}
+
+.hdr__burger span:nth-child(1) { top: 0; }
+.hdr__burger span:nth-child(2) { top: 7px; }
+.hdr__burger span:nth-child(3) { top: 14px; }
+
+/* ===== Menú mobile ===== */
+
+.mnav {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 24px 40px;
+  background: var(--ink-deep);
+  color: #fff;
+  transform: translateY(-100%);
+  visibility: hidden;
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1), visibility 0.45s;
+}
+
+.mnav--open {
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.mnav__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mnav__logo {
+  height: 22px;
+  width: auto;
+}
+
+.mnav__close {
+  font-size: 26px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.mnav__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: auto 0;
+}
+
+.mnav__list a {
+  font-family: var(--font-serif);
+  font-size: 34px;
+  line-height: 1.3;
+}
+
+.mnav__foot {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .hdr__nav,
+  .hdr__login,
+  .hdr__cta,
+  .hdr__tag {
+    display: none;
+  }
+
+  .hdr__burger {
+    display: block;
+  }
+}

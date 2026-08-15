@@ -1,0 +1,273 @@
+/* ============================================================================
+   Base: reset, tipografía, utilidades de layout y botones.
+
+   Todo lo de acá sale de docs/prototipo.html, que es la especificación visual
+   del proyecto. Ante una duda de tamaño, espaciado o color, mirar ahí antes de
+   inventar.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+/* Grano global. Es lo único que se conserva del sitio actual: sobre una paleta
+   de beiges planos, la textura evita que las superficies grandes se vean
+   digitales. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ===== Tipografía ===== */
+
+.t-serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* Poppins 300 para números, importes y horarios: es la voz "display" del
+   sistema, la misma que usa el portal de reservas. */
+.t-display {
+  font-weight: 300;
+  letter-spacing: -0.6px;
+  line-height: 1.05;
+}
+
+.eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--taupe-dark);
+}
+
+.eyebrow--light {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.muted {
+  color: var(--ink-soft);
+}
+
+/* ===== Layout ===== */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.section {
+  padding: 110px 0;
+}
+
+.section--tight {
+  padding: 72px 0;
+}
+
+/* El header es fijo: sin esto, un enlace a #ancla deja el título tapado. */
+section[id],
+div[id] {
+  scroll-margin-top: 90px;
+}
+
+.section-head {
+  max-width: 620px;
+  margin-bottom: 48px;
+}
+
+.section-head h2 {
+  font-family: var(--font-serif);
+  font-size: 44px;
+  line-height: 1.12;
+  margin-top: 12px;
+}
+
+.section-head p {
+  margin-top: 18px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+/* ===== Botones ===== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 34px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: transform 0.15s, background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn--primary {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+.btn--primary:hover {
+  background: #1d1f23;
+}
+
+.btn--light {
+  background: #fff;
+  color: var(--ink-deep);
+}
+
+.btn--ghost {
+  border: 1px solid var(--ink);
+  color: var(--ink);
+}
+
+.btn--ghost:hover {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+.btn--ghost-light {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+.btn--ghost-light:hover {
+  background: #fff;
+  color: var(--ink-deep);
+}
+
+.btn--sm {
+  padding: 12px 24px;
+  font-size: 10px;
+}
+
+.btn--full {
+  width: 100%;
+}
+
+/* ===== Accesibilidad ===== */
+
+/* Visible sólo con foco de teclado: el header es fijo y tapa el primer
+   contenido, así que el salto tiene que caer debajo. */
+.skip {
+  position: absolute;
+  left: 16px;
+  top: -80px;
+  z-index: 400;
+  padding: 12px 20px;
+  background: var(--surface);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-soft);
+  font-size: 12px;
+  transition: top 0.2s;
+}
+
+.skip:focus-visible {
+  top: 16px;
+}
+
+/* ===== Mobile ===== */
+
+@media (max-width: 768px) {
+  body {
+    font-size: 13px;
+  }
+
+  .container {
+    padding: 0 20px;
+  }
+
+  .section {
+    padding: 76px 0;
+  }
+
+  .section-head h2 {
+    font-size: 34px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}

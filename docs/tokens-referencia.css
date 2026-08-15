@@ -1,0 +1,154 @@
+:root {
+  --bg: #edece7;
+  --surface: #fdfbfa;
+  --beige: #dfd4ca;
+  --beige-soft: #e8e0d6;
+  --taupe: #bcac9e;
+  --taupe-dark: #9a8a7c;
+  --ink: #2c2f34;
+  /* El ink de la pantalla de sede (hero, tarjeta de resumen). Vive acá para que
+     el footer pueda cerrar con el mismo color; `.planes` lo repite como
+     --pl-ink porque su paleta es autocontenida. */
+  --ink-deep: #23222b;
+  --ink-soft: #5a5d62;
+  --ink-mute: #9a9da2;
+  --line: #e0d8cd;
+  --line-soft: #ebe5db;
+  --sage: #8a9a82;
+  --sage-bg: #e6ebe2;
+  --terracotta: #b87560;
+  --terracotta-bg: #f0e0d8;
+
+  --font-sans: 'Poppins', system-ui, -apple-system, sans-serif;
+
+  --shadow-soft: 0 18px 40px -18px rgba(44, 47, 52, 0.18), 0 6px 16px -8px rgba(44, 47, 52, 0.08);
+  --shadow-strong: 0 30px 60px -22px rgba(44, 47, 52, 0.4), 0 12px 25px -10px rgba(44, 47, 52, 0.25);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  --container-max: 1040px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ===== Typography utilities ===== */
+/* Display type: Poppins light, used for hero titles, prices, times, section headers. */
+.t-display {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  letter-spacing: -0.6px;
+  line-height: 1.05;
+}
+
+.t-tag {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--taupe-dark);
+}
+
+.t-label {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--taupe-dark);
+}
+
+.t-muted {
+  color: var(--ink-soft);
+}
+
+/* ===== Layout utilities ===== */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.page {
+  flex: 1;
+  padding: 48px 0 80px;
+}
+
+.stack-sm > * + * { margin-top: 8px; }
+.stack-md > * + * { margin-top: 16px; }
+.stack-lg > * + * { margin-top: 24px; }
+.stack-xl > * + * { margin-top: 40px; }
+
+/* ===== Mobile ===== */
+@media (max-width: 768px) {
+  body { font-size: 13px; }
+  .container { padding: 0 20px; }
+  .page { padding: 32px 0 64px; }
+}
