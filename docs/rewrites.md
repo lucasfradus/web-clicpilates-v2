@@ -28,8 +28,12 @@ export default defineConfig({ base, /* ... */ })
 
 ```tsx
 // src/main.tsx
-<BrowserRouter basename={import.meta.env.BASE_URL}>
+<BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
 ```
+
+Esa barra final importa: `BASE_URL` vale `/reservar/`, y con ese valor
+react-router no matchea la URL sin barra (`/reservar`). No tira error — deja la
+página en blanco.
 
 Es una sola variable y no cambia nada por defecto: **sin `VITE_BASE_PATH` el
 build sale idéntico al de hoy**, así que los deploys actuales
@@ -52,6 +56,17 @@ En `next.config.ts`, con los orígenes por variable de entorno:
 RESERVAS_ORIGIN=https://reservas-clientes-clic-v2-production.up.railway.app
 CLIENTES_ORIGIN=https://clientes.clicpilates.com
 ```
+
+Contra un `vite dev` hacen falta dos cosas más, que en producción no van (el
+README las explica en "Entorno local completo"):
+
+- `RESERVAS_PREFIJO` / `CLIENTES_PREFIJO`, porque el dev server sirve todo
+  debajo del prefijo y el build no.
+- `API_ORIGIN`, porque detrás del rewrite los SPAs le piden la API a **este**
+  origen y el proxy de Vite deja de intervenir. En producción no hace falta:
+  cada SPA buildea con `VITE_API_BASE_URL` apuntando al backend real. Si algún
+  día se decide exponer `clicpilates.com/api/*`, es una decisión aparte y hay
+  que pensar cache y rate limit.
 
 ## Orden del día del deploy
 

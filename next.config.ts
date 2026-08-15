@@ -17,13 +17,38 @@ const RESERVAS_ORIGIN =
 const CLIENTES_ORIGIN =
   process.env.CLIENTES_ORIGIN ?? 'https://clientes.clicpilates.com'
 
+/**
+ * Un build de Vite sirve sus archivos en la raíz del origen aunque los pida con
+ * el prefijo, así que el rewrite se lo saca: `/reservar/assets/x.js` va a
+ * `origen/assets/x.js`. Un `vite dev`, en cambio, sirve todo debajo del
+ * prefijo, así que ahí hay que dejárselo puesto.
+ *
+ * De ahí estas dos variables: vacías contra un deploy, `/reservar` y
+ * `/mi-cuenta` contra un dev server local. Ver docs/rewrites.md.
+ */
+const RESERVAS_PREFIJO = process.env.RESERVAS_PREFIJO ?? ''
+const CLIENTES_PREFIJO = process.env.CLIENTES_PREFIJO ?? ''
+
+/**
+ * Proxy de `/api` hacia el backend. Es para desarrollo: los dos SPAs piden su
+ * API al mismo origen que los sirve, y detrás del rewrite ese origen es este
+ * sitio, no ellos. En producción no se define, porque ahí cada SPA buildea con
+ * `VITE_API_BASE_URL` apuntando al backend real.
+ */
+const API_ORIGIN = process.env.API_ORIGIN
+
 const nextConfig: NextConfig = {
   async rewrites () {
     return [
-      { source: '/reservar', destination: RESERVAS_ORIGIN },
-      { source: '/reservar/:path*', destination: `${RESERVAS_ORIGIN}/:path*` },
-      { source: '/mi-cuenta', destination: CLIENTES_ORIGIN },
-      { source: '/mi-cuenta/:path*', destination: `${CLIENTES_ORIGIN}/:path*` },
+      ...(API_ORIGIN
+        ? [{ source: '/api/:path*', destination: `${API_ORIGIN}/api/:path*` }]
+        : []),
+      // La barra final del destino sin `:path*` no es cosmética: un `vite dev`
+      // sirve en `/reservar/` y devuelve 404 para `/reservar`.
+      { source: '/reservar', destination: `${RESERVAS_ORIGIN}${RESERVAS_PREFIJO}/` },
+      { source: '/reservar/:path*', destination: `${RESERVAS_ORIGIN}${RESERVAS_PREFIJO}/:path*` },
+      { source: '/mi-cuenta', destination: `${CLIENTES_ORIGIN}${CLIENTES_PREFIJO}/` },
+      { source: '/mi-cuenta/:path*', destination: `${CLIENTES_ORIGIN}${CLIENTES_PREFIJO}/:path*` },
     ]
   },
 
