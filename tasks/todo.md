@@ -3,12 +3,47 @@
 Plan completo en `docs/plan.md`. Contexto en `docs/contexto.md`.
 Una fase por sesión. Marcar a medida que se completa.
 
+**Todo lo que quede pendiente se anota acá**, aunque caiga en otro repo o no sea
+código. Si no está en este archivo, no existe.
+
+---
+
+## Abierto ahora mismo
+
+| Qué | Dónde | Estado |
+|---|---|---|
+| Higiene de SEO del sitio actual | [clic-pilates-landing#6](https://github.com/lucasfradus/clic-pilates-landing/pull/6) | Esperando merge. Al mergear, deploya |
+| `base` configurable en el SPA de reservas | rama `chore/base-path-rewrite` en `reservas-clientes-clic-v2` | Commiteada, **sin pushear** |
+| `base` configurable en el portal de clientes | rama `chore/base-path-rewrite` en `clic-webapp-clientes` | Commiteada, **sin pushear** |
+
+Los dos worktrees de los SPAs están en `c:/Users/lucas/Clic/.worktrees/`. Los
+cambios son no-destructivos: sin `VITE_BASE_PATH` el build sale idéntico al de
+hoy, así que se pueden mergear antes de publicar la web nueva.
+
+## Pendientes sueltos (no son de una fase)
+
+- [ ] **Verificar el dominio en Search Console.** Necesita a Lucas. Por DNS no
+      toca código; por meta tag va en el `layout.tsx` del sitio actual
+- [ ] **El apex redirige con `307`, no con `308`.** `clicpilates.com` →
+      `www.clicpilates.com` responde temporal en vez de permanente; para un
+      redirect de host canónico conviene permanente. Es config de dominio en
+      Vercel, no código
+- [ ] **`/api/public/sedes?tipo=PILATES` devuelve hoy "Sede Test orig"** entre
+      las 11 sedes. La web nueva no puede publicarla: hay que excluir las sedes
+      de prueba en el `?contexto=web`, o marcar la sede como no publicable
+- [ ] **El sitio actual no tiene `sitemap.xml` ni `robots.txt`.** Decidir si se
+      agregan mientras siga vivo (~30 líneas) o si se espera a la fase 6 de la
+      web nueva
+- [ ] **Header común con los SPAs** cuando se unifique el dominio. Detalle en
+      `docs/rewrites.md`
+
 ---
 
 ## Fase 0 — Higiene del sitio actual (repo `clic-pilates-landing`) ✅ (15-ago-2026)
 
-Rama `fix/seo-higiene`, commiteada y **sin pushear** (worktree en
-`c:/Users/lucas/Clic/.worktrees/landing-seo-fase0`).
+PR abierto: [clic-pilates-landing#6](https://github.com/lucasfradus/clic-pilates-landing/pull/6)
+(rama `fix/seo-higiene`, worktree en `c:/Users/lucas/Clic/.worktrees/landing-seo-fase0`).
+Al mergear, Vercel deploya solo.
 
 - [x] `metadataBase` → `https://www.clicpilates.com` (apuntaba a `clic-landing.vercel.app`, que además hoy devuelve 404)
 - [x] Canonical autorreferencial en cada ruta. **No estaba en el checklist y era lo más grave**: el `canonical: '/'` vivía en el layout raíz y los hijos heredan `alternates`, así que `/sede/nunez` se declaraba duplicado de la home

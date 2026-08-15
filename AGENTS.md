@@ -17,6 +17,9 @@ Leer, en este orden:
   degrada la calidad hacia el final.
 - Plan primero en `tasks/todo.md`, con ítems marcables. Confirmar antes de
   implementar.
+- **Todo pendiente se anota en `tasks/todo.md`**, aunque caiga en otro repo, no
+  sea código o dependa de un tercero. Lo que queda sólo dicho en una respuesta
+  se pierde.
 - Verificar antes de dar algo por hecho: correr el build, mirar la página, probar
   el flujo. Nunca marcar una tarea completa sin demostrar que anda.
 - Capturar correcciones del usuario en `tasks/lessons.md`.
