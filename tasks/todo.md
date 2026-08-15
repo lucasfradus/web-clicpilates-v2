@@ -21,6 +21,14 @@ Los dos worktrees de los SPAs están en `c:/Users/lucas/Clic/.worktrees/`. Los
 cambios son no-destructivos: sin `VITE_BASE_PATH` el build sale idéntico al de
 hoy, así que se pueden mergear antes de publicar la web nueva.
 
+## Al mergear los PRs
+
+- [ ] **Clicnet#370**: verificar que el deploy salió (`/api/public/sedes?tipo=PILATES&contexto=web`
+      en producción tiene que devolver más sedes que sin `contexto`, y traer
+      `reservaOnline`) y cerrar el worktree `sedes-contexto-web` con `/cerrar-worktree`
+- [ ] **clic-pilates-landing#6**: confirmar en el sitio publicado que el canonical
+      apunta a `www.clicpilates.com` y que la meta de verificación ya no está
+
 ## Pendientes sueltos (no son de una fase)
 
 - [ ] **Verificar el dominio en Search Console.** Necesita a Lucas. Por DNS no
