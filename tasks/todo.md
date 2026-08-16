@@ -13,7 +13,7 @@ código. Si no está en este archivo, no existe.
 | Qué | Dónde | Estado |
 |---|---|---|
 | Higiene de SEO del sitio actual | [clic-pilates-landing#6](https://github.com/lucasfradus/clic-pilates-landing/pull/6) | Esperando merge. Al mergear, deploya |
-| `?contexto=web` en el endpoint de sedes | [Clicnet#370](https://github.com/lucasfradus/Clicnet/pull/370) | Esperando merge. **Destraba la fase 2** |
+| `?contexto=web` en el endpoint de sedes | [Clicnet#370](https://github.com/lucasfradus/Clicnet/pull/370) | ✅ Mergeado y **en producción** (verificado 16-ago). Falta cerrar el worktree |
 | `base` configurable en el SPA de reservas | rama `chore/base-path-rewrite` en `reservas-clientes-clic-v2` | Commiteada, **sin pushear** |
 | `base` configurable en el portal de clientes | rama `chore/base-path-rewrite` en `clic-webapp-clientes` | Commiteada, **sin pushear** |
 
@@ -102,23 +102,45 @@ Decisiones de esta fase, por si hay que revisarlas:
 - `/estudios`, `/precios`, `/academy`, `/franquicias` y `/politicas` devuelven
   404 hasta las fases 3 y 5. Es preferible a publicar páginas vacías indexables.
 
-## Fase 2 — Capa de datos ← la que sigue
+## Fase 2 — Capa de datos ✅ (16-ago-2026)
 
-Depende de que se mergee y deploye [Clicnet#370](https://github.com/lucasfradus/Clicnet/pull/370).
-Mientras tanto se puede desarrollar contra el backend del worktree
-`.claude/worktrees/sedes-contexto-web` levantado en otro puerto.
+- [x] Cliente de API tipado (`src/lib/api/`), con los tipos copiados de
+      `reservas/src/types/index.ts` y extendidos con lo que la web necesita
+- [x] `reservaOnline` vive en el tipo de acá: el de reservas es un subconjunto
+      (no modela `fotosDetalle`, `imagenFoco`, `mostrarPrecios` ni `planes`) y
+      agregarle un campo que ese repo no consume sería trabajo para nadie
+- [x] `getSedes` / `getSede` / `getCatalogo` con `revalidate = 3600`
+- [x] `getClases` del lado del cliente, sin cache
+- [x] Skeletons con altura obligatoria (`BloqueCargando`, `Skeleton`)
+- [x] Estados de error y vacío por sección (`EstadoSeccion`)
+- [x] Sede sin `reservaOnline`: `accionDeSede()` manda a WhatsApp
 
-- [ ] Cliente de API tipado reusando `reservas/src/types/index.ts`
-- [ ] `reservaOnline` no está en el tipo `Sede` de reservas (es nuevo, sale de
-      #370): decidir si se agrega allá o se extiende el tipo acá
-- [ ] `getSedes` / `getSede` / `getCatalogo` con `revalidate = 3600`
-- [ ] `getClases` del lado del cliente, sin cache
-- [ ] Skeletons con la misma altura que el contenido real (cuidar CLS)
-- [ ] Estados de error y vacío por sección
-- [ ] Sede sin `reservaOnline`: mostrar WhatsApp en vez del botón de reservar
-      (es para lo que existe el booleano)
+Convención de errores de la capa de datos: `null` = falló (mostrar error),
+lista vacía = no hay nada (mostrar vacío). No es lo mismo "todavía no hay
+clases" que "no pudimos cargar las clases". `getClases` devuelve además
+`sin-grilla`, porque su endpoint 404ea cuando la sede no puede vender online.
 
-## Fase 3 — Landings de sede ← la fase que más rinde
+Verificado: 14 tests con el backend mockeado, y una página temporal contra
+**producción** que listó las 11 sedes con su acción resuelta y el catálogo de
+Belgrano C. Los 18 campos de la respuesta real coinciden con los tipos.
+
+## Fase 3 — Landings de sede ← la que sigue, y la que más rinde
+
+Dos cosas que aparecieron leyendo los endpoints en la fase 2 y que hay que
+resolver acá:
+
+- [ ] **La grilla llega sin las clases llenas.** `/api/public/sedes/:id/clases`
+      filtra `cuposDisponibles > 0`, así que una franja completa se ve como un
+      hueco en el horario. Para el portal está bien —muestra lo reservable—,
+      pero la web dice "estos son nuestros horarios". O se muestra "completo",
+      o se acepta y se documenta
+- [ ] **Ese endpoint 404ea para una sede sin venta online**, igual que el de
+      sedes antes de `?contexto=web`. La capa de datos ya lo distingue
+      (`sin-grilla`), pero si se quiere mostrar la grilla igual, hace falta el
+      mismo `contexto=web` allá
+- [ ] **`inicio` viene en UTC.** Agrupar por día cortando el ISO da el día
+      equivocado para las clases de la noche: hay que pasar por
+      `America/Argentina/Buenos_Aires`
 
 - [ ] `/estudios` (índice)
 - [ ] `/estudios/[slug]` con `generateStaticParams`

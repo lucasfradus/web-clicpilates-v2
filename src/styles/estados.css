@@ -1,0 +1,63 @@
+/* ============================================================================
+   Estados de sección: cargando, vacío, error.
+   ========================================================================== */
+
+.sk {
+  display: block;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--line-soft) 25%, var(--beige-soft) 37%, var(--line-soft) 63%);
+  background-size: 400% 100%;
+  animation: sk-brillo 1.4s ease-in-out infinite;
+}
+
+@keyframes sk-brillo {
+  from { background-position: 100% 50%; }
+  to { background-position: 0 50%; }
+}
+
+.sk-bloque {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Sin movimiento: el bloque queda quieto, pero sigue ocupando su lugar.
+   (base.css ya anula las animaciones; esto deja el color parejo.) */
+@media (prefers-reduced-motion: reduce) {
+  .sk {
+    background: var(--line-soft);
+  }
+}
+
+.estado {
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  text-align: center;
+}
+
+.estado--error {
+  border-color: var(--terracotta);
+  background: var(--terracotta-bg);
+}
+
+.estado__titulo {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.estado--error .estado__titulo {
+  color: var(--terracotta);
+}
+
+.estado__detalle {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.estado__accion {
+  margin-top: 18px;
+}
