@@ -5,10 +5,19 @@
  *
  * - **Servidor** (ISR): URL absoluta al backend. `API_ORIGIN` en desarrollo,
  *   el backend real en producción.
- * - **Cliente** (la grilla en vivo): `NEXT_PUBLIC_API_BASE_URL`. En desarrollo
- *   va vacía para que el pedido salga al mismo origen y lo proxee este sitio
- *   (`next.config.ts`), que es como se esquiva CORS igual que hace el proxy de
- *   Vite en los SPAs.
+ * - **Cliente** (la grilla en vivo): `NEXT_PUBLIC_API_BASE_URL`. Puede ser el
+ *   backend real —lo normal en producción— o el propio origen del sitio, que
+ *   hace que el pedido lo proxee este mismo servidor y esquive CORS.
+ *
+ * Esa segunda opción no es cosmética: el backend tiene una allowlist de
+ * orígenes (`Clicnet/src/proxy.ts`) y un dominio que no esté en la lista se
+ * come un CORS. Mientras el dominio nuevo no esté agregado, staging apunta a sí
+ * mismo. Ojo que proxear tiene un costo: todas las llamadas salen de la IP del
+ * servidor y comparten el rate limit de 60 req/min.
+ *
+ * En desarrollo alcanza con la cadena vacía, que se resuelve al origen actual.
+ * En Railway **no**: una variable vacía no sobrevive, así que ahí va la URL
+ * completa del propio sitio.
  */
 
 const BACKEND_PUBLICO = 'https://app.clicpilates.com'
