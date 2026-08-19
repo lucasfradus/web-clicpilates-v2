@@ -6,13 +6,32 @@ Una fase por sesión. Marcar a medida que se completa.
 **Todo lo que quede pendiente se anota acá**, aunque caiga en otro repo o no sea
 código. Si no está en este archivo, no existe.
 
+## La regla que manda sobre todo lo demás
+
+**La landing actual (`clic-pilates-landing`) no se toca más.** Cerró con la
+fase 0 y sigue sirviendo `clicpilates.com` hasta el final.
+
+Este proyecto es una versión nueva, con **su propio deploy en Railway**. Todas
+las pruebas se hacen ahí, contra su URL propia, hasta estar 100% conformes. El
+cambio de dominio es el último paso, no el primero: recién cuando el sitio nuevo
+esté aprobado se apunta `clicpilates.com` acá y se activan los `301`.
+
+Consecuencias prácticas:
+
+- Nada de arreglar cosas del sitio viejo, por más que se vean mal. Si aparece
+  algo, se anota y se resuelve en la versión nueva.
+- El deploy de staging va con `NEXT_PUBLIC_NOINDEX=true`. Dos sitios con el
+  mismo contenido compitiendo en Google es exactamente lo que vinimos a evitar.
+- Todo lo que es configuración de dominio —el redirect del apex, los `301` de
+  los subdominios, Search Console— se ejecuta el día del cambio, no antes.
+
 ---
 
 ## Abierto ahora mismo
 
 | Qué | Dónde | Estado |
 |---|---|---|
-| Higiene de SEO del sitio actual | [clic-pilates-landing#6](https://github.com/lucasfradus/clic-pilates-landing/pull/6) | Esperando merge. Al mergear, deploya |
+| Higiene de SEO del sitio actual | [clic-pilates-landing#6](https://github.com/lucasfradus/clic-pilates-landing/pull/6) | ✅ Mergeado y **en producción** (verificado 19-ago). Cierra la fase 0 |
 | `?contexto=web` en el endpoint de sedes | [Clicnet#370](https://github.com/lucasfradus/Clicnet/pull/370) | ✅ Mergeado y **en producción** (verificado 16-ago). Falta cerrar el worktree |
 | `base` configurable en el SPA de reservas | rama `chore/base-path-rewrite` en `reservas-clientes-clic-v2` | Commiteada, **sin pushear** |
 | `base` configurable en el portal de clientes | rama `chore/base-path-rewrite` en `clic-webapp-clientes` | Commiteada, **sin pushear** |
@@ -23,28 +42,30 @@ hoy, así que se pueden mergear antes de publicar la web nueva.
 
 ## Al mergear los PRs
 
-- [ ] **Clicnet#370**: verificar que el deploy salió (`/api/public/sedes?tipo=PILATES&contexto=web`
-      en producción tiene que devolver más sedes que sin `contexto`, y traer
-      `reservaOnline`) y cerrar el worktree `sedes-contexto-web` con `/cerrar-worktree`
-- [ ] **clic-pilates-landing#6**: confirmar en el sitio publicado que el canonical
-      apunta a `www.clicpilates.com` y que la meta de verificación ya no está
+- [x] **Clicnet#370** verificado en producción el 16-ago: devuelve `reservaOnline`
+      en las 11 sedes
+- [x] **clic-pilates-landing#6** verificado en producción el 19-ago: canonical
+      autorreferencial en `www.clicpilates.com`, sin `keywords` y con el zoom
+      desbloqueado
+- [ ] Cerrar el worktree `sedes-contexto-web` de Clicnet con `/cerrar-worktree`
+      (y de paso `buscador-alumnos` y `facturas-motivo-error`, que también
+      están mergeados)
 
 ## Pendientes sueltos (no son de una fase)
 
-- [ ] **Verificar el dominio en Search Console.** Necesita a Lucas. Por DNS no
-      toca código; por meta tag va en el `layout.tsx` del sitio actual
-- [ ] **El apex redirige con `307`, no con `308`.** `clicpilates.com` →
-      `www.clicpilates.com` responde temporal en vez de permanente; para un
-      redirect de host canónico conviene permanente. Es config de dominio en
-      Vercel, no código
+- [ ] **Deploy del sitio nuevo en Railway**, con `NEXT_PUBLIC_NOINDEX=true` y su
+      URL propia. Es el entorno donde se prueba todo hasta el visto bueno
+- [ ] **Verificar el dominio en Search Console.** Necesita a Lucas. Conviene por
+      DNS: así vale para el sitio nuevo sin tocar el viejo
+- [ ] **El apex redirige con `307`, no con `308`.** Va con el cambio de
+      dominio (fase 8), no antes: hoy es config del deploy viejo
 - [x] ~~Excluir las sedes de prueba del endpoint público~~ — **decidido el
       15-ago: no se excluyen.** Lucas usa las sedes de prueba para testear y las
       apaga desde el backoffice cuando terminan. El único interruptor es
       `Sede.activa`. Implica que una sede de prueba activa se publica en el
       sitio (y entra al sitemap): es el precio de tener un solo interruptor
-- [ ] **El sitio actual no tiene `sitemap.xml` ni `robots.txt`.** Decidir si se
-      agregan mientras siga vivo (~30 líneas) o si se espera a la fase 6 de la
-      web nueva
+- [x] ~~Sitemap y robots del sitio actual~~ — **no se hacen.** La landing vieja
+      no se toca más; el sitemap sale en la fase 6, acá
 - [ ] **Header común con los SPAs** cuando se unifique el dominio. Detalle en
       `docs/rewrites.md`
 
@@ -52,9 +73,8 @@ hoy, así que se pueden mergear antes de publicar la web nueva.
 
 ## Fase 0 — Higiene del sitio actual (repo `clic-pilates-landing`) ✅ (15-ago-2026)
 
-PR abierto: [clic-pilates-landing#6](https://github.com/lucasfradus/clic-pilates-landing/pull/6)
-(rama `fix/seo-higiene`, worktree en `c:/Users/lucas/Clic/.worktrees/landing-seo-fase0`).
-Al mergear, Vercel deploya solo.
+Mergeado el 19-ago y verificado en producción. **Con esto la landing vieja queda
+cerrada: no se toca más** (ver la regla al principio de este archivo).
 
 - [x] `metadataBase` → `https://www.clicpilates.com` (apuntaba a `clic-landing.vercel.app`, que además hoy devuelve 404)
 - [x] Canonical autorreferencial en cada ruta. **No estaba en el checklist y era lo más grave**: el `canonical: '/'` vivía en el layout raíz y los hijos heredan `alternates`, así que `/sede/nunez` se declaraba duplicado de la home
@@ -62,8 +82,9 @@ Al mergear, Vercel deploya solo.
 - [x] Sacar el array `keywords`
 - [x] Sacar `verification.google`, que salía en producción con el placeholder literal
 - [x] `noindex` en los deploys de preview (`VERCEL_ENV !== 'production'`), verificado con un build de preview
-- [ ] **Necesita a Lucas**: verificar el dominio en Search Console (por DNS no toca código; si es por meta tag, va en `layout.tsx`)
-- [ ] **Decisión pendiente**: el sitio actual no tiene `sitemap.xml` ni `robots.txt`. No se puede "enviar el sitemap" porque no existe. Son ~30 líneas si se quiere sumar mientras el sitio viejo siga vivo
+- [ ] **Necesita a Lucas**: verificar el dominio en Search Console. Conviene por
+      DNS, que vale para los dos sitios y no toca el código de ninguno
+- [x] ~~Sitemap del sitio viejo~~ — no se hace: sale en la fase 6, en el sitio nuevo
 
 ## Fase 1 — Esqueleto ✅ (15-ago-2026)
 
