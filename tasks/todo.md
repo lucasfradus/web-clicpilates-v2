@@ -53,8 +53,17 @@ hoy, así que se pueden mergear antes de publicar la web nueva.
 
 ## Pendientes sueltos (no son de una fase)
 
-- [ ] **Deploy del sitio nuevo en Railway**, con `NEXT_PUBLIC_NOINDEX=true` y su
-      URL propia. Es el entorno donde se prueba todo hasta el visto bueno
+- [x] ~~Deploy del sitio nuevo en Railway~~ — hecho el 19-ago:
+      `web-clicpilates-v2-production.up.railway.app`, con `NEXT_PUBLIC_NOINDEX=true`,
+      deploy automático desde `main`
+- [ ] **CORS del backend: falta el dominio de la web nueva.** `allowedPublicOrigins`
+      en `Clicnet/src/proxy.ts` es una allowlist explícita, y no incluye ni el
+      dominio de staging ni `https://www.clicpilates.com`. Mientras tanto el
+      staging pide la grilla por el mismo origen y la proxea este sitio, lo que
+      funciona pero hace que **todas las llamadas salgan de la IP del servidor**
+      y choquen contra el rate limit de 60 req/min. Antes de lanzar: agregar
+      `www.clicpilates.com` a esa lista y volver a poner
+      `NEXT_PUBLIC_API_BASE_URL` apuntando al backend
 - [ ] **Verificar el dominio en Search Console.** Necesita a Lucas. Conviene por
       DNS: así vale para el sitio nuevo sin tocar el viejo
 - [ ] **El apex redirige con `307`, no con `308`.** Va con el cambio de
