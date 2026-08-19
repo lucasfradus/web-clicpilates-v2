@@ -145,35 +145,50 @@ Verificado: 14 tests con el backend mockeado, y una página temporal contra
 **producción** que listó las 11 sedes con su acción resuelta y el catálogo de
 Belgrano C. Los 18 campos de la respuesta real coinciden con los tipos.
 
-## Fase 3 — Landings de sede ← la que sigue, y la que más rinde
+## Fase 3 — Landings de sede ✅ (19-ago-2026)
 
-Dos cosas que aparecieron leyendo los endpoints en la fase 2 y que hay que
-resolver acá:
+- [x] `/estudios` (índice) con las tarjetas de sede y foto con foco
+- [x] `/estudios/[slug]` con `generateStaticParams`: 11 landings prerenderizadas
+- [x] `generateMetadata` por sede: title, description, canonical y OG
+- [x] H1 por zona ("Pilates reformer en Núñez", no "Nuñez")
+- [x] Migas visibles + `BreadcrumbList`
+- [x] 5 FAQs por sede, visibles + `FAQPage`. Con `<details>` nativo: cero JS y
+      la respuesta está en el HTML aunque el acordeón esté cerrado
+- [x] JSON-LD `LocalBusiness` — **parcial a propósito**: sin `geo`,
+      `telephone`, dirección desagregada ni horarios de apertura, que no
+      existen en el modelo. Se completa con la migración de `Sede`
+- [x] Grilla en vivo del lado del cliente, con skeleton de la misma altura
+- [x] Planes de la sede con el descuento de la clase de prueba visible
+- [x] Galería con `fotosDetalle[].foco` como `object-position`
+- [x] Enlazado interno a sedes cercanas (misma ciudad)
+
+Verificado contra **producción**: build con las 11 landings, `tsc`, `lint`,
+14 tests, y capturas del índice, la landing (hero, grilla real, planes, FAQ) y
+mobile. El JSON-LD emite Organization + LocalBusiness con 7 ofertas + FAQPage
+con 5 preguntas + BreadcrumbList.
+
+Dos cosas que salieron de mirar la página, no el código:
+
+- **Los planes trimestrales decían "por mes"**: `$290.000` es el total de los
+  tres meses del Pack 24, no su mensual. Corregido — el trimestral dice "los 3
+  meses" y su descuento dice "tu primer pago", no "tu primer mes"
+- El título salía duplicado ("… · CLIC Nuñez · CLIC studio pilates") porque la
+  plantilla del layout ya agrega la marca
+
+Pendientes que quedan de esta fase:
 
 - [ ] **La grilla llega sin las clases llenas.** `/api/public/sedes/:id/clases`
-      filtra `cuposDisponibles > 0`, así que una franja completa se ve como un
-      hueco en el horario. Para el portal está bien —muestra lo reservable—,
-      pero la web dice "estos son nuestros horarios". O se muestra "completo",
+      filtra `cuposDisponibles > 0`: una franja completa se ve como un hueco en
+      el horario. Decidir si se muestra "completo" (necesita cambio de backend)
       o se acepta y se documenta
-- [ ] **Ese endpoint 404ea para una sede sin venta online**, igual que el de
-      sedes antes de `?contexto=web`. La capa de datos ya lo distingue
-      (`sin-grilla`), pero si se quiere mostrar la grilla igual, hace falta el
-      mismo `contexto=web` allá
-- [ ] **`inicio` viene en UTC.** Agrupar por día cortando el ISO da el día
-      equivocado para las clases de la noche: hay que pasar por
-      `America/Argentina/Buenos_Aires`
+- [ ] **Ese endpoint 404ea para una sede sin venta online.** La landing ya lo
+      resuelve mostrando "no publica su grilla" + WhatsApp, pero si se quiere
+      mostrar la grilla igual hace falta el mismo `contexto=web` allá
+- [ ] **`Sede.zona` no existe**: el mapa de barrios está a mano en
+      `src/lib/zona.ts`. Va con la migración de `Sede`
+- [ ] **Texto propio por sede (~300 palabras).** Hoy la landing usa
+      `Sede.descripcion`, que es de una línea. Lo tiene que escribir el dueño
 
-- [ ] `/estudios` (índice)
-- [ ] `/estudios/[slug]` con `generateStaticParams`
-- [ ] `generateMetadata` por sede: title, description, canonical, OG
-- [ ] H1 por zona ("Pilates reformer en Núñez", no "Núñez")
-- [ ] Breadcrumbs visibles + `BreadcrumbList`
-- [ ] 5 FAQs por sede, visibles + `FAQPage`
-- [ ] JSON-LD `LocalBusiness` (bloqueado por la migración de `Sede`)
-- [ ] Grilla en vivo dentro de `<Suspense>`
-- [ ] Planes de la sede con el descuento de la clase de prueba visible
-- [ ] Galería usando `fotosDetalle[].foco` como `object-position`
-- [ ] Enlazado interno a sedes cercanas
 
 ## Fase 4 — Home y marca
 

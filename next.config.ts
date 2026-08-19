@@ -38,6 +38,16 @@ const CLIENTES_PREFIJO = process.env.CLIENTES_PREFIJO ?? ''
 const API_ORIGIN = process.env.API_ORIGIN
 
 const nextConfig: NextConfig = {
+  images: {
+    // Las fotos de las sedes las sirve el backend desde su storage.
+    // El backend ya genera variantes WebP y acepta `?w=`; acá igual las pasamos
+    // por el optimizador de Next, que además arma el srcset y sirve AVIF.
+    remotePatterns: [
+      { protocol: 'https', hostname: 'app.clicpilates.com', pathname: '/api/storage/**' },
+      { protocol: 'http', hostname: 'localhost', port: '3000', pathname: '/api/storage/**' },
+    ],
+  },
+
   async rewrites () {
     return [
       ...(API_ORIGIN

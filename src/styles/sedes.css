@@ -1,0 +1,113 @@
+/* ============================================================================
+   Grilla de tarjetas de sede (índice de estudios y, más adelante, la home).
+   ========================================================================== */
+
+.sedes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.sede {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+.sede:hover {
+  transform: translateY(-3px);
+  border-color: var(--taupe);
+  box-shadow: var(--shadow-soft);
+}
+
+.sede__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  /* El degradado se ve sólo si la sede no cargó su foto. */
+  background: linear-gradient(135deg, #d8c4ad, #bcac9e);
+}
+
+.sede__tagcity {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  padding: 5px 11px;
+  border-radius: var(--radius-pill);
+  background: rgba(253, 251, 250, 0.9);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.sede__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 7px;
+  padding: 22px 24px 24px;
+}
+
+.sede__name {
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.sede__addr {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.sede__foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.sede__price {
+  margin-top: 4px;
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.sede__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.sede:hover .sede__cta {
+  color: var(--taupe-dark);
+}
+
+@media (max-width: 1024px) {
+  .sedes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .sedes {
+    grid-template-columns: 1fr;
+  }
+}

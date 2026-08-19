@@ -1,0 +1,124 @@
+/* ============================================================================
+   Grilla de clases en vivo.
+   ========================================================================== */
+
+.day-label {
+  margin: 32px 0 14px;
+  padding-left: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+div:first-child > .day-label {
+  margin-top: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+  padding: 18px 22px;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  transition: 0.2s;
+}
+
+.row + .row {
+  margin-top: 10px;
+}
+
+.row:not(.row--estatica):hover {
+  border-color: var(--taupe);
+  transform: translateX(2px);
+}
+
+.row__time {
+  min-width: 70px;
+  padding-right: 20px;
+  border-right: 1px solid var(--line);
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.row__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.row__name {
+  display: block;
+  font-size: 18px;
+  line-height: 1.15;
+}
+
+.row__meta {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  color: var(--ink-soft);
+}
+
+.row__cupos {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--sage-bg);
+  white-space: nowrap;
+}
+
+.row__cupos b {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--sage);
+}
+
+/* Quedan pocos: terracota. Es el mismo código de color del portal de reservas. */
+.row__cupos--low {
+  background: var(--terracotta-bg);
+}
+
+.row__cupos--low b {
+  color: var(--terracotta);
+}
+
+.row__arrow {
+  font-size: 16px;
+  color: var(--ink-mute);
+  transition: 0.2s;
+}
+
+.row:hover .row__arrow {
+  color: var(--ink);
+  transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+  .row {
+    column-gap: 14px;
+    padding: 14px 16px;
+  }
+
+  .row__time {
+    min-width: 54px;
+    padding-right: 14px;
+    font-size: 20px;
+  }
+
+  .row__name {
+    font-size: 16px;
+  }
+
+  .row__arrow {
+    display: none;
+  }
+}
