@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from 'next'
 import { Poppins, Prata } from 'next/font/google'
 
+import { Medicion } from '@/components/medicion/medicion'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
+import { getSedes } from '@/lib/api/sedes'
 import { NOINDEX, SITIO } from '@/lib/site'
 import '@/styles/globals.css'
 
@@ -53,7 +55,17 @@ export const viewport: Viewport = {
   // arrastra el sitio actual (fase 0 del plan). No volver a ponerlo.
 }
 
-export default function RootLayout ({ children }: LayoutProps<'/'>) {
+export default async function RootLayout ({ children }: LayoutProps<'/'>) {
+  // El mapa sede → pixel se arma acá, con las sedes que ya tenemos cacheadas:
+  // el navegador no necesita pedirlas de nuevo sólo para saber a qué cuenta
+  // publicitaria pertenece el evento.
+  const sedes = await getSedes()
+  const pixelesPorSede = Object.fromEntries(
+    (sedes ?? [])
+      .filter((s) => s.metaPixelId != null && s.metaPixelId !== '')
+      .map((s) => [s.slug, s.metaPixelId as string]),
+  )
+
   return (
     <html lang="es-AR" className={`${poppins.variable} ${prata.variable}`}>
       <body>
@@ -67,6 +79,7 @@ export default function RootLayout ({ children }: LayoutProps<'/'>) {
         <SiteHeader />
         <main id="contenido">{children}</main>
         <SiteFooter />
+        <Medicion pixelesPorSede={pixelesPorSede} activo={!NOINDEX} />
       </body>
     </html>
   )

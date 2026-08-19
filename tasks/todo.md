@@ -291,14 +291,37 @@ que no tiene que indexar. Lo que **no** se hace es bloquear el rastreo — si lo
 bloqueáramos, Google no podría leer el `noindex`.
 
 
-## Fase 7 — Medición
+## Fase 7 — Medición ✅ (19-ago-2026) — con dos partes en otros repos
 
-- [ ] Portar `reservas/src/lib/meta.ts` (pixel por `Sede.metaPixelId`)
-- [ ] Eventos: ViewContent, Search, AddToCart, InitiateCheckout, Purchase, Lead
-- [ ] Conversions API desde el webhook de Mercado Pago, con `event_id` compartido
-- [ ] Verificar deduplicación en Events Manager
-- [ ] GA4 con `sede` como dimensión personalizada
-- [ ] UTMs persistidos hasta el `CheckoutPlanPayload`
+- [x] Portado `reservas/src/lib/meta.ts`: pixel por `Sede.metaPixelId`, todo por
+      `trackSingle`. Con varios pixels vivos, `fbq('track')` dispara a todos y
+      una franquicia terminaría viendo las conversiones de otra
+- [x] El mapa sede → pixel lo arma el servidor y viaja por props: la versión de
+      reservas tenía que pedirlo a la API y correr una carrera contra un
+      timeout; acá las sedes ya están renderizadas
+- [x] GA4 con `sede` y `sede_slug` en cada evento
+- [x] Eventos de este sitio: PageView, ViewContent (landing de sede, contra el
+      pixel de esa sede) y Lead (formularios, sólo si el envío salió bien)
+- [x] UTMs persistidas y re-adjuntadas a los links a `/reservar`, para que el
+      checkout —que vive en otro SPA— no vea la venta como directa
+- [x] **La medición no corre en staging.** Un deploy de pruebas mandando eventos
+      a las cuentas reales ensucia los números con los que se decide la pauta
+
+Verificado en el navegador: carga gtag y fbevents, guarda las UTMs de la URL y
+el CTA a `/reservar` sale con ellas pegadas.
+
+Lo que queda, y no es de este repo:
+
+- [ ] **AddToCart, InitiateCheckout y Purchase** los emite el portal de reservas,
+      que ya los tiene (PR #307 y #311 de Clicnet). Hay que verificar que el
+      embudo se lea completo cuando los dos sitios compartan dominio
+- [ ] **Conversions API desde el webhook de Mercado Pago**, con `event_id`
+      compartido para deduplicar. Es backend (Clicnet) y sigue pendiente el
+      token de CAPI de Clic Wellness
+- [ ] **Verificar la deduplicación en Events Manager** una vez que CAPI esté
+- [ ] Cargar `NEXT_PUBLIC_META_PIXEL_ID` y `NEXT_PUBLIC_GA_MEASUREMENT_ID` en
+      Railway el día del lanzamiento (en staging no hacen falta: está apagada)
+
 
 ## Fase 8 — QA y lanzamiento
 

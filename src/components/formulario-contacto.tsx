@@ -2,6 +2,9 @@
 
 import { useState } from 'react'
 
+import { ga4Evento } from '@/lib/medicion/ga4'
+import { metaEvento } from '@/lib/medicion/meta'
+
 export type TipoConsulta = 'franquicia' | 'academy'
 
 const ETIQUETAS: Record<TipoConsulta, { zona: string; mensaje: string; boton: string }> = {
@@ -53,6 +56,11 @@ export function FormularioContacto ({ tipo, emailContacto }: {
 
       if (res.status === 503) { setEstado('sin-configurar'); return }
       if (!res.ok) { setEstado('error'); return }
+
+      // El Lead se dispara sólo cuando el envío salió bien: contar como
+      // conversión un formulario que se perdió es peor que no contarlo.
+      metaEvento('Lead', { content_category: tipo })
+      ga4Evento('generate_lead', { tipo })
 
       form.reset()
       setEstado('enviado')

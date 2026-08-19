@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { JsonLd } from '@/components/json-ld'
+import { ViewContentSede } from '@/components/medicion/view-content'
 import { Migas } from '@/components/migas'
 import { BloqueFaq } from '@/components/sede/faq'
 import { BloquePrueba } from '@/components/sede/bloque-prueba'
@@ -15,6 +16,7 @@ import type { Sede } from '@/lib/api/tipos'
 import { faqsDeSede } from '@/lib/faqs'
 import { pesos } from '@/lib/formato'
 import { grafo, migasDePan, negocioLocal, organizacion, paginaDeFaqs } from '@/lib/jsonld'
+import { NOINDEX } from '@/lib/site'
 import { sedesCerca, zonaDe } from '@/lib/zona'
 
 // Next exige que este valor sea un literal analizable estáticamente: no acepta
@@ -208,6 +210,13 @@ export default async function LandingSede ({ params }: PageProps<'/estudios/[slu
           )}
         </div>
       </section>
+
+      <ViewContentSede
+        slug={sede.slug}
+        nombre={sede.nombre}
+        precioPrueba={sede.precioPrueba}
+        activo={!NOINDEX}
+      />
 
       <JsonLd
         datos={grafo(
