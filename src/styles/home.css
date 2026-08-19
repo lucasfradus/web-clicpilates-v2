@@ -228,7 +228,8 @@
   font-family: var(--font-serif);
   font-weight: 400;
   font-style: italic;
-  color: rgba(255, 255, 255, 0.32);
+  /* 0.32 no llegaba a AA. Sigue leyéndose como fantasma y ahora se lee. */
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .band__iso {
