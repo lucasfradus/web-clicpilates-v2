@@ -234,13 +234,37 @@ Pendientes que quedan de esta fase:
       por clase, y cuántos estudios son de verdad
 
 
-## Fase 5 — Resto de páginas
+## Fase 5 — Resto de páginas ✅ (19-ago-2026)
 
-- [ ] `/precios` con selector de sede
-- [ ] `/clases/initial-pilates`, `/clases/level-up-pilates`
-- [ ] `/academy`
-- [ ] `/franquicias` con formulario propio y su pixel
-- [ ] `/politicas` migrada desde la landing actual
+- [x] `/precios` con selector de estudio. Los 11 catálogos vienen con la
+      página, así que cambiar de estudio no dispara ni un pedido
+- [x] `/clases/initial-pilates` y `/clases/level-up-pilates`, con sus FAQs
+- [x] `/academy`, con formulario propio
+- [x] `/franquicias`, con formulario y embudo aparte
+- [x] `/politicas` migrada del sitio actual — **texto legal portado tal cual**,
+      con un script; sólo cambiaron el envoltorio y los estilos
+
+El formulario (`/api/contacto`) manda por Resend, a la misma casilla que usaba
+el sitio anterior. Tiene honeypot contra bots y valida del lado del servidor.
+Sin `RESEND_API_KEY` devuelve 503 y el formulario muestra el mail para escribir
+directo: un formulario que dice "gracias" y no manda nada es peor que no
+tenerlo.
+
+Verificado: las 6 rutas responden 200, `/clases/no-existe` da 404, y la API
+contesta 503 sin key, 400 con datos incompletos y 200 al honeypot sin enviar
+nada.
+
+Pendientes de esta fase:
+
+- [ ] **`RESEND_API_KEY` en Railway.** Hasta que esté, los dos formularios
+      muestran el mail en vez de enviar. La key es la misma que usa el sitio
+      actual (está en su proyecto de Vercel)
+- [ ] **Confirmar el contenido de Academy y Franquicias.** Las dos páginas dicen
+      sólo lo que podemos sostener. Falta que el dueño confirme, para poder
+      publicarlas: duración, modalidad y precio de la formación; e inversión,
+      plazos, fee y exclusividad territorial de la franquicia
+- [ ] El pixel propio de Franquicias es de la fase 7
+
 
 ## Fase 6 — SEO técnico
 
