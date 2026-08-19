@@ -1,0 +1,96 @@
+/* ============================================================================
+   Selector de estudio. Reemplaza al <select> nativo.
+   Sale del patrón de píldoras del prototipo (la barra de la grilla en vivo).
+   ========================================================================== */
+
+.sedepick {
+  min-width: 0;
+  border: 0;
+}
+
+.sedepick__lista {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* En una columna angosta —el widget del hero— las píldoras scrollean en una
+   sola fila en vez de apilarse y comerse la tarjeta entera. */
+.sedepick--compacto .sedepick__lista {
+  min-width: 0;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+  /* El scroll horizontal tiene que insinuarse, o parece que no hay más. */
+  mask-image: linear-gradient(to right, #000 88%, transparent);
+}
+
+.sedepick--compacto .sedepick__lista::-webkit-scrollbar {
+  display: none;
+}
+
+.sedepick--compacto .sedepick__op {
+  flex: none;
+  scroll-snap-align: start;
+}
+
+.sedepick--ancho .sedepick__lista {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sedepick__op {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.sedepick__op:hover {
+  border-color: var(--taupe);
+  transform: translateY(-1px);
+}
+
+/* El radio real sigue ahí, sólo que no se ve: el foco de teclado se dibuja
+   sobre la píldora. */
+.sedepick__op input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.sedepick__op:has(input:focus-visible) {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.sedepick__op--on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface);
+}
+
+.sedepick__op--on:hover {
+  border-color: var(--ink);
+}
+
+.sedepick__nombre {
+  font-weight: 500;
+}
+
+.sedepick__zona {
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+.sedepick__op--on .sedepick__zona {
+  color: rgba(253, 251, 250, 0.7);
+}

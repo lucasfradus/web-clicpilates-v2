@@ -476,12 +476,8 @@
   text-decoration: underline;
 }
 
-/* Selector de estudio de la página de precios. */
+/* Franja del selector de estudio en la página de precios. */
 .price-picker {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
   margin-bottom: 34px;
 }
 

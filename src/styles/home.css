@@ -11,6 +11,13 @@
   align-items: end;
 }
 
+/* Sin esto, el scroll horizontal de las píldoras ensancha la columna en vez de
+   scrollear: los items de grid arrancan con `min-width: auto`, así que el
+   contenido manda sobre la pista. */
+.hero__grid > * {
+  min-width: 0;
+}
+
 .hero__stats {
   display: flex;
   flex-wrap: wrap;

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 import { Planes } from '@/components/sede/planes'
+import { SelectorSedes } from '@/components/sede/selector-sedes'
 import type { CatalogoSede, Sede } from '@/lib/api/tipos'
 
 export interface PreciosDeSede {
@@ -27,18 +28,12 @@ export function SelectorPrecios ({ precios }: { precios: PreciosDeSede[] }) {
   return (
     <>
       <div className="price-picker">
-        <label className="book__label" htmlFor="selector-precios">Estudio</label>
-        <select
-          id="selector-precios"
-          className="book__select"
-          style={{ maxWidth: 340, marginTop: 0 }}
-          value={slug}
-          onChange={(e) => setSlug(e.target.value)}
-        >
-          {precios.map(({ sede }) => (
-            <option key={sede.id} value={sede.slug}>{sede.nombre} · {sede.ciudad}</option>
-          ))}
-        </select>
+        <SelectorSedes
+          sedes={precios.map((p) => p.sede)}
+          valor={slug}
+          alElegir={setSlug}
+          etiqueta="Elegí tu estudio"
+        />
       </div>
 
       <Planes sede={actual.sede} catalogo={actual.catalogo} />

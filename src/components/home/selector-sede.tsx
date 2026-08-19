@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { getClases } from '@/lib/api/clases'
 import { accionDeSede } from '@/lib/api/contacto'
 import { hora } from '@/lib/formato'
+import { SelectorSedes } from '@/components/sede/selector-sedes'
 import type { Sede } from '@/lib/api/tipos'
 
 /**
@@ -65,17 +66,13 @@ export function SelectorSede ({ sedes }: { sedes: Sede[] }) {
       <p className="book__title">Elegí tu estudio y mirá<br />las clases de hoy</p>
 
       <div className="book__field">
-        <label className="book__label" htmlFor="selector-sede">Estudio</label>
-        <select
-          id="selector-sede"
-          className="book__select"
-          value={slug}
-          onChange={(e) => setSlug(e.target.value)}
-        >
-          {sedes.map((s) => (
-            <option key={s.id} value={s.slug}>{s.nombre} · {s.ciudad}</option>
-          ))}
-        </select>
+        <SelectorSedes
+          sedes={sedes}
+          valor={slug}
+          alElegir={setSlug}
+          etiqueta="Estudio"
+          variante="compacto"
+        />
       </div>
 
       <p
