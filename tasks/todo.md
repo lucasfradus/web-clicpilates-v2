@@ -226,7 +226,9 @@ estudios, que sale de la API.
 Pendientes que quedan de esta fase:
 
 - [ ] **Imágenes genéricas de marca**: el hero, el bloque de método y las
-      tarjetas de Academy/Franquicias siguen con los degradados del prototipo
+      tarjetas de Academy/Franquicias siguen con los degradados del prototipo.
+      El brief está en `docs/fotos.md` — cinco piezas, en orden de impacto, con
+      qué tiene que mostrar cada una y cómo tienen que estar hechas
 - [ ] **Links de las tiendas** para la sección de la app: hoy los badges se ven
       pero no son links, porque no tenemos las URLs. Un botón que no lleva a
       ningún lado es peor que no tenerlo
