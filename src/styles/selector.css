@@ -14,8 +14,11 @@
   margin-top: 10px;
 }
 
-/* En una columna angosta —el widget del hero— las píldoras scrollean en una
-   sola fila en vez de apilarse y comerse la tarjeta entera. */
+/* La variante compacta —el widget del hero— scrollea en una fila.
+   Eso funciona con el dedo, pero en desktop el scroll horizontal necesita
+   shift+rueda o arrastrar una barra que además está oculta: en la práctica, los
+   estudios que no entran en la primera fila no existen. Así que el scroll queda
+   sólo para touch (abajo hay un @media que lo apaga en pantallas grandes). */
 .sedepick--compacto .sedepick__lista {
   min-width: 0;
   overflow-x: auto;
@@ -93,4 +96,15 @@
 
 .sedepick__op--on .sedepick__zona {
   color: rgba(253, 251, 250, 0.7);
+}
+
+/* Desktop: las píldoras envuelven y se ven las once de una. La tarjeta del hero
+   crece unos 100 px, que sobran en una portada de alto completo. */
+@media (min-width: 769px) {
+  .sedepick--compacto .sedepick__lista {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    padding-bottom: 0;
+    mask-image: none;
+  }
 }
