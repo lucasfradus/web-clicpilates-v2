@@ -29,6 +29,20 @@
   --terracotta: #b87560;
   --terracotta-bg: #f0e0d8;
 
+  /* Variantes de TEXTO de los colores de marca.
+     Los de arriba están pensados para rellenos y bordes: sobre fondo claro y en
+     tamaños chicos no llegan a 4.5:1, que es el mínimo de WCAG AA. En vez de
+     cambiar la paleta —que es la del design system de reservas— se agregan
+     versiones oscurecidas para el texto, y los de marca se siguen usando para
+     todo lo demás. Medido con Lighthouse: sin esto la accesibilidad daba 96 y
+     el chip de "quedan 2 lugares" quedaba en 2.84:1.
+       --taupe-texto  pasa AA sobre surface, bg, beige-soft y el header sólido
+       --sage-texto   5.24:1 sobre --sage-bg
+       --terracotta-texto 5.12:1 sobre --terracotta-bg */
+  --taupe-texto: #6e5f50;
+  --sage-texto: #4a6741;
+  --terracotta-texto: #8f4a34;
+
   --shadow-soft: 0 18px 40px -18px rgba(44, 47, 52, 0.18), 0 6px 16px -8px rgba(44, 47, 52, 0.08);
   --shadow-strong: 0 30px 60px -22px rgba(44, 47, 52, 0.4), 0 12px 25px -10px rgba(44, 47, 52, 0.25);
 

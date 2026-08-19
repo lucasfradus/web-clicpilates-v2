@@ -202,7 +202,7 @@ export default async function LandingSede ({ params }: PageProps<'/estudios/[slu
               <div className="nearby">
                 {cerca.map((otra) => (
                   <Link key={otra.id} href={`/estudios/${otra.slug}`}>
-                    CLIC {otra.nombre} <span style={{ color: 'var(--ink-mute)' }}>{otra.ciudad}</span>
+                    CLIC {otra.nombre} <span style={{ color: 'var(--ink-soft)' }}>{otra.ciudad}</span>
                   </Link>
                 ))}
               </div>

@@ -79,7 +79,7 @@ div:first-child > .day-label {
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: var(--sage);
+  color: var(--sage-texto);
 }
 
 /* Quedan pocos: terracota. Es el mismo código de color del portal de reservas. */
@@ -88,7 +88,7 @@ div:first-child > .day-label {
 }
 
 .row__cupos--low b {
-  color: var(--terracotta);
+  color: var(--terracotta-texto);
 }
 
 .row__arrow {

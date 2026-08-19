@@ -194,7 +194,7 @@ export default async function Clase ({ params }: PageProps<'/clases/[nivel]'>) {
               <p className="eyebrow">El otro nivel</p>
               <div className="nearby">
                 <Link href={`/clases/${otro.slug}`}>
-                  {otro.nombre} <span style={{ color: 'var(--ink-mute)' }}>{otro.eyebrow}</span>
+                  {otro.nombre} <span style={{ color: 'var(--ink-soft)' }}>{otro.eyebrow}</span>
                 </Link>
               </div>
             </div>

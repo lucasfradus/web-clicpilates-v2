@@ -47,10 +47,10 @@ body:not(:has([data-hero])) .hdr {
   --hdr-logo-h: 22px;
   --hdr-fg: var(--ink-soft);
   --hdr-fg-strong: var(--ink);
-  --hdr-bg: rgba(237, 236, 231, 0.88);
+  --hdr-bg: rgba(237, 236, 231, 0.95);
   --hdr-line: rgba(35, 34, 43, 0.08);
   --hdr-blur: saturate(160%) blur(10px);
-  --hdr-tag: var(--taupe-dark);
+  --hdr-tag: var(--taupe-texto);
   --hdr-tag-line: var(--line);
   --hdr-cta-bg: var(--ink);
   --hdr-cta-fg: var(--surface);

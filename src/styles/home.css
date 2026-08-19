@@ -62,7 +62,7 @@
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--taupe-dark);
+  color: var(--taupe-texto);
 }
 
 .book__select {
@@ -114,7 +114,7 @@
   margin-top: 14px;
   font-size: 11px;
   text-align: center;
-  color: var(--ink-mute);
+  color: var(--ink-soft);
 }
 
 /* ===== Manifiesto de marca ===== */
@@ -161,7 +161,7 @@
 .manifesto__pron {
   font-family: var(--font-serif);
   font-size: clamp(22px, 3vw, 34px);
-  color: var(--taupe-dark);
+  color: var(--taupe-texto);
 }
 
 .manifesto__rule {
@@ -293,7 +293,7 @@
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.2em;
-  color: var(--taupe-dark);
+  color: var(--taupe-texto);
 }
 
 .method__item h3 {

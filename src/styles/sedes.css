@@ -97,7 +97,7 @@
 }
 
 .sede:hover .sede__cta {
-  color: var(--taupe-dark);
+  color: var(--taupe-texto);
 }
 
 @media (max-width: 1024px) {
