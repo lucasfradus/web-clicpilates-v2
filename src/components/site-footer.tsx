@@ -23,8 +23,8 @@ export function SiteFooter ({ sedes = [] }: { sedes?: Sede[] }) {
           <div>
             <Logo className="ftr__logo" titulo={SITIO.nombre} />
             <p className="ftr__bio">
-              Pilates Clásico en nueve estudios de Buenos Aires. Reformer en grupos chicos,
-              instructoras formadas en casa.
+              Pilates Clásico en Buenos Aires. Reformer en grupos chicos, instructoras
+              formadas en casa.
             </p>
           </div>
 
@@ -46,7 +46,7 @@ export function SiteFooter ({ sedes = [] }: { sedes?: Sede[] }) {
                 ? sedes.map(sede => (
                   <Enlace key={sede.slug} href={`/estudios/${sede.slug}`}>{sede.nombre}</Enlace>
                 ))
-                : <Enlace href="/estudios">Ver los nueve estudios</Enlace>}
+                : <Enlace href="/estudios">Ver todos los estudios</Enlace>}
             </div>
           </div>
 

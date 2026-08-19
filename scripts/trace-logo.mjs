@@ -14,6 +14,7 @@
  * Uso:  node scripts/trace-logo.mjs
  * Salida: src/components/brand/logo-path.ts  (el logotipo completo)
  *         src/app/icon.svg                   (el isotipo, para el favicon)
+ *         public/brand/iso.svg               (el isotipo con currentColor)
  *
  * El isotipo no se traza aparte: es la última C del logotipo, la que lleva la
  * flecha de recarga. Se recorta ese contorno y se le da un viewBox propio.
@@ -237,9 +238,14 @@ const desplazado = iso.map(([x, y]) => [
   y - caja.y0 + margen + (lado - margen * 2 - (caja.y1 - caja.y0)) / 2,
 ])
 
-writeFileSync(resolve(raiz, 'src/app/icon.svg'),
+const svgIso = (relleno) =>
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${redondear(lado)} ${redondear(lado)}">` +
-  `<path fill="#2c2f34" fill-rule="evenodd" d="${aPath(desplazado)}"/></svg>\n`)
+  `<path fill="${relleno}" fill-rule="evenodd" d="${aPath(desplazado)}"/></svg>\n`
+
+// El favicon lleva el color fijo; el de public/ hereda currentColor, para
+// usarlo como marca de agua y como separador.
+writeFileSync(resolve(raiz, 'src/app/icon.svg'), svgIso('#2c2f34'))
+writeFileSync(resolve(raiz, 'public/brand/iso.svg'), svgIso('currentColor'))
 
 mkdirSync(dirname(SALIDA), { recursive: true })
 writeFileSync(SALIDA, `// Generado por scripts/trace-logo.mjs — no editar a mano.

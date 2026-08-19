@@ -68,6 +68,11 @@
   line-height: 1.03;
 }
 
+.hero h1 em {
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
 .hero__sub {
   max-width: 440px;
   margin-top: 24px;

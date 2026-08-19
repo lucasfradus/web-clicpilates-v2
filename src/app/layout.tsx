@@ -54,6 +54,12 @@ export default function RootLayout ({ children }: LayoutProps<'/'>) {
   return (
     <html lang="es-AR" className={`${poppins.variable} ${prata.variable}`}>
       <body>
+        {/* Los reveals arrancan invisibles y los muestra un IntersectionObserver.
+            Sin JavaScript no habría quien los muestre: esta regla los deja
+            visibles desde el principio. */}
+        <noscript>
+          <style>{'.rv{opacity:1;transform:none}'}</style>
+        </noscript>
         <a className="skip" href="#contenido">Saltar al contenido</a>
         <SiteHeader />
         <main id="contenido">{children}</main>

@@ -1,5 +1,4 @@
 import { pesos } from '@/lib/formato'
-import type { Sede } from '@/lib/api/tipos'
 
 /**
  * Cómo funciona la clase de prueba.
@@ -9,14 +8,22 @@ import type { Sede } from '@/lib/api/tipos'
  * sigue, ese valor se descuenta del plan. En la práctica, probar sale gratis
  * si te quedás.
  */
-export function BloquePrueba ({ sede }: { sede: Sede }) {
+export function BloquePrueba ({ nombreSede, precioPrueba }: {
+  /** Sin nombre, el texto habla en general: es el caso de la home. */
+  nombreSede?: string
+  precioPrueba: number | null
+}) {
   return (
     <div className="trial">
       <div className="trial__step">
         <p className="trial__num">01</p>
         <h3>Reservás tu clase de prueba</h3>
         <p>
-          La abonás al reservar{sede.precioPrueba != null ? ` — ${pesos(sede.precioPrueba)} en ${sede.nombre}` : ''}.
+          La abonás al reservar{precioPrueba == null
+            ? ''
+            : nombreSede != null
+              ? ` — ${pesos(precioPrueba)} en ${nombreSede}`
+              : `, desde ${pesos(precioPrueba)}`}.
           Eso deja tu lugar tomado: no es una seña que se pierde ni una lista de espera.
         </p>
       </div>

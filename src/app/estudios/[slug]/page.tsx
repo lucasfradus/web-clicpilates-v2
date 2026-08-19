@@ -159,7 +159,7 @@ export default async function LandingSede ({ params }: PageProps<'/estudios/[slu
             <p className="eyebrow">Cómo empezás en {sede.nombre}</p>
             <h2>Probás una vez, y si seguís no la pagás dos.</h2>
           </div>
-          <BloquePrueba sede={sede} />
+          <BloquePrueba nombreSede={sede.nombre} precioPrueba={sede.precioPrueba} />
         </div>
       </section>
 

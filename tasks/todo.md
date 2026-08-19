@@ -68,6 +68,11 @@ hoy, así que se pueden mergear antes de publicar la web nueva.
       DNS: así vale para el sitio nuevo sin tocar el viejo
 - [ ] **El apex redirige con `307`, no con `308`.** Va con el cambio de
       dominio (fase 8), no antes: hoy es config del deploy viejo
+- [ ] **La sede de prueba se está publicando, y se nota.** Hoy "Sede Test orig
+      · Calle Falsa 123 · $200" sale en la home y en /estudios, y el contador
+      dice 11 estudios. Por eso la home ya **no** publica un "clase de prueba
+      desde $X" agregado: ese $200 se convertía en el titular del sitio. Se
+      arregla apagando la sede desde el backoffice
 - [x] ~~Excluir las sedes de prueba del endpoint público~~ — **decidido el
       15-ago: no se excluyen.** Lucas usa las sedes de prueba para testear y las
       apaga desde el backoffice cuando terminan. El único interruptor es
@@ -199,14 +204,35 @@ Pendientes que quedan de esta fase:
       `Sede.descripcion`, que es de una línea. Lo tiene que escribir el dueño
 
 
-## Fase 4 — Home y marca
+## Fase 4 — Home y marca ✅ (19-ago-2026)
 
-- [ ] Hero con selector de sede y disponibilidad real
-- [ ] Sección manifiesto CLIC /klik/
-- [ ] Banda HACÉ EL CLIC
-- [ ] Método, niveles, testimonios, app, grilla de sedes
-- [ ] Sección de cómo funciona la clase de prueba
-- [ ] Reveals con `IntersectionObserver` + `prefers-reduced-motion`
+- [x] Hero con selector de sede y disponibilidad real ("4 clases con lugar hoy ·
+      próxima 15:00", del backend)
+- [x] Sección manifiesto CLIC /klik/, con el isotipo de marca de agua
+- [x] Banda HACÉ EL CLIC
+- [x] Método, niveles, app, grilla de sedes
+- [x] Sección de cómo funciona la clase de prueba
+- [x] Reveals con `IntersectionObserver`, con `<noscript>` que los deja
+      visibles sin JS y `prefers-reduced-motion` respetado
+- [ ] **Testimonios: NO se hacen hasta tener los reales.** Inventar testimonios
+      con nombre y sede en el sitio de un negocio real no es una opción. La
+      sección entra cuando lleguen
+
+Regla de copy que quedó aplicada en toda la home: **ningún número sin
+confirmar**. Se sacaron de todo el sitio "nueve estudios", "grupos de hasta
+ocho" y el "4.9 en Google" — el único número que se publica es la cantidad de
+estudios, que sale de la API.
+
+Pendientes que quedan de esta fase:
+
+- [ ] **Imágenes genéricas de marca**: el hero, el bloque de método y las
+      tarjetas de Academy/Franquicias siguen con los degradados del prototipo
+- [ ] **Links de las tiendas** para la sección de la app: hoy los badges se ven
+      pero no son links, porque no tenemos las URLs. Un botón que no lleva a
+      ningún lado es peor que no tenerlo
+- [ ] **Confirmar los números** para poder publicarlos: 4.9 en Google, máximo
+      por clase, y cuántos estudios son de verdad
+
 
 ## Fase 5 — Resto de páginas
 
