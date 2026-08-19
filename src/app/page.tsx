@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 
 import { EstadoSeccion } from '@/components/estados'
@@ -20,6 +21,10 @@ import { SITIO } from '@/lib/site'
 
 // Literal por exigencia de Next; coincide con REVALIDAR de src/lib/api.
 export const revalidate = 3600
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+}
 
 export default async function Home () {
   const sedes = await getSedes()

@@ -266,15 +266,30 @@ Pendientes de esta fase:
 - [ ] El pixel propio de Franquicias es de la fase 7
 
 
-## Fase 6 — SEO técnico
+## Fase 6 — SEO técnico ✅ (19-ago-2026)
 
-- [ ] `app/sitemap.ts` alimentado por las sedes
-- [ ] `app/robots.ts` con `/mi-cuenta` y `/reservar` excluidos
-- [ ] `301` desde `/sede/[slug]`, `/horarios/[sede]`, `/grilla/[sede]`
-- [ ] `301` desde `reservas.` y `clientes.` a las rutas nuevas
-- [ ] Canonical autorreferencial en toda ruta
-- [ ] Validar todo en Rich Results Test
-- [ ] Los nueve perfiles de Google apuntando a su landing
+- [x] `app/sitemap.ts` alimentado por las sedes: 19 URLs, y una sede nueva
+      entra sola dentro de la hora. Sin `lastModified`, porque el backend no
+      expone `updatedAt` y poner la fecha del build sería mentirle a Google
+      sobre qué cambió
+- [x] `app/robots.ts` con `/api/`, `/reservar` y `/mi-cuenta` afuera
+- [x] `301` desde `/sede/[slug]`, `/horarios/[sede]` y `/grilla/[sede]`.
+      **`office` es el único slug que cambió** (ahora `office-pilates`) y tiene
+      su regla propia antes de la genérica; `prueba`, que era una página de
+      test, va al índice
+- [x] Canonical autorreferencial en toda ruta. Se sacó del layout raíz: los
+      hijos heredan `alternates`, así que dejarlo ahí habría repetido el bug
+      que arreglamos en el sitio viejo
+- [ ] **Validar en Rich Results Test.** Necesita una URL pública: se corre
+      contra el staging cuando quieras, o contra el dominio el día del cambio
+- [ ] **Los perfiles de Google apuntando a su landing.** Es del día del cambio
+      de dominio, y lo hace Lucas desde el perfil de cada estudio
+
+En staging el sitemap sale vacío y sin `Sitemap:` en el robots, a propósito:
+el sitio va con `noindex` y no le vamos a ofrecer a Google una lista de URLs
+que no tiene que indexar. Lo que **no** se hace es bloquear el rastreo — si lo
+bloqueáramos, Google no podría leer el `noindex`.
+
 
 ## Fase 7 — Medición
 

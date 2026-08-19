@@ -64,6 +64,29 @@ const nextConfig: NextConfig = {
 
   async redirects () {
     return [
+      // Las URLs del sitio anterior. Se activan solas el día que el dominio
+      // apunte acá; hasta entonces no molestan a nadie.
+      //
+      // Van con 301 explícito y no con `permanent: true`, que emite 308: los
+      // dos son permanentes y Google los trata igual, pero 301 lo entiende
+      // cualquier herramienta vieja.
+      //
+      // `office` es el único slug que cambió (ahora `office-pilates`), así que
+      // va antes de la regla genérica: Next aplica la primera que matchea.
+      { source: '/sede/office', destination: '/estudios/office-pilates', statusCode: 301 },
+      { source: '/horarios/office', destination: '/estudios/office-pilates', statusCode: 301 },
+      { source: '/grilla/office', destination: '/estudios/office-pilates', statusCode: 301 },
+      // `prueba` era una página de test del sitio viejo: va al índice.
+      { source: '/sede/prueba', destination: '/estudios', statusCode: 301 },
+      { source: '/horarios/prueba', destination: '/estudios', statusCode: 301 },
+      { source: '/grilla/prueba', destination: '/estudios', statusCode: 301 },
+
+      { source: '/sede/:slug', destination: '/estudios/:slug', statusCode: 301 },
+      // Los horarios y la grilla eran páginas aparte; ahora la grilla vive
+      // dentro de la landing de cada estudio.
+      { source: '/horarios/:slug', destination: '/estudios/:slug', statusCode: 301 },
+      { source: '/grilla/:slug', destination: '/estudios/:slug', statusCode: 301 },
+
       // El sitio es `www` (decisión de fase 1, ver src/lib/site.ts). El apex
       // redirige acá y no en el DNS para que la regla viva en el repo y no se
       // pierda en un panel.
@@ -71,7 +94,7 @@ const nextConfig: NextConfig = {
         source: '/:path*',
         has: [{ type: 'host', value: 'clicpilates.com' }],
         destination: 'https://www.clicpilates.com/:path*',
-        permanent: true,
+        statusCode: 301,
       },
     ]
   },

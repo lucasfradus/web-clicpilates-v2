@@ -29,7 +29,10 @@ export const metadata: Metadata = {
     template: `%s · ${SITIO.nombre}`,
   },
   description: SITIO.descripcion,
-  alternates: { canonical: '/' },
+  // El canonical NO va acá: los hijos heredan `alternates`, así que un
+  // `canonical: '/'` en la raíz haría que cada página se declare duplicada de
+  // la home. Cada ruta declara el suyo. (Es el bug que arreglamos en el sitio
+  // anterior, ver tasks/todo.md, fase 0.)
   openGraph: {
     type: 'website',
     locale: SITIO.locale,
