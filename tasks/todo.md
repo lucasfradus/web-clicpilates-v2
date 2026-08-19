@@ -323,13 +323,41 @@ Lo que queda, y no es de este repo:
       Railway el día del lanzamiento (en staging no hacen falta: está apagada)
 
 
-## Fase 8 — QA y lanzamiento
+## Fase 8 — QA ✅ (19-ago-2026) · el lanzamiento queda listo para ejecutar
 
-- [ ] Lighthouse móvil: LCP < 2,5 s / INP < 200 ms / CLS < 0,1
-- [ ] Teclado y lectores de pantalla
-- [ ] iOS y Android reales
-- [ ] Flujo completo end-to-end contra producción
-- [ ] Deploy con los `301` activos desde el minuto cero
+Medido con Lighthouse contra el staging:
+
+| | Home (móvil) | Landing de sede (desktop) |
+|---|---|---|
+| Performance | 99 | 100 |
+| Accesibilidad | 100 | 100 |
+| Buenas prácticas | 100 | 100 |
+| LCP | 1,6 s | 0,6 s |
+| CLS | 0 | 0,001 |
+| TBT | 20 ms | 0 ms |
+
+- [x] Lighthouse móvil dentro de los objetivos (LCP < 2,5 s / CLS < 0,1)
+- [x] Contraste: la primera pasada dio 96 y el chip de "quedan 2 lugares"
+      estaba en 2,84:1. Se agregaron variantes de texto de los colores de marca
+      (`--taupe-texto`, `--sage-texto`, `--terracotta-texto`), medidas una por
+      una
+- [x] Teclado: el skip link es el primer foco y lleva a `#contenido`; el menú
+      mobile cerrado va con `inert`, así que sus 7 links no son alcanzables; el
+      acordeón de FAQ es `<details>` nativo
+- [x] Lectores: un solo `h1`, un `main`, los tres `nav` etiquetados, ninguna
+      imagen sin `alt`
+- [x] Flujo end-to-end en staging: home → landing → CTA → el SPA de reservas
+      responde
+- [x] `docs/lanzamiento.md`: el orden exacto del cambio de dominio, con lo que
+      va antes, lo que va ese día y lo que **no** hay que hacer
+- [ ] **iOS y Android reales.** No lo puedo hacer yo: hay que abrir el staging
+      en un teléfono de verdad y probar el menú, el selector de sede y la grilla
+- [ ] **El cambio de dominio.** Está todo listo y documentado; lo ejecuta Lucas
+
+Lo único que en staging no se puede probar completo es `/reservar`: devuelve el
+HTML del SPA pero pide sus assets en la raíz del dominio, porque ese deploy
+todavía no buildea con `VITE_BASE_PATH`. Es el primer punto de
+`docs/lanzamiento.md`.
 
 ---
 
