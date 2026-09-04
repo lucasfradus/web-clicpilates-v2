@@ -87,6 +87,23 @@ conviene hacerlo recién cuando esté decidido cuál de los tres heroes queda.
 
 ---
 
+## Las imágenes generadas con IA no van acá
+
+En `referencia-ia/` (fuera de `public/`, y fuera del repo) hay siete imágenes
+generadas: un hero, dos de método, una de academy, las dos de niveles y una para
+la OG. **No se publican.**
+
+El motivo no es estético — son buenas—: es que muestran una sala que no es
+ninguna de las once y personas que no existen. Todo el sitio está construido
+sobre "lo que ves acá es lo que hay" (horarios, cupos y precios reales), y las
+fotos serían el único lugar donde eso dejaría de ser cierto. Alguien reserva su
+clase de prueba esperando esa sala, y entra a otra.
+
+Para lo que **sí** sirven: son la lista de tomas. `nivel-initial-correccion.jpg`
+es exactamente el encuadre que falta producir —la instructora agachada,
+corrigiendo, con la alumna en el reformer— y `academy.jpg` resuelve cómo
+mostrar una formación. Llevárselas al fotógrafo ahorra media reunión.
+
 ## Lo que hay que producir
 
 1. **Instructora corrigiendo a una alumna**, cerrado, manos y espalda, vertical

@@ -40,3 +40,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Imágenes generadas con IA. NO se publican: el sitio muestra los estudios y las
+# personas que existen. Viven acá como referencia visual para la producción de
+# fotos — son, literalmente, la lista de tomas que falta.
+/referencia-ia
