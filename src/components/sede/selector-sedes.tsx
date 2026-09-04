@@ -1,7 +1,7 @@
 'use client'
 
 import type { Sede } from '@/lib/api/tipos'
-import { zonaDe } from '@/lib/zona'
+import { etiquetaDeSede } from '@/lib/zona'
 
 /**
  * Elegir estudio.
@@ -28,7 +28,7 @@ export function SelectorSedes ({ sedes, valor, alElegir, etiqueta, variante = 'a
       <div className="sedepick__lista">
         {sedes.map((sede) => {
           const elegida = sede.slug === valor
-          const zona = zonaDe(sede)
+          const { principal, secundaria } = etiquetaDeSede(sede)
           return (
             <label key={sede.id} className={`sedepick__op${elegida ? ' sedepick__op--on' : ''}`}>
               <input
@@ -38,8 +38,8 @@ export function SelectorSedes ({ sedes, valor, alElegir, etiqueta, variante = 'a
                 checked={elegida}
                 onChange={() => alElegir(sede.slug)}
               />
-              <span className="sedepick__nombre">{sede.nombre}</span>
-              {zona !== sede.nombre && <span className="sedepick__zona">{zona}</span>}
+              <span className="sedepick__nombre">{principal}</span>
+              {secundaria != null && <span className="sedepick__zona">{secundaria}</span>}
             </label>
           )
         })}

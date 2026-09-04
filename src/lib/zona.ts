@@ -35,3 +35,36 @@ export function sedesCerca (sede: Sede, todas: Sede[], cuantas = 4): Sede[] {
   const mismaCiudad = otras.filter((s) => s.ciudad === sede.ciudad)
   return (mismaCiudad.length > 0 ? mismaCiudad : otras).slice(0, cuantas)
 }
+
+/** Sin acentos, sin mayúsculas y sin dobles espacios: para comparar, no para mostrar. */
+const normalizar = (s: string) =>
+  s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim()
+
+/**
+ * Cómo nombrar una sede en una lista: qué mostrar y qué no repetir.
+ *
+ * El nombre de la sede y su zona muchas veces dicen lo mismo con distintas
+ * letras — "Nuñez" y "Núñez", "Pilara" y "Pilará", "Belgrano C" y "Belgrano"—,
+ * y ponerlos uno al lado del otro se lee como un error. Comparar los strings
+ * crudos no alcanza justamente por los acentos.
+ *
+ * La regla, en orden:
+ *   1. Si dicen lo mismo, gana la zona: es la que tiene los acentos bien.
+ *   2. Si uno contiene al otro, gana el más largo, que es el que informa más
+ *      ("Palermo Hollywood" en vez de "Hollywood").
+ *   3. Si son cosas distintas, van las dos: "Office Pilates · Pilar" es
+ *      exactamente lo que alguien necesita para elegir.
+ */
+export function etiquetaDeSede (sede: Pick<Sede, 'slug' | 'ciudad' | 'nombre'>): {
+  principal: string
+  secundaria?: string
+} {
+  const zona = zonaDe(sede)
+  const n = normalizar(sede.nombre)
+  const z = normalizar(zona)
+
+  if (n === z) return { principal: zona }
+  if (n.includes(z)) return { principal: sede.nombre }
+  if (z.includes(n)) return { principal: zona }
+  return { principal: sede.nombre, secundaria: zona }
+}

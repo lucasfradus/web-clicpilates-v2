@@ -75,6 +75,17 @@ export function SelectorSede ({ sedes }: { sedes: Sede[] }) {
         />
       </div>
 
+      {/* La dirección del estudio elegido: es el otro dato que decide, y hasta
+          ahora había que entrar a la landing para verlo. */}
+      <p className="book__dir">
+        <span>{sede.direccion}, {sede.ciudad}</span>
+        {sede.googleMapsUrl != null && sede.googleMapsUrl !== '' && (
+          <a className="book__mapa" href={sede.googleMapsUrl} target="_blank" rel="noreferrer">
+            Cómo llegar
+          </a>
+        )}
+      </p>
+
       <p
         className={`book__peek${alDia == null || alDia.hayLugar ? '' : ' book__peek--vacio'}`}
         aria-live="polite"
