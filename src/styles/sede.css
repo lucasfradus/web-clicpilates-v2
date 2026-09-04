@@ -534,3 +534,19 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Foto de fondo del encabezado de sub-página. Va debajo del contenido y con su
+   propio oscurecido: sin eso, el texto blanco no tiene contraste garantizado
+   sobre una foto que puede ser clara. */
+.subhero__foto {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.subhero__foto::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(35, 34, 43, 0.94), rgba(35, 34, 43, 0.62));
+}

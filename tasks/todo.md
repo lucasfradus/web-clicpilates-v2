@@ -233,9 +233,17 @@ estudios, que sale de la API.
 
 Pendientes que quedan de esta fase:
 
-- [ ] **Imágenes genéricas de marca**: el hero, el bloque de método y las
-      tarjetas de Academy/Franquicias siguen con los degradados del prototipo.
-      El brief está en `docs/fotos.md` — cinco piezas, en orden de impacto, con
+- [ ] **Fotos: falta el consentimiento de las personas reconocibles.** Es el
+      bloqueante real, no la producción. De las 8 cargadas, hoy se publican
+      **3** —sala vacía de franquicias, la de espaldas de Level Up y la del
+      manifiesto, que tiene la cara tapada—: van en `/franquicias` y en
+      `/clases/level-up-pilates`. Las otras 5 (los dos heroes, método, initial
+      y comunidad) están conectadas y esperando: cada una es un
+      `publicable: true` en `src/lib/fotos.ts`, sin tocar nada más.
+      **Academy no tiene foto en ninguna fuente**: hay que producirla, junto con
+      la de la instructora corrigiendo y la de vestuarios (ver
+      `public/fotos/_LEEME.md`). Falta también la OG de 1200×630.
+      El brief original está en `docs/fotos.md` — cinco piezas, en orden de impacto, con
       qué tiene que mostrar cada una y cómo tienen que estar hechas
 - [ ] **Links de las tiendas** para la sección de la app: hoy los badges se ven
       pero no son links, porque no tenemos las URLs. Un botón que no lleva a

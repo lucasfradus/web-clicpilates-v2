@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 
 import { FormularioContacto } from '@/components/formulario-contacto'
+import { FotoFondo } from '@/components/foto-fondo'
 import { JsonLd } from '@/components/json-ld'
 import { Migas } from '@/components/migas'
 import { getSedes } from '@/lib/api/sedes'
+import { FOTOS } from '@/lib/fotos'
 import { grafo, migasDePan, organizacion } from '@/lib/jsonld'
 
 // Literal por exigencia de Next; coincide con REVALIDAR de src/lib/api.
@@ -48,6 +50,9 @@ export default async function Franquicias () {
   return (
     <>
       <section className="subhero">
+        <div className="subhero__foto">
+          <FotoFondo foto={FOTOS.franquicias} prioridad sizes="100vw" />
+        </div>
         <div className="container subhero__in">
           <Migas migas={MIGAS} />
           <p className="eyebrow eyebrow--light" style={{ marginTop: 26 }}>Franquicias</p>

@@ -1,5 +1,7 @@
 import Link from 'next/link'
 
+import { FotoFondo } from '@/components/foto-fondo'
+import { FOTOS } from '@/lib/fotos'
 import { SITIO } from '@/lib/site'
 
 /**
@@ -63,7 +65,9 @@ export function Metodo () {
   return (
     <section className="section" style={{ background: 'var(--surface)' }} id="metodo">
       <div className="container method">
-        <div className="method__media" aria-hidden="true" />
+        <div className="method__media" aria-hidden="true">
+          <FotoFondo foto={FOTOS.metodo} sizes="(max-width: 1024px) 100vw, 40vw" />
+        </div>
         <div>
           <p className="eyebrow">El método</p>
           <h2>Contrología, como fue pensada.</h2>
@@ -198,7 +202,9 @@ export function AcademyYFranquicias () {
         </Link>
 
         <Link className="card-cta" href="/franquicias">
-          <div className="card-cta__bg" style={{ background: 'linear-gradient(140deg,#8d8a86,#2c2f34)' }} />
+          <div className="card-cta__bg" style={{ background: 'linear-gradient(140deg,#8d8a86,#2c2f34)' }}>
+            <FotoFondo foto={FOTOS.franquicias} sizes="(max-width: 1024px) 100vw, 50vw" />
+          </div>
           <p className="eyebrow eyebrow--light">Franquicias</p>
           <h2>Abrí tu CLIC.</h2>
           <p>

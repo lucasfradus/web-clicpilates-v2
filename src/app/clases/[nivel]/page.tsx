@@ -2,10 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
+import { FotoFondo } from '@/components/foto-fondo'
 import { JsonLd } from '@/components/json-ld'
 import { Migas } from '@/components/migas'
 import { grafo, migasDePan, organizacion, paginaDeFaqs } from '@/lib/jsonld'
 import type { Faq } from '@/lib/faqs'
+import { FOTOS, type Foto } from '@/lib/fotos'
 
 // Literal por exigencia de Next; coincide con REVALIDAR de src/lib/api.
 export const revalidate = 3600
@@ -25,11 +27,13 @@ interface Nivel {
   descripcion: string[]
   paraQuien: string[]
   faqs: Faq[]
+  foto: Foto | null
 }
 
 const NIVELES: Nivel[] = [
   {
     slug: 'initial-pilates',
+    foto: FOTOS.initial,
     nombre: 'Initial Pilates',
     eyebrow: 'Para arrancar',
     titulo: 'Initial Pilates',
@@ -68,6 +72,7 @@ const NIVELES: Nivel[] = [
   },
   {
     slug: 'level-up-pilates',
+    foto: FOTOS.levelUp,
     nombre: 'Level Up Pilates',
     eyebrow: 'Para seguir',
     titulo: 'Level Up Pilates',
@@ -143,6 +148,9 @@ export default async function Clase ({ params }: PageProps<'/clases/[nivel]'>) {
   return (
     <>
       <section className="subhero">
+        <div className="subhero__foto">
+          <FotoFondo foto={nivel.foto} prioridad sizes="100vw" />
+        </div>
         <div className="container subhero__in">
           <Migas migas={migas} />
           <p className="eyebrow eyebrow--light" style={{ marginTop: 26 }}>{nivel.eyebrow}</p>

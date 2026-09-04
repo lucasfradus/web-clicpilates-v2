@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 import { EstadoSeccion } from '@/components/estados'
+import { FotoFondo } from '@/components/foto-fondo'
 import { JsonLd } from '@/components/json-ld'
 import { Reveal } from '@/components/home/reveal'
 import { SelectorSede } from '@/components/home/selector-sede'
@@ -16,6 +17,7 @@ import {
 import { BloquePrueba } from '@/components/sede/bloque-prueba'
 import { TarjetaSede } from '@/components/sede/tarjeta-sede'
 import { getSedes } from '@/lib/api/sedes'
+import { FOTOS } from '@/lib/fotos'
 import { grafo, organizacion } from '@/lib/jsonld'
 import { SITIO } from '@/lib/site'
 
@@ -32,7 +34,9 @@ export default async function Home () {
   return (
     <>
       <section className="hero" data-hero>
-        <div className="hero__media" aria-hidden="true" />
+        <div className="hero__media" aria-hidden="true">
+          <FotoFondo foto={FOTOS.hero} prioridad sizes="100vw" />
+        </div>
         <div className="container hero__inner">
           <div className="hero__grid">
             <div>
