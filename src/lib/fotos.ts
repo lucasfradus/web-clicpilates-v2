@@ -37,24 +37,28 @@ export const FOTOS = {
     nota: PENDIENTE_CONSENTIMIENTO,
   },
 
+  // El pelo le tapa la cara: no es identificable.
   metodo: {
-    src: '/fotos/metodo/metodo-manos.jpg',
-    alt: 'Dos alumnas trabajando sobre la barra del reformer',
-    foco: { x: 55, y: 40 },
-    publicable: false,
-    nota: PENDIENTE_CONSENTIMIENTO,
+    src: '/fotos/metodo/estiramiento-de-espaldas.jpg',
+    alt: 'Alumna estirando sobre el reformer, de espaldas',
+    foco: { x: 45, y: 40 },
+    publicable: true,
+    // Mejor para esta sección sería `metodo/metodo-correccion.jpg`, que muestra
+    // a la instructora corrigiendo — que es el argumento de los grupos chicos.
+    // Espera consentimiento: se le ve la cara de perfil.
   },
 
   // Sala vacía: no hay nadie, así que no hay consentimiento que pedir.
+  // Reemplaza a `franquicias-sala-vacia.jpg`, de la producción anterior.
   franquicias: {
-    src: '/fotos/franquicias/franquicias-sala-vacia.jpg',
-    alt: 'Sala de un estudio CLIC vacía, con la fila de reformers',
-    foco: { x: 50, y: 50 },
+    src: '/fotos/franquicias/franquicias-belgrano.jpg',
+    alt: 'Sala de un estudio CLIC vacía, con la fila de reformers y la C iluminada',
+    foco: { x: 50, y: 55 },
     publicable: true,
   },
 
   initial: {
-    src: '/fotos/niveles/initial.jpg',
+    src: '/fotos/niveles/initial-nueva.jpg',
     alt: 'Alumna trabajando el repertorio de Initial Pilates',
     foco: { x: 50, y: 35 },
     publicable: false,
@@ -62,6 +66,8 @@ export const FOTOS = {
   },
 
   // De espaldas: no se le ve la cara, así que no es identificable.
+  // La de la producción nueva (`levelup-nueva.jpg`) es mejor, pero muestra dos
+  // caras y espera consentimiento.
   levelUp: {
     src: '/fotos/niveles/levelup.jpg',
     alt: 'Alumna de espaldas con los brazos abiertos, en Level Up Pilates',
@@ -88,6 +94,16 @@ export const FOTOS = {
   // Todavía no existe: no hay ninguna foto de formación en ninguna fuente.
   // Es una de las tres que hay que producir (public/fotos/_LEEME.md).
   academy: null,
+
+  // La imagen que se ve al compartir el link. Además del consentimiento le
+  // falta el recorte: la OG es horizontal (1200×630) y esta es vertical.
+  og: {
+    src: '/fotos/og/grupo-clase.jpg',
+    alt: 'Alumnas de CLIC en clase de reformer',
+    foco: { x: 40, y: 30 },
+    publicable: false,
+    nota: PENDIENTE_CONSENTIMIENTO,
+  },
 } as const satisfies Record<string, Foto | null>
 
 /**

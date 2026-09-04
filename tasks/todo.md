@@ -234,15 +234,23 @@ estudios, que sale de la API.
 Pendientes que quedan de esta fase:
 
 - [ ] **Fotos: falta el consentimiento de las personas reconocibles.** Es el
-      bloqueante real, no la producción. De las 8 cargadas, hoy se publican
-      **3** —sala vacía de franquicias, la de espaldas de Level Up y la del
-      manifiesto, que tiene la cara tapada—: van en `/franquicias` y en
-      `/clases/level-up-pilates`. Las otras 5 (los dos heroes, método, initial
-      y comunidad) están conectadas y esperando: cada una es un
-      `publicable: true` en `src/lib/fotos.ts`, sin tocar nada más.
-      **Academy no tiene foto en ninguna fuente**: hay que producirla, junto con
-      la de la instructora corrigiendo y la de vestuarios (ver
-      `public/fotos/_LEEME.md`). Falta también la OG de 1200×630.
+      bloqueante real, no la producción. Con las seis fotos nuevas del Drive
+      (04-sep) hoy se publican **4**: la sala vacía de Belgrano en
+      `/franquicias`, la de espaldas de Level Up en `/clases/level-up-pilates`,
+      la del manifiesto y —nueva— la de estiramiento de espaldas en la sección
+      "El método" de la home. Las cuatro pasan sin permiso porque en ninguna hay
+      una cara identificable: dos son de espaldas, una tiene la cara tapada por
+      el pelo y la otra es una sala sin nadie.
+      Las **4 que esperan consentimiento** son el hero, initial, comunidad y la
+      OG. Cada una es un `publicable: true` en `src/lib/fotos.ts`, sin tocar
+      nada más; mientras estén en `false` la sección muestra su degradado.
+      Hay dos tomas buenas que también esperan permiso y hoy no se usan:
+      `metodo/metodo-correccion.jpg` (la instructora corrigiendo, que es el
+      argumento de los grupos chicos) y `niveles/levelup-nueva.jpg`.
+      **Academy sigue sin foto en ninguna fuente**: hay que producirla, junto
+      con la de vestuarios (ver `public/fotos/_LEEME.md`).
+      La **OG de 1200×630 falta**: la que hay (`og/grupo-clase.jpg`) es
+      vertical, así que además del permiso necesita el recorte horizontal.
       El brief original está en `docs/fotos.md` — cinco piezas, en orden de impacto, con
       qué tiene que mostrar cada una y cómo tienen que estar hechas
 - [ ] **Links de las tiendas** para la sección de la app: hoy los badges se ven

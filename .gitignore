@@ -45,3 +45,6 @@ next-env.d.ts
 # personas que existen. Viven acá como referencia visual para la producción de
 # fotos — son, literalmente, la lista de tomas que falta.
 /referencia-ia
+
+# Originales de camara (6-9 MB). Al sitio va la version de scripts/preparar-fotos.mjs.
+/originales
