@@ -20,6 +20,10 @@ interface Consulta {
   telefono?: string
   zona?: string
   mensaje?: string
+  /** Sólo franquicias. */
+  plazo?: string
+  inversion?: string
+  local?: string
   /** Honeypot: si viene con algo, es un bot. */
   sitioWeb?: string
 }
@@ -63,6 +67,13 @@ export async function POST (request: Request) {
     ['Email', email],
     ['Teléfono', telefono],
     [esAcademy ? 'Dónde vive' : 'Zona de interés', datos.zona?.trim() ?? '—'],
+    ...(esAcademy
+      ? []
+      : [
+          ['Plazo', datos.plazo?.trim() ?? '—'],
+          ['Inversión disponible', datos.inversion?.trim() ?? '—'],
+          ['Local o zona pensada', datos.local?.trim() ?? '—'],
+        ]),
     ['Mensaje', datos.mensaje?.trim() ?? '—'],
   ]
 

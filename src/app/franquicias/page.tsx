@@ -4,9 +4,11 @@ import { FormularioContacto } from '@/components/formulario-contacto'
 import { FotoFondo } from '@/components/foto-fondo'
 import { JsonLd } from '@/components/json-ld'
 import { Migas } from '@/components/migas'
+import { BloqueFaq } from '@/components/sede/faq'
 import { getSedes } from '@/lib/api/sedes'
 import { FOTOS } from '@/lib/fotos'
-import { grafo, migasDePan, organizacion } from '@/lib/jsonld'
+import type { Faq } from '@/lib/faqs'
+import { grafo, migasDePan, organizacion, paginaDeFaqs } from '@/lib/jsonld'
 
 // Literal por exigencia de Next; coincide con REVALIDAR de src/lib/api.
 export const revalidate = 3600
@@ -37,6 +39,33 @@ export const metadata: Metadata = {
  * exclusividad, fee— las tiene que confirmar el dueño antes de publicarlas;
  * mientras tanto, quien pregunta las recibe por mail con el dossier.
  */
+const FAQS: Faq[] = [
+  {
+    pregunta: '¿Qué recibo si dejo mis datos?',
+    respuesta:
+      'El dossier del modelo: inversión, plazos de apertura, condiciones y las zonas ' +
+      'disponibles hoy. Va por mail, y después coordinamos una llamada si querés avanzar.',
+  },
+  {
+    pregunta: '¿Hace falta que ya tenga el local?',
+    respuesta:
+      'No. Podés consultar con una zona en mente o sin nada definido todavía. Si ya tenés ' +
+      'un local, contanos dónde: cambia bastante la conversación.',
+  },
+  {
+    pregunta: '¿Tengo que saber de pilates?',
+    respuesta:
+      'La parte técnica la cubre la red: las instructoras se forman en CLIC Academy y el ' +
+      'método, los niveles y el criterio de clase son los mismos en todos los estudios.',
+  },
+  {
+    pregunta: '¿Cómo se maneja el estudio una vez abierto?',
+    respuesta:
+      'Con el mismo sistema de gestión que usamos nosotros: reservas, cobros, membresías y ' +
+      'reportes. Es el software con el que operan hoy todos los estudios de la red.',
+  },
+]
+
 export default async function Franquicias () {
   const sedes = await getSedes()
 
@@ -85,6 +114,51 @@ export default async function Franquicias () {
         </div>
       </section>
 
+      <section className="section" style={{ background: 'var(--surface)' }}>
+        <div className="container">
+          <div className="section-head">
+            <p className="eyebrow">Cómo sigue</p>
+            <h2>Tres pasos, sin vueltas.</h2>
+          </div>
+          <div className="trial">
+            <div className="trial__step">
+              <p className="trial__num">01</p>
+              <h3>Dejás tus datos</h3>
+              <p>
+                Con la zona que te interesa y para cuándo lo pensás. Cuanto más concreto,
+                más útil es la primera respuesta.
+              </p>
+            </div>
+            <div className="trial__step">
+              <p className="trial__num">02</p>
+              <h3>Te mandamos el dossier</h3>
+              <p>
+                Inversión, plazos, condiciones y las zonas que están disponibles. Todo por
+                escrito, para que lo puedas mirar con tiempo.
+              </p>
+            </div>
+            <div className="trial__step trial__step--hl">
+              <p className="trial__num">03</p>
+              <h3>Hablamos</h3>
+              <p>
+                Si después de leerlo querés avanzar, coordinamos una llamada y vemos tu caso:
+                la zona, los plazos y qué necesitás para arrancar.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <div className="section-head">
+            <p className="eyebrow">Preguntas frecuentes</p>
+            <h2>Antes de escribirnos.</h2>
+          </div>
+          <BloqueFaq faqs={FAQS} />
+        </div>
+      </section>
+
       <section className="section" style={{ background: 'var(--surface)' }} id="contacto">
         <div className="container">
           <div className="section-head">
@@ -99,7 +173,7 @@ export default async function Franquicias () {
         </div>
       </section>
 
-      <JsonLd datos={grafo(organizacion(), migasDePan(MIGAS))} />
+      <JsonLd datos={grafo(organizacion(), paginaDeFaqs(FAQS), migasDePan(MIGAS))} />
     </>
   )
 }

@@ -96,6 +96,31 @@ export function FormularioContacto ({ tipo, emailContacto }: {
         <label htmlFor="zona">{etiquetas.zona}</label>
         <input id="zona" name="zona" placeholder="Ciudad o barrio" />
       </div>
+      {tipo === 'franquicia' && (
+        <>
+          <div className="field">
+            <label htmlFor="plazo">¿Para cuándo?</label>
+            <select id="plazo" name="plazo" className="book__select" defaultValue="">
+              <option value="" disabled>Elegí una opción</option>
+              <option>En los próximos 3 meses</option>
+              <option>Entre 3 y 6 meses</option>
+              <option>Entre 6 y 12 meses</option>
+              <option>Todavía lo estoy explorando</option>
+            </select>
+          </div>
+          <div className="field">
+            <label htmlFor="inversion">Inversión disponible</label>
+            {/* Campo libre y no una lista de rangos: una lista fijaría
+                expectativas de precio que todavía no confirmamos. */}
+            <input id="inversion" name="inversion" placeholder="Aproximado" />
+          </div>
+          <div className="field full">
+            <label htmlFor="local">¿Tenés local o zona pensada?</label>
+            <input id="local" name="local" placeholder="Dirección, barrio, o si todavía no lo tenés" />
+          </div>
+        </>
+      )}
+
       <div className="field full">
         <label htmlFor="mensaje">{etiquetas.mensaje}</label>
         <textarea id="mensaje" name="mensaje" placeholder="Experiencia, motivación, plazos" />
