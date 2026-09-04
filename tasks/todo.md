@@ -33,12 +33,18 @@ Consecuencias prácticas:
 |---|---|---|
 | Higiene de SEO del sitio actual | [clic-pilates-landing#6](https://github.com/lucasfradus/clic-pilates-landing/pull/6) | ✅ Mergeado y **en producción** (verificado 19-ago). Cierra la fase 0 |
 | `?contexto=web` en el endpoint de sedes | [Clicnet#370](https://github.com/lucasfradus/Clicnet/pull/370) | ✅ Mergeado y **en producción** (verificado 16-ago). Falta cerrar el worktree |
-| `base` configurable en el SPA de reservas | rama `chore/base-path-rewrite` en `reservas-clientes-clic-v2` | Commiteada, **sin pushear** |
-| `base` configurable en el portal de clientes | rama `chore/base-path-rewrite` en `clic-webapp-clientes` | Commiteada, **sin pushear** |
+| `base` configurable en el SPA de reservas | [reservas-clientes-clic-v2#18](https://github.com/lucasfradus/reservas-clientes-clic-v2/pull/18) | PR abierto (20-ago) |
+| `base` configurable en el portal de clientes | [clic-webapp-clientes#4](https://github.com/lucasfradus/clic-webapp-clientes/pull/4) | PR abierto (20-ago) |
+| CORS: el origen de la web nueva | [Clicnet#408](https://github.com/lucasfradus/Clicnet/pull/408) | PR abierto (20-ago) |
 
-Los dos worktrees de los SPAs están en `c:/Users/lucas/Clic/.worktrees/`. Los
-cambios son no-destructivos: sin `VITE_BASE_PATH` el build sale idéntico al de
-hoy, así que se pueden mergear antes de publicar la web nueva.
+Los tres son no-destructivos y se pueden mergear ya: sin `VITE_BASE_PATH` el
+build de los SPAs sale idéntico al de hoy, y el de CORS sólo suma orígenes a una
+allowlist. Al mergear el de CORS se puede pasar
+`NEXT_PUBLIC_API_BASE_URL=https://app.clicpilates.com` en Railway y dejar de
+proxear la grilla por nuestro servidor.
+
+Worktrees: los SPAs en `c:/Users/lucas/Clic/.worktrees/`, el de CORS en
+`Clicnet/.claude/worktrees/cors-dominio-web`.
 
 ## Al mergear los PRs
 
@@ -56,7 +62,9 @@ hoy, así que se pueden mergear antes de publicar la web nueva.
 - [x] ~~Deploy del sitio nuevo en Railway~~ — hecho el 19-ago:
       `web-clicpilates-v2-production.up.railway.app`, con `NEXT_PUBLIC_NOINDEX=true`,
       deploy automático desde `main`
-- [ ] **CORS del backend: falta el dominio de la web nueva.** `allowedPublicOrigins`
+- [x] ~~CORS del backend: falta el dominio de la web nueva~~ — PR Clicnet#408.
+      Al mergear, cambiar `NEXT_PUBLIC_API_BASE_URL` en Railway al backend real.
+      Contexto original: `allowedPublicOrigins`
       en `Clicnet/src/proxy.ts` es una allowlist explícita, y no incluye ni el
       dominio de staging ni `https://www.clicpilates.com`. Mientras tanto el
       staging pide la grilla por el mismo origen y la proxea este sitio, lo que
