@@ -101,6 +101,15 @@ están mergeados y se pueden cerrar.
       **todas las llamadas salían de la IP del servidor** y compartían el rate
       limit de 60 req/min de esas rutas. `https://www.clicpilates.com` también
       quedó en la allowlist, así que el cambio de dominio no toca el backend
+- [ ] **El repo no tiene CI.** No hay `.github/workflows/`, así que un PR acá no
+      corre ningún check y `main` deploya a Railway sin que nada haya validado
+      nada. Mientras se commiteaba directo era coherente; con PRs deja de serlo.
+      Los cuatro comandos ya existen en `package.json`: `typecheck`, `lint`,
+      `test` y `build`. Alcanza con un workflow que los corra en el PR.
+      Ojo con la lección de Clicnet#410: `next build` ya typechequea el
+      proyecto, así que `typecheck` aparte sólo tiene sentido por lo que el
+      `tsconfig` de build excluye — y hay que darle `NODE_OPTIONS` de memoria o
+      se cae por OOM
 - [ ] **Verificar el dominio en Search Console.** Necesita a Lucas. Conviene por
       DNS: así vale para el sitio nuevo sin tocar el viejo
 - [ ] **El apex redirige con `307`, no con `308`.** Va con el cambio de
