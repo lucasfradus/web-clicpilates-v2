@@ -27,6 +27,27 @@ Consecuencias prácticas:
 
 ---
 
+## Cómo se commitea acá (decidido el 7-sep)
+
+**De ahora en adelante: rama + PR.** Nada más directo a `main`.
+
+Hasta el 7-sep este repo no tuvo ni un PR: los siete commits —fase 1, fotos,
+franquicias, TODO— fueron todos directos a `main`, que es de donde deploya
+Railway. Funcionó porque es un staging con `noindex` y sin tráfico real, pero
+deja de tener sentido a medida que el sitio se acerca al cambio de dominio.
+
+Lo ya commiteado se queda donde está. Rehacerlo como PR habría significado
+force-pushear `main` para des-mergear trabajo que ya estaba deployado y
+verificado en staging, y el diff no habría agregado nada: las fotos ya se
+revisaron **renderizadas**, que para material visual es mejor revisión que
+mirar un diff de binarios.
+
+Si hace falta revisar una tanda vieja sin abrir un PR, la vista de compare de
+GitHub renderiza las imágenes:
+`https://github.com/lucasfradus/web-clicpilates-v2/compare/<sha-anterior>...main`
+
+---
+
 ## Abierto ahora mismo
 
 | Qué | Dónde | Estado |
