@@ -33,18 +33,27 @@ Consecuencias prácticas:
 |---|---|---|
 | Higiene de SEO del sitio actual | [clic-pilates-landing#6](https://github.com/lucasfradus/clic-pilates-landing/pull/6) | ✅ Mergeado y **en producción** (verificado 19-ago). Cierra la fase 0 |
 | `?contexto=web` en el endpoint de sedes | [Clicnet#370](https://github.com/lucasfradus/Clicnet/pull/370) | ✅ Mergeado y **en producción** (verificado 16-ago). Falta cerrar el worktree |
-| `base` configurable en el SPA de reservas | [reservas-clientes-clic-v2#18](https://github.com/lucasfradus/reservas-clientes-clic-v2/pull/18) | PR abierto (20-ago) |
-| `base` configurable en el portal de clientes | [clic-webapp-clientes#4](https://github.com/lucasfradus/clic-webapp-clientes/pull/4) | PR abierto (20-ago) |
-| CORS: el origen de la web nueva | [Clicnet#408](https://github.com/lucasfradus/Clicnet/pull/408) | PR abierto (20-ago) |
+| `base` configurable en el SPA de reservas | [reservas-clientes-clic-v2#18](https://github.com/lucasfradus/reservas-clientes-clic-v2/pull/18) | ✅ Mergeado (4-sep) |
+| `base` configurable en el portal de clientes | [clic-webapp-clientes#4](https://github.com/lucasfradus/clic-webapp-clientes/pull/4) | ✅ Mergeado (4-sep) |
+| CORS: el origen de la web nueva | [Clicnet#408](https://github.com/lucasfradus/Clicnet/pull/408) | ✅ Mergeado (4-sep) y **verificado en producción** (7-sep) |
+| CI: el `tsc` redundante que rompía toda rama | [Clicnet#410](https://github.com/lucasfradus/Clicnet/pull/410) | ✅ Mergeado (4-sep) |
 
-Los tres son no-destructivos y se pueden mergear ya: sin `VITE_BASE_PATH` el
-build de los SPAs sale idéntico al de hoy, y el de CORS sólo suma orígenes a una
-allowlist. Al mergear el de CORS se puede pasar
-`NEXT_PUBLIC_API_BASE_URL=https://app.clicpilates.com` en Railway y dejar de
-proxear la grilla por nuestro servidor.
+**No queda ningún PR abierto de este proyecto.**
 
-Worktrees: los SPAs en `c:/Users/lucas/Clic/.worktrees/`, el de CORS en
-`Clicnet/.claude/worktrees/cors-dominio-web`.
+Con #408 en producción, el staging dejó de proxear la grilla por su propio
+servidor: `NEXT_PUBLIC_API_BASE_URL` en Railway pasó a `https://app.clicpilates.com`
+(7-sep) y el preflight desde el origen de staging vuelve `200` con
+`access-control-allow-origin` correcto. Eso saca de encima el rate limit de
+60 req/min compartido, que era el motivo real del PR.
+
+Falta lo mismo para el dominio definitivo: `https://www.clicpilates.com` ya está
+en la allowlist de `Clicnet/src/proxy.ts`, así que el día del cambio de dominio
+no hay que tocar el backend — sólo repuntar `NEXT_PUBLIC_API_BASE_URL` si
+cambiara, que no es el caso.
+
+Worktrees: los SPAs en `c:/Users/lucas/Clic/.worktrees/`, los de Clicnet en
+`Clicnet/.claude/worktrees/` (`cors-dominio-web` y `ci-tsc-memoria`). Los cuatro
+están mergeados y se pueden cerrar.
 
 ## Al mergear los PRs
 
@@ -62,16 +71,15 @@ Worktrees: los SPAs en `c:/Users/lucas/Clic/.worktrees/`, el de CORS en
 - [x] ~~Deploy del sitio nuevo en Railway~~ — hecho el 19-ago:
       `web-clicpilates-v2-production.up.railway.app`, con `NEXT_PUBLIC_NOINDEX=true`,
       deploy automático desde `main`
-- [x] ~~CORS del backend: falta el dominio de la web nueva~~ — PR Clicnet#408.
-      Al mergear, cambiar `NEXT_PUBLIC_API_BASE_URL` en Railway al backend real.
-      Contexto original: `allowedPublicOrigins`
-      en `Clicnet/src/proxy.ts` es una allowlist explícita, y no incluye ni el
-      dominio de staging ni `https://www.clicpilates.com`. Mientras tanto el
-      staging pide la grilla por el mismo origen y la proxea este sitio, lo que
-      funciona pero hace que **todas las llamadas salgan de la IP del servidor**
-      y choquen contra el rate limit de 60 req/min. Antes de lanzar: agregar
-      `www.clicpilates.com` a esa lista y volver a poner
-      `NEXT_PUBLIC_API_BASE_URL` apuntando al backend
+- [x] ~~CORS del backend: falta el dominio de la web nueva~~ — **cerrado el
+      7-sep.** Clicnet#408 mergeado y verificado contra producción: el preflight
+      desde el origen de staging devuelve `204` y el GET `200`, los dos con
+      `access-control-allow-origin` correcto. `NEXT_PUBLIC_API_BASE_URL` en
+      Railway pasó a `https://app.clicpilates.com`, así que la grilla en vivo ya
+      no se proxea por nuestro servidor. Eso era lo que importaba: proxeando,
+      **todas las llamadas salían de la IP del servidor** y compartían el rate
+      limit de 60 req/min de esas rutas. `https://www.clicpilates.com` también
+      quedó en la allowlist, así que el cambio de dominio no toca el backend
 - [ ] **Verificar el dominio en Search Console.** Necesita a Lucas. Conviene por
       DNS: así vale para el sitio nuevo sin tocar el viejo
 - [ ] **El apex redirige con `307`, no con `308`.** Va con el cambio de
@@ -377,23 +385,35 @@ Medido con Lighthouse contra el staging:
 - [x] `docs/lanzamiento.md`: el orden exacto del cambio de dominio, con lo que
       va antes, lo que va ese día y lo que **no** hay que hacer
 - [ ] **iOS y Android reales.** No lo puedo hacer yo: hay que abrir el staging
-      en un teléfono de verdad y probar el menú, el selector de sede y la grilla
+      en un teléfono de verdad y probar el menú, el selector de sede y la grilla.
+      Mirar de paso cuánto tarda la grilla en llenarse: en desktop, contra el
+      backend real, todavía muestra el esqueleto a los ~3 s y está completa
+      antes de los 9 s. No es el backend —`/api/public/sedes` responde en ~1,2 s
+      y `/api/public/catalogo` en ~0,7 s—, así que es el bundle hidratando en un
+      contenedor frío. En 4G puede ser bastante peor
 - [ ] **El cambio de dominio.** Está todo listo y documentado; lo ejecuta Lucas
 
 Lo único que en staging no se puede probar completo es `/reservar`: devuelve el
-HTML del SPA pero pide sus assets en la raíz del dominio, porque ese deploy
-todavía no buildea con `VITE_BASE_PATH`. Es el primer punto de
-`docs/lanzamiento.md`.
+HTML del SPA pero pide sus assets en la raíz del dominio.
+
+**Esto ya se puede destrabar** (7-sep): los dos PRs que faltaban están
+mergeados —[reservas-clientes-clic-v2#18](https://github.com/lucasfradus/reservas-clientes-clic-v2/pull/18)
+y [clic-webapp-clientes#4](https://github.com/lucasfradus/clic-webapp-clientes/pull/4)—,
+así que alcanza con que esos dos deploys buildeen con `VITE_BASE_PATH`
+(`/reservar` y `/clientes` respectivamente). Es el primer punto de
+`docs/lanzamiento.md`. Ojo con el detalle que ya nos costó una vez:
+`import.meta.env.BASE_URL` trae la barra final, y react-router necesita el
+`basename` sin ella.
 
 ---
 
 ## Backend (`Clicnet`) — en paralelo, destraba la fase 3
 
-- [x] `?contexto=web` en `/api/public/sedes`: toda sede `activa` + booleano `reservaOnline` — [PR #370](https://github.com/lucasfradus/Clicnet/pull/370), esperando merge
+- [x] `?contexto=web` en `/api/public/sedes`: toda sede `activa` + booleano `reservaOnline` — [PR #370](https://github.com/lucasfradus/Clicnet/pull/370), mergeado y en produccion
 - [ ] Migración de `Sede`: `latitud`, `longitud`, `telefono`, `calle`, `localidad`, `provincia`, `codigoPostal`, `zona`
 - [ ] Exponer `updatedAt` para el `lastModified` del sitemap
 - [ ] Horarios de apertura del estudio (o derivarlos del mín/máx de la grilla)
-- [ ] Excluir la IP del servidor del rate limit, o API key de servicio
+- [x] ~~Excluir la IP del servidor del rate limit, o API key de servicio~~ — ya no hace falta: con Clicnet#408 el navegador le pega directo al backend y cada visitante gasta su propio rate limit, no el del servidor
 
 ---
 
@@ -403,7 +423,9 @@ todavía no buildea con `VITE_BASE_PATH`. Es el primer punto de
       hecho por `scripts/trace-logo.mjs`. Cuando llegue el original se reemplaza
       `src/components/brand/logo-path.ts` y se borra el script
 - [ ] Fotos de espacios comunes: recepción, vestuarios, plano general de sala,
-      detalle de reformer, instructora corrigiendo, Academy enseñando
+      detalle de reformer y Academy enseñando. **La instructora corrigiendo ya
+      no falta**: llegó el 4-sep como `metodo/metodo-correccion.jpg` y lo único
+      que la frena es el consentimiento
 - [ ] Testimonios reales con nombre y sede
 - [ ] Texto propio por sede (~300 palabras: qué tiene, cómo llegar, instructoras)
 - [ ] Confirmar 4.9 en Google, máximo por clase y cantidad de sedes activas
