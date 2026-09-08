@@ -58,8 +58,22 @@ GitHub renderiza las imágenes:
 | `base` configurable en el portal de clientes | [clic-webapp-clientes#4](https://github.com/lucasfradus/clic-webapp-clientes/pull/4) | ✅ Mergeado (4-sep) |
 | CORS: el origen de la web nueva | [Clicnet#408](https://github.com/lucasfradus/Clicnet/pull/408) | ✅ Mergeado (4-sep) y **verificado en producción** (7-sep) |
 | CI: el `tsc` redundante que rompía toda rama | [Clicnet#410](https://github.com/lucasfradus/Clicnet/pull/410) | ✅ Mergeado (4-sep) |
+| Convención: rama y PR en este repo | [#1](https://github.com/lucasfradus/web-clicpilates-v2/pull/1) | ✅ Mergeado (8-sep) |
+| Comprar el plan desde la web | [#2](https://github.com/lucasfradus/web-clicpilates-v2/pull/2) | ✅ Mergeado (8-sep) y en el staging |
+| Deep-link `?tipo=` en el portal | [reservas-clientes-clic-v2#19](https://github.com/lucasfradus/reservas-clientes-clic-v2/pull/19) | ✅ Mergeado (8-sep) y **verificado en producción** |
 
 **No queda ningún PR abierto de este proyecto.**
+
+Verificación del 8-sep en `reservas.clicpilates.com`, después de mergear el #19
+—que es el único que toca producción—, contra la línea de base tomada antes:
+
+- `/sede/belgrano` **sin parámetros** quedó idéntico: misma landing, mismo
+  título, sin errores de consola. Era lo que había que proteger
+- `?tipo=97` abre el checkout con ese plan
+- `?tipo=999999` cae en la landing, sin romperse
+
+Lo que **todavía no se puede probar entero** es el circuito completo desde la
+web, y no por culpa de este cambio: ver abajo el punto de `/reservar`.
 
 Con #408 en producción, el staging dejó de proxear la grilla por su propio
 servidor: `NEXT_PUBLIC_API_BASE_URL` en Railway pasó a `https://app.clicpilates.com`
@@ -101,16 +115,23 @@ están mergeados y se pueden cerrar.
       **todas las llamadas salían de la IP del servidor** y compartían el rate
       limit de 60 req/min de esas rutas. `https://www.clicpilates.com` también
       quedó en la allowlist, así que el cambio de dominio no toca el backend
-- [ ] **El deep-link del plan necesita su mitad en el SPA.** La web ya manda
-      `/reservar/sede/<slug>?tipo=<id>`, pero hoy el portal **ignora ese
-      parámetro** y cae en la landing de la sede: la persona tiene que volver a
-      elegir el plan que ya había elegido acá. El parámetro es inofensivo
-      mientras tanto, por eso este cambio pudo salir solo.
-      Falta el PR en `reservas-clientes-clic-v2` (`src/pages/Planes.tsx`):
-      leer `?tipo=`, buscarlo en `tipos`, y si existe hacer
-      `setPeriodo(t.frecuencia)` + `empezarPlan(t)`, con guard de `useRef` para
-      que corra una sola vez y sin hacer nada si el id no existe.
-      **Ojo: ese repo es producción.** Ver el punto de abajo
+- [x] ~~El deep-link del plan necesita su mitad en el SPA~~ — **cerrado el
+      8-sep** con reservas-clientes-clic-v2#19, mergeado y verificado en
+      producción. La web manda `/reservar/sede/<slug>?tipo=<id>` y el portal
+      abre el checkout con ese plan
+- [ ] **`/reservar` sigue sin poder probarse entero, y ahora corta el embudo
+      nuevo.** El rewrite devuelve el HTML del portal —con el bundle correcto—
+      pero ese pide `/assets/index-*.js` en la raíz del dominio de la web, que
+      da **404**, así que la página queda en blanco. Es el bloqueo viejo, no una
+      regresión del deep-link: hasta que se resuelva, el circuito
+      tarjeta → checkout sólo se puede probar pegándole directo al portal.
+      El arreglo es que el deploy del portal al que apunta la web buildee con
+      `VITE_BASE_PATH=/reservar/` (el PR #18 ya dejó el `base` configurable).
+      Ojo con el efecto lateral: eso rompe el acceso directo a
+      `reservas-clientes-clic-v2-production.up.railway.app`, porque un build de
+      Vite sirve los archivos en la raíz del origen — que es justo lo que el
+      rewrite compensa sacando el prefijo (`RESERVAS_PREFIJO`).
+      Es el primer punto de `docs/lanzamiento.md`
 - [ ] **El portal de reservas no tiene entorno de pruebas.** Verificado en
       Railway el 8-sep: los **dos** servicios del proyecto "Reservas - Clic
       Pilates" deployan el mismo repo (`reservas-clientes-clic-v2`) y la misma
@@ -122,11 +143,12 @@ están mergeados y se pueden cerrar.
       apunta a ese build de producción, así que **una compra de prueba desde el
       staging cobra de verdad**. Usar la Sede Test.
       Vale un tercer servicio apuntado a la rama del PR antes de tocar el SPA
-- [ ] **`begin_checkout` cambia de significado** cuando exista el deep-link: se
-      va a disparar al cargar la página, no al hacer click, porque la intención
-      se expresó del otro lado. El número va a subir y deja de ser comparable
-      con el histórico. No es un bug, pero hay que saberlo antes de leer el
-      embudo
+- [ ] **`begin_checkout` cambia de significado** desde el 8-sep: con el
+      deep-link en producción se dispara al cargar la página, no al hacer
+      click, porque la intención se expresó en la web. El número va a subir y
+      deja de ser comparable con el histórico. No es un bug, pero hay que
+      saberlo antes de leer el embudo — y conviene avisarlo antes de decidir
+      pauta con esa métrica
 - [ ] **El repo no tiene CI.** No hay `.github/workflows/`, así que un PR acá no
       corre ningún check y `main` deploya a Railway sin que nada haya validado
       nada. Mientras se commiteaba directo era coherente; con PRs deja de serlo.
