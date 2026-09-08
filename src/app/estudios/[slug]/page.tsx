@@ -170,7 +170,10 @@ export default async function LandingSede ({ params }: PageProps<'/estudios/[slu
           <div className="section-head">
             <p className="eyebrow">Planes en {sede.nombre}</p>
             <h2>Elegí tu frecuencia.</h2>
-            <p>Estos son los valores de este estudio. Cada sede publica su propia lista.</p>
+            <p>
+              Estos son los valores de este estudio. Cada sede publica su propia lista, y
+              cualquiera de estos planes se contrata desde acá.
+            </p>
           </div>
           <Planes sede={sede} catalogo={catalogo} />
         </div>

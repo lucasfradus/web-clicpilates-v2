@@ -1,4 +1,4 @@
-import type { Sede } from './tipos'
+import type { CatalogoTipoPlan, Sede } from './tipos'
 
 /**
  * A dónde manda el botón principal de una sede.
@@ -35,5 +35,38 @@ export function accionDeSede (sede: Pick<Sede, 'slug' | 'reservaOnline' | 'whats
     href: sede.whatsappUrl,
     texto: 'Consultar por WhatsApp',
     reserva: false,
+  }
+}
+
+/**
+ * A dónde manda el botón de una tarjeta de plan.
+ *
+ * El portal de reservas dejó de ser sólo "reservá tu clase de prueba": la misma
+ * pantalla vende planes. Hasta ahora la web publicaba los precios y ahí se
+ * terminaba —las tarjetas no tenían botón—, así que quien decidía comprar tenía
+ * que buscar solo el camino.
+ *
+ * `?tipo=` es el `CatalogoTipoPlan.id`, que es exactamente lo que el SPA guarda
+ * para saber qué tarjeta elegiste. **No** es `fijo.planId` ni `flexible.planId`:
+ * esos son los planes concretos de cada modalidad y se resuelven del otro lado,
+ * después de que elegís entre horarios fijos y pack.
+ *
+ * El parámetro es inofensivo mientras el SPA no lo lea: hoy lo ignora y cae en
+ * la landing de la sede, que es el mismo lugar donde caía antes.
+ *
+ * Si la sede no cobra online devuelve `null` y la tarjeta queda sin botón, a
+ * propósito: la salida a WhatsApp ya está en el CTA del hero, y repetirla en
+ * cada tarjeta serían tres botones idénticos que dicen lo mismo.
+ */
+export function accionDePlan (
+  sede: Pick<Sede, 'slug' | 'reservaOnline'>,
+  tipo: Pick<CatalogoTipoPlan, 'id'>,
+): AccionSede | null {
+  if (!sede.reservaOnline) return null
+
+  return {
+    href: `/reservar/sede/${sede.slug}?tipo=${tipo.id}`,
+    texto: 'Empezar este plan',
+    reserva: true,
   }
 }

@@ -39,8 +39,8 @@ export function SelectorPrecios ({ precios }: { precios: PreciosDeSede[] }) {
       <Planes sede={actual.sede} catalogo={actual.catalogo} />
 
       <p className="muted" style={{ marginTop: 26, fontSize: 12 }}>
-        Los valores son los de {actual.sede.nombre}. La clase de prueba de este estudio se
-        descuenta del primer pago del plan que elijas.
+        Los valores son los de {actual.sede.nombre}. Podés empezar por la clase de prueba
+        —se descuenta del primer pago— o contratar el plan directo.
       </p>
     </>
   )

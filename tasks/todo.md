@@ -101,6 +101,32 @@ están mergeados y se pueden cerrar.
       **todas las llamadas salían de la IP del servidor** y compartían el rate
       limit de 60 req/min de esas rutas. `https://www.clicpilates.com` también
       quedó en la allowlist, así que el cambio de dominio no toca el backend
+- [ ] **El deep-link del plan necesita su mitad en el SPA.** La web ya manda
+      `/reservar/sede/<slug>?tipo=<id>`, pero hoy el portal **ignora ese
+      parámetro** y cae en la landing de la sede: la persona tiene que volver a
+      elegir el plan que ya había elegido acá. El parámetro es inofensivo
+      mientras tanto, por eso este cambio pudo salir solo.
+      Falta el PR en `reservas-clientes-clic-v2` (`src/pages/Planes.tsx`):
+      leer `?tipo=`, buscarlo en `tipos`, y si existe hacer
+      `setPeriodo(t.frecuencia)` + `empezarPlan(t)`, con guard de `useRef` para
+      que corra una sola vez y sin hacer nada si el id no existe.
+      **Ojo: ese repo es producción.** Ver el punto de abajo
+- [ ] **El portal de reservas no tiene entorno de pruebas.** Verificado en
+      Railway el 8-sep: los **dos** servicios del proyecto "Reservas - Clic
+      Pilates" deployan el mismo repo (`reservas-clientes-clic-v2`) y la misma
+      rama (`main`). El que se llama `reservas-clientes-clic` —nombre viejo, que
+      engaña— es el que tiene `reservas.clicpilates.com`. O sea: **mergear a
+      `main` ahí es deployar al checkout que cobra plata**, y el otro dominio de
+      Railway no sirve como staging porque es el mismo build.
+      Consecuencia que ya es cierta hoy: el `/reservar` del staging de la web
+      apunta a ese build de producción, así que **una compra de prueba desde el
+      staging cobra de verdad**. Usar la Sede Test.
+      Vale un tercer servicio apuntado a la rama del PR antes de tocar el SPA
+- [ ] **`begin_checkout` cambia de significado** cuando exista el deep-link: se
+      va a disparar al cargar la página, no al hacer click, porque la intención
+      se expresó del otro lado. El número va a subir y deja de ser comparable
+      con el histórico. No es un bug, pero hay que saberlo antes de leer el
+      embudo
 - [ ] **El repo no tiene CI.** No hay `.github/workflows/`, así que un PR acá no
       corre ningún check y `main` deploya a Railway sin que nada haya validado
       nada. Mientras se commiteaba directo era coherente; con PRs deja de serlo.

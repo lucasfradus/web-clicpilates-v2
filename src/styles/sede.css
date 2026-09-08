@@ -317,6 +317,15 @@
   color: var(--taupe);
 }
 
+/* El `margin-top: auto` es lo que hace que los botones queden alineados entre
+   tarjetas de distinto alto: la tarjeta es flex en columna y el pie empuja
+   contra el fondo. Sin esto, cada CTA arranca donde termina su lista de
+   características y la fila queda escalonada. Viene del prototipo. */
+.plan__foot {
+  margin-top: auto;
+  padding-top: 30px;
+}
+
 /* ===== Galería ===== */
 
 .galeria {
