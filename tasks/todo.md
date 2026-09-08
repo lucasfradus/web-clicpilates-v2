@@ -27,6 +27,27 @@ Consecuencias prácticas:
 
 ---
 
+## Cómo se commitea acá (decidido el 7-sep)
+
+**De ahora en adelante: rama + PR.** Nada más directo a `main`.
+
+Hasta el 7-sep este repo no tuvo ni un PR: los siete commits —fase 1, fotos,
+franquicias, TODO— fueron todos directos a `main`, que es de donde deploya
+Railway. Funcionó porque es un staging con `noindex` y sin tráfico real, pero
+deja de tener sentido a medida que el sitio se acerca al cambio de dominio.
+
+Lo ya commiteado se queda donde está. Rehacerlo como PR habría significado
+force-pushear `main` para des-mergear trabajo que ya estaba deployado y
+verificado en staging, y el diff no habría agregado nada: las fotos ya se
+revisaron **renderizadas**, que para material visual es mejor revisión que
+mirar un diff de binarios.
+
+Si hace falta revisar una tanda vieja sin abrir un PR, la vista de compare de
+GitHub renderiza las imágenes:
+`https://github.com/lucasfradus/web-clicpilates-v2/compare/<sha-anterior>...main`
+
+---
+
 ## Abierto ahora mismo
 
 | Qué | Dónde | Estado |
@@ -106,6 +127,15 @@ están mergeados y se pueden cerrar.
       se expresó del otro lado. El número va a subir y deja de ser comparable
       con el histórico. No es un bug, pero hay que saberlo antes de leer el
       embudo
+- [ ] **El repo no tiene CI.** No hay `.github/workflows/`, así que un PR acá no
+      corre ningún check y `main` deploya a Railway sin que nada haya validado
+      nada. Mientras se commiteaba directo era coherente; con PRs deja de serlo.
+      Los cuatro comandos ya existen en `package.json`: `typecheck`, `lint`,
+      `test` y `build`. Alcanza con un workflow que los corra en el PR.
+      Ojo con la lección de Clicnet#410: `next build` ya typechequea el
+      proyecto, así que `typecheck` aparte sólo tiene sentido por lo que el
+      `tsconfig` de build excluye — y hay que darle `NODE_OPTIONS` de memoria o
+      se cae por OOM
 - [ ] **Verificar el dominio en Search Console.** Necesita a Lucas. Conviene por
       DNS: así vale para el sitio nuevo sin tocar el viejo
 - [ ] **El apex redirige con `307`, no con `308`.** Va con el cambio de
