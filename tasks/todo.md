@@ -72,8 +72,9 @@ Verificación del 8-sep en `reservas.clicpilates.com`, después de mergear el #1
 - `?tipo=97` abre el checkout con ese plan
 - `?tipo=999999` cae en la landing, sin romperse
 
-Lo que **todavía no se puede probar entero** es el circuito completo desde la
-web, y no por culpa de este cambio: ver abajo el punto de `/reservar`.
+Y desde el 9-sep el circuito **sí se puede probar entero desde la web**: se
+destrabó `/reservar` poniendo `VITE_BASE_PATH` en el servicio que apunta el
+rewrite (ver el punto más abajo).
 
 Con #408 en producción, el staging dejó de proxear la grilla por su propio
 servidor: `NEXT_PUBLIC_API_BASE_URL` en Railway pasó a `https://app.clicpilates.com`
@@ -119,19 +120,27 @@ están mergeados y se pueden cerrar.
       8-sep** con reservas-clientes-clic-v2#19, mergeado y verificado en
       producción. La web manda `/reservar/sede/<slug>?tipo=<id>` y el portal
       abre el checkout con ese plan
-- [ ] **`/reservar` sigue sin poder probarse entero, y ahora corta el embudo
-      nuevo.** El rewrite devuelve el HTML del portal —con el bundle correcto—
-      pero ese pide `/assets/index-*.js` en la raíz del dominio de la web, que
-      da **404**, así que la página queda en blanco. Es el bloqueo viejo, no una
-      regresión del deep-link: hasta que se resuelva, el circuito
-      tarjeta → checkout sólo se puede probar pegándole directo al portal.
-      El arreglo es que el deploy del portal al que apunta la web buildee con
-      `VITE_BASE_PATH=/reservar/` (el PR #18 ya dejó el `base` configurable).
-      Ojo con el efecto lateral: eso rompe el acceso directo a
-      `reservas-clientes-clic-v2-production.up.railway.app`, porque un build de
-      Vite sirve los archivos en la raíz del origen — que es justo lo que el
-      rewrite compensa sacando el prefijo (`RESERVAS_PREFIJO`).
-      Es el primer punto de `docs/lanzamiento.md`
+- [x] ~~`/reservar` no cargaba desde la web~~ — **cerrado el 9-sep.** Se puso
+      `VITE_BASE_PATH=/reservar/` en el servicio Railway
+      **`reservas-clientes-clic-v2`**, que es el que apunta el rewrite. Ahora el
+      HTML del portal pide `/reservar/assets/…`, el rewrite le saca el prefijo
+      (`RESERVAS_PREFIJO=''`) y el asset resuelve contra la raíz del origen.
+      **Con esto el embudo queda completo de punta a punta**: desde el dominio
+      de la web, `/reservar/sede/<slug>?tipo=<id>` abre el checkout con ese
+      plan. Verificado con Belgrano: JS y CSS en `200`, y el Pack 24 en $327.800,
+      el mismo precio que publica la tarjeta.
+      Dos cosas que quedan dichas para que nadie se asuste después:
+      **1.** `reservas.clicpilates.com` **no se tocó**. Vive en el *otro*
+      servicio (`reservas-clientes-clic`), que sigue buildeando con `base: /`
+      y responde `200`. La variable es por servicio.
+      **2.** El acceso **directo** a
+      `reservas-clientes-clic-v2-production.up.railway.app` quedó roto a
+      propósito: ahí el HTML pide `/reservar/assets/…` y ese origen sirve los
+      archivos en la raíz, así que devuelve el fallback del SPA —HTML con `200`,
+      no un `404`— y la página queda en blanco. Ese servicio existe sólo como
+      destino del rewrite y no tiene dominio propio, así que es un intercambio
+      aceptable; pero **no sirve más para mirar el portal a mano**. Para eso
+      está `reservas.clicpilates.com`
 - [ ] **El portal de reservas no tiene entorno de pruebas.** Verificado en
       Railway el 8-sep: los **dos** servicios del proyecto "Reservas - Clic
       Pilates" deployan el mismo repo (`reservas-clientes-clic-v2`) y la misma
