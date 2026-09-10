@@ -118,8 +118,7 @@ const NIVELES: Nivel[] = [
   },
   {
     slug: 'intense',
-    // Todavía no hay foto de una clase de Intense en ninguna producción.
-    foto: null,
+    foto: FOTOS.intense,
     nombre: 'Intense',
     eyebrow: 'Para exigirte',
     titulo: 'Intense',

@@ -29,10 +29,14 @@ export interface Foto {
 }
 
 export const FOTOS = {
+  // El hero es la única foto que se recorta a alto completo de pantalla, así que
+  // en un teléfono se ve más o menos un tercio del ancho. El foco corrido a la
+  // derecha prioriza a las alumnas sobre el logo de la pared, que queda a la
+  // izquierda: en desktop entran los dos, en mobile hay que elegir.
   hero: {
-    src: '/fotos/hero/hero-sala.jpg',
-    alt: 'Sala de un estudio CLIC con alumnas entrenando en reformer',
-    foco: { x: 50, y: 45 },
+    src: '/fotos/hero/hero-estiramiento.jpg',
+    alt: 'Fila de reformers en un estudio CLIC, con alumnas estirando sobre la barra',
+    foco: { x: 62, y: 42 },
     publicable: true,
   },
 
@@ -42,9 +46,6 @@ export const FOTOS = {
     alt: 'Alumna estirando sobre el reformer, de espaldas',
     foco: { x: 45, y: 40 },
     publicable: true,
-    // Mejor para esta sección sería `metodo/metodo-correccion.jpg`, que muestra
-    // a la instructora corrigiendo — que es el argumento de los grupos chicos.
-    // Espera consentimiento: se le ve la cara de perfil.
   },
 
   // Sala vacía: no hay nadie, así que no hay consentimiento que pedir.
@@ -63,13 +64,24 @@ export const FOTOS = {
     publicable: true,
   },
 
-  // De espaldas: no se le ve la cara, así que no es identificable.
-  // La de la producción nueva (`levelup-nueva.jpg`) es mejor, pero muestra dos
-  // caras y espera consentimiento.
+  // De espaldas: no se le ve la cara. `niveles/levelup-nueva.jpg` es la
+  // alternativa de la producción nueva, por si se quiere cambiar.
   levelUp: {
     src: '/fotos/niveles/levelup.jpg',
     alt: 'Alumna de espaldas con los brazos abiertos, en Level Up',
     foco: { x: 50, y: 30 },
+    publicable: true,
+  },
+
+  intense: {
+    src: '/fotos/niveles/intense.jpg',
+    alt: 'Alumna trabajando con el aro sobre el reformer, en una clase de Intense',
+    // Es vertical y el subhero es una banda ancha y baja, así que de la foto
+    // entra una franja finita. Probados tres focos: al medio quedaban sólo las
+    // piernas, más abajo un primer plano del torso. Éste agarra las manos en
+    // alto y el aro, que es lo que se parece a "más ritmo".
+    // Lo que de verdad falta es una toma horizontal de una clase de Intense.
+    foco: { x: 50, y: 45 },
     publicable: true,
   },
 
@@ -88,12 +100,19 @@ export const FOTOS = {
     publicable: true,
   },
 
-  // Todavía no existe: no hay ninguna foto de formación en ninguna fuente.
-  // Es una de las tres que hay que producir (public/fotos/_LEEME.md).
-  academy: null,
+  // La instructora corrigiendo. Es la mejor foto que tenemos para Academy
+  // porque muestra el oficio que se enseña, no un aula: alguien mirando un
+  // cuerpo y ajustándolo.
+  academy: {
+    src: '/fotos/academy/instructora-corrigiendo.jpg',
+    alt: 'Instructora de CLIC corrigiendo a una alumna sobre el reformer',
+    foco: { x: 60, y: 40 },
+    publicable: true,
+  },
 
-  // La imagen que se ve al compartir el link. Además del consentimiento le
-  // falta el recorte: la OG es horizontal (1200×630) y esta es vertical.
+  // Una alternativa horizontal para la imagen de compartir. Hoy `public/og.jpg`
+  // se genera desde el hero con `scripts/preparar-og.mjs`; ésta es vertical, así
+  // que usarla implicaría recortarla con el mismo script.
   og: {
     src: '/fotos/og/grupo-clase.jpg',
     alt: 'Alumnas de CLIC en clase de reformer',

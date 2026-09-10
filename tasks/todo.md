@@ -181,9 +181,11 @@ están mergeados y se pueden cerrar.
       y en `/clases/intense`. La (b) no se hizo a propósito.
       Mientras tanto: alguien de Belgrano puede leer Intense en la home, ir a
       buscar la clase y no encontrarla
-- [ ] **Intense no tiene foto.** `FOTOS` no tiene una entrada para el nivel, así
-      que su página muestra el degradado. Desde el 10-sep es —junto con Academy—
-      **la única sección sin foto por falta de material, no de permiso**
+- [x] ~~Intense no tiene foto~~ — **cerrado el 10-sep**: `niveles/intense.jpg`.
+      Queda una limitación anotada arriba: es vertical y el subhero es una banda
+      ancha y baja, así que entra una franja. Se probaron tres focos y el que
+      quedó agarra las manos en alto y el aro. Lo que lo resuelve de verdad es
+      una toma horizontal
 - [ ] **Verificar el dominio en Search Console.** Necesita a Lucas. Conviene por
       DNS: así vale para el sitio nuevo sin tocar el viejo
 - [ ] **El apex redirige con `307`, no con `308`.** Va con el cambio de
@@ -360,25 +362,22 @@ Pendientes que quedan de esta fase:
       Antes de esto el sitio **no tenía ninguna**: el link viajaba sin imagen, y
       encima `twitter:card` decía `summary_large_image`, que es la variante
       grande — la peor versión posible de no tener foto.
-- [ ] **Faltan tres fotos que no existen en ninguna fuente.** Ya no es un tema
-      de permisos, es de producción:
-      **(a) Academy** — una instructora formando a otra.
-      **(b) Intense** — una clase del nivel nuevo.
-      **(c) Vestuarios** — pero ojo: **el sitio no tiene un slot de vestuarios**.
-      Iría como una de las tres fotos de la galería de cada estudio, y **esas
-      salen del backend** (`sede.fotosDetalle`), o sea que se cargan desde el
-      backoffice de Clicnet, no desde este repo. Lo que falta ahí no es "una
-      foto de vestuarios": es que las once galerías hoy son heterogéneas y se
-      verían como una familia con el mismo set de tres por sede — fachada,
-      plano general y un detalle (ver `docs/fotos.md`). Si hay que elegir una
-      sola, la fachada es la que más sirve: es la que permite reconocer el
-      lugar al llegar.
-      El brief original está en `docs/fotos.md` — cinco piezas, en orden de impacto, con
-      qué tiene que mostrar cada una y cómo tienen que estar hechas
-- [ ] **Decidir dónde va `metodo/metodo-correccion.jpg`.** Es la mejor foto sin
-      usar que tenemos —la instructora corrigiendo, que es la prueba visual del
-      argumento de los grupos chicos— y ya tiene permiso. Sirve para "El
-      método" o para Academy, pero **no para las dos**: se nota
+- [ ] **Faltan dos fotos, y ninguna es de permisos: es producción.**
+      **(a) Una toma horizontal de Intense.** La que hay es vertical y el
+      subhero es una banda ancha y baja, así que entra una franja: se ve el aro
+      y los brazos, no la clase.
+      **(b) Academy propiamente dicha** — una instructora formando a otra. Lo
+      que hay hoy (`academy/instructora-corrigiendo.jpg`) es una instructora
+      corrigiendo en clase: funciona, pero muestra el oficio, no la formación.
+      **Y lo de vestuarios no es lo que parecía**: el sitio **no tiene un slot
+      de vestuarios**. Iría como una de las tres fotos de la galería de cada
+      estudio, y esas salen del backend (`sede.fotosDetalle`), o sea del
+      backoffice de Clicnet, no de este repo. Lo que falta ahí no es una foto
+      suelta: es que las once galerías tengan el mismo set de tres —fachada,
+      plano general y un detalle— para que se lean como una familia. Si hay que
+      elegir una sola, la fachada gana: es la que permite reconocer el lugar al
+      llegar.
+      El brief está en `docs/fotos.md`
 - [ ] **Links de las tiendas** para la sección de la app: hoy los badges se ven
       pero no son links, porque no tenemos las URLs. Un botón que no lleva a
       ningún lado es peor que no tenerlo
