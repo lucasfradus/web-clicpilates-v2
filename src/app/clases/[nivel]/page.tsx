@@ -41,7 +41,7 @@ const NIVELES: Nivel[] = [
       'La base del método, a un ritmo que te deja entender cada movimiento. Es por donde ' +
       'empieza todo el mundo, hayas hecho o no actividad física antes.',
     descripcion: [
-      'En Initial trabajamos el repertorio clásico de reformer desde el principio: la ' +
+      'En Initial trabajamos el repertorio de reformer desde el principio: la ' +
       'respiración que sostiene cada ejercicio, la alineación y el control. La instructora ' +
       'te corrige desde el primer movimiento, que es la diferencia entre aprender el método ' +
       'y hacer una clase de gimnasia sobre un reformer.',
@@ -97,7 +97,7 @@ const NIVELES: Nivel[] = [
       {
         pregunta: '¿Puedo empezar directamente en Level Up?',
         respuesta:
-          'Sólo si ya trabajaste Pilates Clásico en reformer. Si venís de otro estudio, ' +
+          'Sólo si ya trabajaste Pilates Reformer. Si venís de otro estudio, ' +
           'contanos en la clase de prueba y la instructora te dice por dónde arrancar.',
       },
       {

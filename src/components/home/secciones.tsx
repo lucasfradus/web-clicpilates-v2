@@ -70,11 +70,11 @@ export function Metodo () {
         </div>
         <div>
           <p className="eyebrow">El método</p>
-          <h2>Contrología, como fue pensada.</h2>
+          <h2>Reformer, con método.</h2>
           <p className="method__intro">
-            Trabajamos Pilates Clásico: el orden original de los ejercicios, la respiración
-            que los sostiene y la progresión que Joseph Pilates diseñó. No es una clase de
-            moda con música fuerte — es una práctica precisa que se vuelve tuya.
+            Trabajamos Pilates Reformer: un orden de ejercicios, una respiración que los
+            sostiene y una progresión que se sigue clase a clase. No es una clase de moda
+            con música fuerte — es una práctica precisa que se vuelve tuya.
           </p>
           <div className="method__list">
             <div className="method__item">
@@ -194,7 +194,7 @@ export function AcademyYFranquicias () {
         <Link className="card-cta" href="/academy">
           <div className="card-cta__bg" style={{ background: 'linear-gradient(140deg,#c9b39a,#6f6558)' }} />
           <p className="eyebrow eyebrow--light">CLIC Academy</p>
-          <h2>Formate como instructora de Pilates Clásico.</h2>
+          <h2>Formate como instructora de Pilates Reformer.</h2>
           <p>Certificación con práctica real en nuestros estudios y salida laboral en la red CLIC.</p>
           <div className="card-cta__foot">
             <span className="btn btn--ghost-light btn--sm">Conocer la formación</span>

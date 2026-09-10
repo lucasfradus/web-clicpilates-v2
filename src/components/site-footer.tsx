@@ -23,7 +23,7 @@ export function SiteFooter ({ sedes = [] }: { sedes?: Sede[] }) {
           <div>
             <Logo className="ftr__logo" titulo={SITIO.nombre} />
             <p className="ftr__bio">
-              Pilates Clásico en Buenos Aires. Reformer en grupos chicos, instructoras
+              Pilates Reformer en Buenos Aires. Grupos chicos, instructoras
               formadas en casa.
             </p>
           </div>
