@@ -12,7 +12,10 @@
  *    de diseño. Cada foto declara si se puede publicar; mientras esté en
  *    `false`, la sección muestra el degradado y no la foto.
  *
- * Para habilitar una: conseguir el consentimiento y poner `publicable: true`.
+ * El 10-sep llegó el consentimiento de todas las que estaban esperando, así que
+ * hoy no hay ninguna en `false`. **El interruptor no se saca**: la próxima
+ * tanda de fotos entra igual, con `publicable: false` hasta que su permiso
+ * exista. Que hoy esté vacío es un estado, no el final de la historia.
  */
 
 export interface Foto {
@@ -25,16 +28,12 @@ export interface Foto {
   nota?: string
 }
 
-const PENDIENTE_CONSENTIMIENTO =
-  'Caras reconocibles: falta el consentimiento para uso comercial (public/fotos/_LEEME.md).'
-
 export const FOTOS = {
   hero: {
     src: '/fotos/hero/hero-sala.jpg',
     alt: 'Sala de un estudio CLIC con alumnas entrenando en reformer',
     foco: { x: 50, y: 45 },
-    publicable: false,
-    nota: PENDIENTE_CONSENTIMIENTO,
+    publicable: true,
   },
 
   // El pelo le tapa la cara: no es identificable.
@@ -61,8 +60,7 @@ export const FOTOS = {
     src: '/fotos/niveles/initial-nueva.jpg',
     alt: 'Alumna trabajando el repertorio de Inicial',
     foco: { x: 50, y: 35 },
-    publicable: false,
-    nota: PENDIENTE_CONSENTIMIENTO,
+    publicable: true,
   },
 
   // De espaldas: no se le ve la cara, así que no es identificable.
@@ -87,8 +85,7 @@ export const FOTOS = {
     src: '/fotos/marca/comunidad-alumnas.jpg',
     alt: 'Dos alumnas en un estudio CLIC',
     foco: { x: 50, y: 40 },
-    publicable: false,
-    nota: PENDIENTE_CONSENTIMIENTO,
+    publicable: true,
   },
 
   // Todavía no existe: no hay ninguna foto de formación en ninguna fuente.
@@ -101,8 +98,7 @@ export const FOTOS = {
     src: '/fotos/og/grupo-clase.jpg',
     alt: 'Alumnas de CLIC en clase de reformer',
     foco: { x: 40, y: 30 },
-    publicable: false,
-    nota: PENDIENTE_CONSENTIMIENTO,
+    publicable: true,
   },
 } as const satisfies Record<string, Foto | null>
 
