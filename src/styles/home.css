@@ -320,7 +320,7 @@
 
 .levels {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
@@ -348,6 +348,13 @@
 .level--b {
   background: var(--ink-deep);
   color: #fff;
+}
+
+/* Intense: mismo peso visual que Inicial. La tarjeta oscura queda al medio,
+   así los tres niveles se leen como una progresión y no como una jerarquía. */
+.level--c {
+  background: var(--surface);
+  border: 1px solid var(--line);
 }
 
 .level h3 {
@@ -567,6 +574,16 @@
 
   .split {
     grid-template-columns: 1fr;
+  }
+
+  /* Tres niveles en tablet: entran las tres columnas, pero con el padding de
+     desktop quedan ~220px de texto útil y el titular serif se parte. */
+  .level {
+    padding: 34px 26px;
+  }
+
+  .level h3 {
+    font-size: 28px;
   }
 }
 
