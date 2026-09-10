@@ -29,25 +29,37 @@ pero ninguna sección la usa: son las candidatas para cuando se quiera cambiar
 una. Qué archivo usa cada sección está en `src/lib/fotos.ts`, que es el único
 lugar donde se toca esto.
 
-### Producción nueva (Drive, bajada el 4-sep)
+### Producción nueva (Drive, 4-sep y 10-sep)
 
 ```
+hero/
+  hero-estiramiento.jpg         2560 × 1355   la fila estirando sobre la barra  PUBLICADA
 franquicias/
-  franquicias-belgrano.jpg      2560 × 1707   sala vacía, fila de reformers    PUBLICADA
+  franquicias-belgrano.jpg      2560 × 1707   sala vacía, fila de reformers     PUBLICADA
 metodo/
-  estiramiento-de-espaldas.jpg  1707 × 2560   de espaldas, aro de luz al fondo PUBLICADA
-  metodo-correccion.jpg         1707 × 2560   la instructora corrigiendo       alternativa
+  estiramiento-de-espaldas.jpg  1707 × 2560   de espaldas, aro de luz al fondo  PUBLICADA
+academy/
+  instructora-corrigiendo.jpg   1707 × 2560   la instructora corrigiendo        PUBLICADA
 niveles/
-  initial-nueva.jpg             1707 × 2560   movimiento contenido             PUBLICADA
-  levelup-nueva.jpg             1707 × 2560   dos alumnas                      alternativa
+  initial-nueva.jpg             1707 × 2560   movimiento contenido              PUBLICADA
+  intense.jpg                   1707 × 2560   aro entre los pies, brazos arriba PUBLICADA
+  levelup-nueva.jpg             1707 × 2560   dos alumnas                       alternativa
 og/
-  grupo-clase.jpg               1707 × 2560   cuatro alumnas en clase          alternativa
+  fila-completa.jpg             2560 × 1707   el encuadre entero, con el logo   fuente de og.jpg
+  grupo-clase.jpg               1707 × 2560   cuatro alumnas en clase           alternativa
 ```
 
-`metodo-correccion.jpg` es la mejor que hay sin usar: es la instructora
-corrigiendo a una alumna, o sea la prueba visual del argumento de los grupos
-chicos. Candidata para "El método" o para Academy — en los dos lugares no,
-porque se nota.
+Dos cosas sobre el hero, porque el recorte no es caprichoso:
+
+- **`hero-estiramiento.jpg` está recortado por arriba** respecto del original.
+  El encuadre completo tiene el logo CLIC retroiluminado en la pared, arriba a
+  la izquierda — justo debajo del logo del header. Los dos juntos se leen como
+  un logo duplicado y fuera de foco. Recortando la franja de arriba desaparece
+  el problema y de paso la proporción (1,89) queda casi igual a la del hero en
+  desktop, así que se pierde menos imagen.
+- **El encuadre completo no se tiró**: vive en `og/fila-completa.jpg` y es la
+  fuente de `public/og.jpg`. Ahí el logo suma en vez de estorbar, porque la
+  imagen de compartir no tiene un header encima.
 
 ### Producción vieja (fototeca del sitio actual)
 
@@ -134,10 +146,12 @@ alcanza.
 
 ---
 
-## La carpeta vacía
+## Ya no queda ninguna carpeta vacía
 
-**`academy/`** está vacía a propósito. No existe ninguna foto de formación en
-ninguna fuente, ni en la producción vieja ni en la nueva. Hay que producirla.
+**`academy/`** tiene `instructora-corrigiendo.jpg`, que hasta el 10-sep vivía en
+`metodo/` como `metodo-correccion.jpg`. Se movió porque muestra el oficio que
+Academy enseña —alguien mirando un cuerpo y ajustándolo— y usar la misma foto en
+las dos secciones se nota.
 
 La imagen de compartir **ya existe** (`public/og.jpg`, generada desde el hero).
 `og/grupo-clase.jpg` sigue ahí como alternativa, pero es vertical: para usarla
@@ -166,9 +180,19 @@ instructora corrigiendo, y esa foto ahora existe de verdad en
 
 ## Lo que hay que producir
 
-1. **Academy** — una instructora formando a otra. La única que no tiene ninguna
-   toma equivalente en ninguna fuente.
-2. **Vestuarios** vacíos y ordenados.
+1. **Una toma horizontal de una clase de Intense.** La que hay es vertical y el
+   subhero es una banda ancha y baja, así que entra una franja finita: se ve el
+   aro y los brazos, no la clase.
+2. **Academy propiamente dicha** — una instructora formando a otra. Lo que hay
+   hoy es una instructora corrigiendo en clase: funciona, pero muestra el oficio,
+   no la formación.
+3. **Vestuarios** vacíos y ordenados. Ojo: **el sitio no tiene un slot de
+   vestuarios**. Iría como una de las tres fotos de la galería de cada estudio,
+   y esas salen del backend (`sede.fotosDetalle`), o sea que se cargan desde el
+   backoffice de Clicnet, no desde este repo. Lo que falta ahí no es una foto
+   suelta: es que las once galerías tengan el mismo set de tres —fachada, plano
+   general y un detalle— para que se lean como una familia. Si hay que elegir
+   una sola, la fachada es la que más sirve.
 
 Conviene hacerlas en Belgrano o Soho, que son las sedes fotografiadas con el
 estándar nuevo, y con la misma cámara y luz.
