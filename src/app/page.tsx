@@ -40,8 +40,8 @@ export default async function Home () {
         <div className="container hero__inner">
           <div className="hero__grid">
             <div>
-              <p className="eyebrow eyebrow--light">Pilates clásico · Buenos Aires</p>
-              <h1>Pilates clásico,<br /><em>tu horario.</em></h1>
+              <p className="eyebrow eyebrow--light">Pilates reformer · Buenos Aires</p>
+              <h1>Pilates reformer,<br /><em>tu horario.</em></h1>
               <p className="hero__sub">
                 Reformer en grupos chicos, con instructoras formadas en nuestra propia
                 academy. Elegís el estudio, ves los lugares que quedan y reservás en un

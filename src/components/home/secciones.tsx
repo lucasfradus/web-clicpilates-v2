@@ -70,11 +70,11 @@ export function Metodo () {
         </div>
         <div>
           <p className="eyebrow">El método</p>
-          <h2>Contrología, como fue pensada.</h2>
+          <h2>Reformer, con método.</h2>
           <p className="method__intro">
-            Trabajamos Pilates Clásico: el orden original de los ejercicios, la respiración
-            que los sostiene y la progresión que Joseph Pilates diseñó. No es una clase de
-            moda con música fuerte — es una práctica precisa que se vuelve tuya.
+            Trabajamos Pilates Reformer: un orden de ejercicios, una respiración que los
+            sostiene y una progresión que se sigue clase a clase. No es una clase de moda
+            con música fuerte — es una práctica precisa que se vuelve tuya.
           </p>
           <div className="method__list">
             <div className="method__item">
@@ -102,7 +102,7 @@ export function Metodo () {
               <div>
                 <h3>Progresión real</h3>
                 <p>
-                  Empezás en Initial y pasás a Level Up cuando el cuerpo está listo, no
+                  Empezás en Inicial y pasás a Level Up cuando el cuerpo está listo, no
                   cuando pasan los meses.
                 </p>
               </div>
@@ -120,13 +120,13 @@ export function Niveles () {
       <div className="container">
         <div className="section-head">
           <p className="eyebrow">Niveles</p>
-          <h2>Dos formas de entrar.</h2>
+          <h2>Tres formas de entrenar.</h2>
           <p>No hace falta experiencia previa. Hace falta empezar por el lugar correcto.</p>
         </div>
         <div className="levels">
           <article className="level level--a">
             <p className="eyebrow">Para arrancar</p>
-            <h3>Initial Pilates</h3>
+            <h3>Inicial</h3>
             <p>
               La base del método a un ritmo que te deja entender cada movimiento. Ideal si
               nunca hiciste reformer o volvés después de una pausa larga.
@@ -137,24 +137,41 @@ export function Niveles () {
               <li>Corrección individual</li>
             </ul>
             <div className="level__foot">
-              <Link className="btn btn--ghost" href="/estudios">Ver estudios</Link>
+              <Link className="btn btn--ghost" href="/clases/inicial">Conocer Inicial</Link>
             </div>
           </article>
 
           <article className="level level--b">
             <p className="eyebrow eyebrow--light">Para seguir</p>
-            <h3>Level Up Pilates</h3>
+            <h3>Level Up</h3>
             <p>
               Secuencias más largas, más carga y menos pausas. Entrás cuando tu instructora
               ve que la base está sólida.
             </p>
             <ul>
-              <li>Requiere base de Initial</li>
+              <li>Requiere base de Inicial</li>
               <li>Mayor intensidad y fluidez</li>
               <li>Repertorio intermedio y avanzado</li>
             </ul>
             <div className="level__foot">
-              <Link className="btn btn--light" href="/estudios">Ver horarios</Link>
+              <Link className="btn btn--light" href="/clases/level-up">Conocer Level Up</Link>
+            </div>
+          </article>
+
+          <article className="level level--c">
+            <p className="eyebrow">Para exigirte</p>
+            <h3>Intense</h3>
+            <p>
+              Movimientos más fluidos y más ritmo. Menos pausas, más fuerza y resistencia:
+              salís activada y con el cuerpo trabajado.
+            </p>
+            <ul>
+              <li>Más ritmo y continuidad</li>
+              <li>Fuerza y resistencia</li>
+              <li>Salís con sensación de entrenamiento</li>
+            </ul>
+            <div className="level__foot">
+              <Link className="btn btn--ghost" href="/clases/intense">Conocer Intense</Link>
             </div>
           </article>
         </div>
@@ -194,7 +211,7 @@ export function AcademyYFranquicias () {
         <Link className="card-cta" href="/academy">
           <div className="card-cta__bg" style={{ background: 'linear-gradient(140deg,#c9b39a,#6f6558)' }} />
           <p className="eyebrow eyebrow--light">CLIC Academy</p>
-          <h2>Formate como instructora de Pilates Clásico.</h2>
+          <h2>Formate como instructora de Pilates Reformer.</h2>
           <p>Certificación con práctica real en nuestros estudios y salida laboral en la red CLIC.</p>
           <div className="card-cta__foot">
             <span className="btn btn--ghost-light btn--sm">Conocer la formación</span>

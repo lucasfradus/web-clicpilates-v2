@@ -32,7 +32,7 @@ export function faqsDeSede (sede: Sede, catalogo: CatalogoSede | null): Faq[] {
     {
       pregunta: `¿Hace falta experiencia previa para entrenar en ${zona}?`,
       respuesta:
-        'No. Las clases de Initial Pilates están pensadas para quien nunca hizo reformer. ' +
+        'No. Las clases de Inicial están pensadas para quien nunca hizo reformer. ' +
         'Trabajás en grupos chicos, así que la instructora te corrige desde el primer movimiento.',
     },
     {

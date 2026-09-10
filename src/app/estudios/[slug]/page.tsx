@@ -51,7 +51,7 @@ export async function generateMetadata ({ params }: PageProps<'/estudios/[slug]'
   // Sin la marca: la agrega la plantilla del layout (`%s · CLIC studio pilates`).
   const titulo = `Pilates reformer en ${zona}`
   const descripcion =
-    `Pilates Clásico en reformer en ${sede.direccion}, ${sede.ciudad}. ` +
+    `Pilates Reformer en ${sede.direccion}, ${sede.ciudad}. ` +
     `Horarios reales, grupos chicos y clase de prueba desde ${pesos(sede.precioPrueba)}.`
 
   return {
@@ -97,7 +97,7 @@ export default async function LandingSede ({ params }: PageProps<'/estudios/[slu
           <h1>Pilates reformer<br />en {zona}</h1>
           <p>
             CLIC {sede.nombre} — {sede.direccion}, {sede.ciudad}.
-            {sede.descripcion != null ? ` ${sede.descripcion}` : ' Pilates Clásico en reformer, en grupos chicos.'}
+            {sede.descripcion != null ? ` ${sede.descripcion}` : ' Pilates Reformer, en grupos chicos.'}
           </p>
           {accion != null && (
             <div style={{ marginTop: 28 }}>

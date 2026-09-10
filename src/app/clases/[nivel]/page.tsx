@@ -13,9 +13,13 @@ import { FOTOS, type Foto } from '@/lib/fotos'
 export const revalidate = 3600
 
 /**
- * Las dos formas de entrar al método. Son páginas de contenido: no dependen de
- * la API, y existen para captar las búsquedas de quien todavía no sabe por
- * dónde empezar ("pilates para principiantes", "pilates reformer avanzado").
+ * Los niveles. Son páginas de contenido: no dependen de la API, y existen para
+ * captar las búsquedas de quien todavía no sabe por dónde empezar ("pilates
+ * para principiantes", "pilates reformer avanzado").
+ *
+ * Los nombres son los mismos que publica la grilla en vivo —Inicial, Level Up e
+ * Intense— porque son lo que la alumna ve al reservar. Antes decían "Initial
+ * Pilates" y "Level Up Pilates", que no existían en ningún otro lado.
  */
 
 interface Nivel {
@@ -23,6 +27,8 @@ interface Nivel {
   nombre: string
   eyebrow: string
   titulo: string
+  /** La cola del <title>. Es la consulta que buscaria alguien que no sabe el nombre del nivel. */
+  tituloSeo: string
   bajada: string
   descripcion: string[]
   paraQuien: string[]
@@ -32,16 +38,17 @@ interface Nivel {
 
 const NIVELES: Nivel[] = [
   {
-    slug: 'initial-pilates',
+    slug: 'inicial',
     foto: FOTOS.initial,
-    nombre: 'Initial Pilates',
+    nombre: 'Inicial',
     eyebrow: 'Para arrancar',
-    titulo: 'Initial Pilates',
+    titulo: 'Inicial',
+    tituloSeo: 'pilates reformer para empezar',
     bajada:
       'La base del método, a un ritmo que te deja entender cada movimiento. Es por donde ' +
       'empieza todo el mundo, hayas hecho o no actividad física antes.',
     descripcion: [
-      'En Initial trabajamos el repertorio clásico de reformer desde el principio: la ' +
+      'En Inicial trabajamos el repertorio de reformer desde el principio: la ' +
       'respiración que sostiene cada ejercicio, la alineación y el control. La instructora ' +
       'te corrige desde el primer movimiento, que es la diferencia entre aprender el método ' +
       'y hacer una clase de gimnasia sobre un reformer.',
@@ -56,7 +63,7 @@ const NIVELES: Nivel[] = [
     ],
     faqs: [
       {
-        pregunta: '¿Necesito estar en forma para empezar Initial Pilates?',
+        pregunta: '¿Necesito estar en forma para empezar Inicial?',
         respuesta:
           'No. El método se adapta a tu cuerpo: la instructora ajusta los resortes y la ' +
           'versión del ejercicio según lo que necesitás ese día. Por eso trabajamos en ' +
@@ -71,25 +78,26 @@ const NIVELES: Nivel[] = [
     ],
   },
   {
-    slug: 'level-up-pilates',
+    slug: 'level-up',
     foto: FOTOS.levelUp,
-    nombre: 'Level Up Pilates',
+    nombre: 'Level Up',
     eyebrow: 'Para seguir',
-    titulo: 'Level Up Pilates',
+    titulo: 'Level Up',
+    tituloSeo: 'pilates reformer intermedio y avanzado',
     bajada:
       'Secuencias más largas, más carga y menos pausas. Es el mismo método, con el ' +
       'repertorio intermedio y avanzado y otro ritmo.',
     descripcion: [
       'En Level Up la clase fluye: las transiciones son parte del ejercicio y el trabajo ' +
-      'de fuerza y control se sostiene más tiempo. Entra el repertorio que en Initial ' +
+      'de fuerza y control se sostiene más tiempo. Entra el repertorio que en Inicial ' +
       'todavía no se toca, y con él la parte del método donde el cuerpo empieza a hacer ' +
       'cosas que antes no podía.',
       'Se entra cuando tu instructora ve que la base está sólida. No es una cuestión de ' +
       'antigüedad ni de esfuerzo: es que las secuencias avanzadas necesitan un control que ' +
-      'se construye en Initial.',
+      'se construye en Inicial.',
     ],
     paraQuien: [
-      'Ya tenés base de Initial',
+      'Ya tenés base de Inicial',
       'Buscás más intensidad sin salir del método',
       'Querés el repertorio intermedio y avanzado',
     ],
@@ -97,14 +105,57 @@ const NIVELES: Nivel[] = [
       {
         pregunta: '¿Puedo empezar directamente en Level Up?',
         respuesta:
-          'Sólo si ya trabajaste Pilates Clásico en reformer. Si venís de otro estudio, ' +
+          'Sólo si ya trabajaste Pilates Reformer. Si venís de otro estudio, ' +
           'contanos en la clase de prueba y la instructora te dice por dónde arrancar.',
       },
       {
-        pregunta: '¿Puedo combinar Initial y Level Up en la misma semana?',
+        pregunta: '¿Puedo combinar Inicial y Level Up en la misma semana?',
         respuesta:
           'Sí. Muchas alumnas alternan según el día y cómo llegan. Tu plan te sirve para ' +
           'cualquiera de los dos.',
+      },
+    ],
+  },
+  {
+    slug: 'intense',
+    // Todavía no hay foto de una clase de Intense en ninguna producción.
+    foto: null,
+    nombre: 'Intense',
+    eyebrow: 'Para exigirte',
+    titulo: 'Intense',
+    tituloSeo: 'pilates reformer de alta intensidad',
+    bajada:
+      'Movimientos más fluidos y más ritmo. Menos pausas, más fuerza y resistencia: ' +
+      'salís activada y con el cuerpo trabajado.',
+    descripcion: [
+      'Intense corre el foco del repertorio a la continuidad. Las secuencias se encadenan ' +
+      'con menos pausas entre ejercicio y ejercicio, así que el trabajo de fuerza se ' +
+      'sostiene y aparece la resistencia: no es sólo cuánto podés, es cuánto podés ' +
+      'sostenerlo.',
+      'Sigue siendo reformer y sigue habiendo técnica —la instructora corrige igual—, pero ' +
+      'la sensación al terminar es otra: salís con el pulso alto y con la clase en el ' +
+      'cuerpo.',
+    ],
+    paraQuien: [
+      'Buscás más ritmo y menos pausas',
+      'Querés trabajar fuerza y resistencia',
+      'Te gusta salir con sensación de entrenamiento',
+    ],
+    faqs: [
+      {
+        pregunta: '¿En qué se diferencia de Level Up?',
+        respuesta:
+          'Level Up sube el repertorio: entran los ejercicios intermedios y avanzados. ' +
+          'Intense sube el ritmo: los ejercicios se encadenan con menos pausas y el foco ' +
+          'está en la fuerza sostenida y la resistencia.',
+      },
+      {
+        pregunta: '¿Puedo hacer Intense sin experiencia?',
+        respuesta:
+          'Conviene tener base. El ritmo deja menos lugar para corregir cada movimiento, ' +
+          'así que si nunca hiciste reformer vas a aprovecharla mucho más después de ' +
+          'Inicial. Contanos en la clase de prueba y la instructora te dice por dónde ' +
+          'arrancar.',
       },
     ],
   },
@@ -122,7 +173,7 @@ export async function generateMetadata ({ params }: PageProps<'/clases/[nivel]'>
   if (nivel == null) return {}
 
   return {
-    title: `${nivel.nombre}: pilates reformer ${nivel.slug === 'initial-pilates' ? 'para empezar' : 'intermedio y avanzado'}`,
+    title: `${nivel.nombre}: ${nivel.tituloSeo}`,
     description: nivel.bajada,
     alternates: { canonical: `/clases/${nivel.slug}` },
     openGraph: {
@@ -138,7 +189,7 @@ export default async function Clase ({ params }: PageProps<'/clases/[nivel]'>) {
   const nivel = buscar(slug)
   if (nivel == null) notFound()
 
-  const otro = NIVELES.find((n) => n.slug !== nivel.slug)
+  const otros = NIVELES.filter((n) => n.slug !== nivel.slug)
   const migas = [
     { nombre: 'Inicio', href: '/' },
     { nombre: 'Clases' },
@@ -197,13 +248,15 @@ export default async function Clase ({ params }: PageProps<'/clases/[nivel]'>) {
             ))}
           </div>
 
-          {otro != null && (
+          {otros.length > 0 && (
             <div style={{ marginTop: 48 }}>
-              <p className="eyebrow">El otro nivel</p>
+              <p className="eyebrow">{otros.length === 1 ? 'El otro nivel' : 'Los otros niveles'}</p>
               <div className="nearby">
-                <Link href={`/clases/${otro.slug}`}>
-                  {otro.nombre} <span style={{ color: 'var(--ink-soft)' }}>{otro.eyebrow}</span>
-                </Link>
+                {otros.map((o) => (
+                  <Link key={o.slug} href={`/clases/${o.slug}`}>
+                    {o.nombre} <span style={{ color: 'var(--ink-soft)' }}>{o.eyebrow}</span>
+                  </Link>
+                ))}
               </div>
             </div>
           )}

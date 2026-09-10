@@ -12,13 +12,13 @@ export const revalidate = 3600
 const MIGAS = [{ nombre: 'Inicio', href: '/' }, { nombre: 'Academy' }]
 
 export const metadata: Metadata = {
-  title: 'CLIC Academy: formación en Pilates Clásico',
+  title: 'CLIC Academy: formación en Pilates Reformer',
   description:
-    'Formación de instructoras de Pilates Clásico con práctica supervisada en estudios ' +
+    'Formación de instructoras de Pilates Reformer con práctica supervisada en estudios ' +
     'que funcionan todos los días.',
   alternates: { canonical: '/academy' },
   openGraph: {
-    title: 'CLIC Academy · Formación en Pilates Clásico',
+    title: 'CLIC Academy · Formación en Pilates Reformer',
     description: 'Certificación con práctica real en los estudios de la red.',
     url: '/academy',
   },
@@ -43,7 +43,7 @@ export default async function Academy () {
         <div className="container subhero__in">
           <Migas migas={MIGAS} />
           <p className="eyebrow eyebrow--light" style={{ marginTop: 26 }}>CLIC Academy</p>
-          <h1>Formación en Pilates Clásico</h1>
+          <h1>Formación en Pilates Reformer</h1>
           <p>
             Certificación con práctica supervisada en estudios que funcionan todos los días,
             y salida laboral concreta en la red CLIC.
@@ -60,7 +60,7 @@ export default async function Academy () {
           </div>
           <div className="info">
             <p className="eyebrow">Método</p>
-            <b>Pilates Clásico</b>
+            <b>Pilates Reformer</b>
             <span>El repertorio original de reformer, en su orden.</span>
           </div>
           <div className="info">

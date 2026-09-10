@@ -59,7 +59,7 @@ export const FOTOS = {
 
   initial: {
     src: '/fotos/niveles/initial-nueva.jpg',
-    alt: 'Alumna trabajando el repertorio de Initial Pilates',
+    alt: 'Alumna trabajando el repertorio de Inicial',
     foco: { x: 50, y: 35 },
     publicable: false,
     nota: PENDIENTE_CONSENTIMIENTO,
@@ -70,7 +70,7 @@ export const FOTOS = {
   // caras y espera consentimiento.
   levelUp: {
     src: '/fotos/niveles/levelup.jpg',
-    alt: 'Alumna de espaldas con los brazos abiertos, en Level Up Pilates',
+    alt: 'Alumna de espaldas con los brazos abiertos, en Level Up',
     foco: { x: 50, y: 30 },
     publicable: true,
   },

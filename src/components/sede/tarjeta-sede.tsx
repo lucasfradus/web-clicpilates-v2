@@ -30,7 +30,7 @@ export function TarjetaSede ({ sede, prioridad = false }: { sede: Sede; priorida
       </div>
 
       <div className="sede__body">
-        <p className="eyebrow">Reformer clásico</p>
+        <p className="eyebrow">Pilates reformer</p>
         <p className="sede__name">{sede.nombre}</p>
         <p className="sede__addr">{sede.direccion}, {sede.ciudad}</p>
         <div className="sede__foot">
