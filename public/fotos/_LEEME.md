@@ -24,6 +24,11 @@ Los originales van en `originales/`, que está en `.gitignore`.
 
 ## Lo que está cargado
 
+`PUBLICADA` = la usa alguna sección hoy. `alternativa` = está acá, con permiso,
+pero ninguna sección la usa: son las candidatas para cuando se quiera cambiar
+una. Qué archivo usa cada sección está en `src/lib/fotos.ts`, que es el único
+lugar donde se toca esto.
+
 ### Producción nueva (Drive, bajada el 4-sep)
 
 ```
@@ -31,37 +36,53 @@ franquicias/
   franquicias-belgrano.jpg      2560 × 1707   sala vacía, fila de reformers    PUBLICADA
 metodo/
   estiramiento-de-espaldas.jpg  1707 × 2560   de espaldas, aro de luz al fondo PUBLICADA
-  metodo-correccion.jpg         1707 × 2560   la instructora corrigiendo       espera permiso
+  metodo-correccion.jpg         1707 × 2560   la instructora corrigiendo       alternativa
 niveles/
-  initial-nueva.jpg             1707 × 2560   movimiento contenido             espera permiso
-  levelup-nueva.jpg             1707 × 2560   dos alumnas                      espera permiso
+  initial-nueva.jpg             1707 × 2560   movimiento contenido             PUBLICADA
+  levelup-nueva.jpg             1707 × 2560   dos alumnas                      alternativa
 og/
-  grupo-clase.jpg               1707 × 2560   cuatro alumnas en clase          espera permiso
+  grupo-clase.jpg               1707 × 2560   cuatro alumnas en clase          alternativa
 ```
+
+`metodo-correccion.jpg` es la mejor que hay sin usar: es la instructora
+corrigiendo a una alumna, o sea la prueba visual del argumento de los grupos
+chicos. Candidata para "El método" o para Academy — en los dos lugares no,
+porque se nota.
 
 ### Producción vieja (fototeca del sitio actual)
 
 ```
 hero/
-  hero-sala.jpg                 4425 × 2950   plano general, gente en clase    espera permiso
-  hero-clase.jpg                4396 × 2931   cuatro alumnas en lunge
+  hero-sala.jpg                 4425 × 2950   plano general, gente en clase    PUBLICADA
+  hero-clase.jpg                4396 × 2931   cuatro alumnas en lunge          alternativa
 metodo/
-  metodo-manos.jpg              2405 × 4275   manos sobre la barra
+  metodo-manos.jpg              2405 × 4275   manos sobre la barra             alternativa
 franquicias/
-  franquicias-sala-vacia.jpg    4512 × 3008   sala vacía, fila de reformers
+  franquicias-sala-vacia.jpg    4512 × 3008   sala vacía, fila de reformers    alternativa
 niveles/
-  initial.jpg                   2859 × 4288   movimiento contenido, calma      espera permiso
+  initial.jpg                   2859 × 4288   movimiento contenido, calma      alternativa
   levelup.jpg                   2888 × 4332   de espaldas, brazos abiertos     PUBLICADA
 marca/
-  comunidad-alumnas.jpg         2794 × 4191   dos alumnas                      espera permiso
+  comunidad-alumnas.jpg         2794 × 4191   dos alumnas                      PUBLICADA
   manifiesto.jpg                2790 × 4185   figura recogida sobre el reformer PUBLICADA
 ```
 
-Nichos con arcos, paredes beige, luz natural, registro documental. Siguen
-cargadas porque tres de ellas son las que hoy se pueden publicar.
+Nichos con arcos, paredes beige, luz natural, registro documental.
 
-Qué archivo usa cada sección está en `src/lib/fotos.ts`, que es el único lugar
-donde se toca esto.
+### La imagen de compartir
+
+```
+og.jpg                          1200 × 630    recorte de hero/hero-sala.jpg
+```
+
+Vive en `public/og.jpg`, no en `public/fotos/`, porque no es una foto de una
+sección: es la única imagen que se ve **fuera** del sitio. La genera
+`scripts/preparar-og.mjs` respetando el punto focal, así que queda encuadrada
+como la que se ve en la página. Para rehacerla desde otra foto:
+
+```
+node scripts/preparar-og.mjs public/fotos/hero/hero-sala.jpg 50 45
+```
 
 ---
 
@@ -77,7 +98,8 @@ retroiluminados—. Las marcadas con ★ reemplazan a lo que hay hoy.
 | ★ [`DSC06301.JPG`](https://drive.google.com/file/d/1Hvt5bIpx5CY3FLlr1Sk2Ry2z1Akaw2Mj/view) | `hero/hero-belgrano.jpg` |
 | [`DSC06520.JPG`](https://drive.google.com/file/d/1YxLC5gvinO_LHinC2K4E5srq2FkR88m9/view) | `niveles/levelup-plancha.jpg` |
 
-El hero es el que más falta: es lo primero que se ve y hoy muestra un degradado.
+El hero ya muestra una foto real (`hero-sala.jpg`), así que esto dejó de ser
+urgente: es un reemplazo por una mejor, no un hueco.
 
 ### Soho
 
@@ -117,9 +139,9 @@ alcanza.
 **`academy/`** está vacía a propósito. No existe ninguna foto de formación en
 ninguna fuente, ni en la producción vieja ni en la nueva. Hay que producirla.
 
-`og/` ya no está vacía, pero lo que tiene **no sirve como está**: la OG es
-horizontal (1200 × 630) y `grupo-clase.jpg` es vertical. Necesita un recorte,
-además del permiso.
+La imagen de compartir **ya existe** (`public/og.jpg`, generada desde el hero).
+`og/grupo-clase.jpg` sigue ahí como alternativa, pero es vertical: para usarla
+habría que recortarla a 1200 × 630 con `scripts/preparar-og.mjs`.
 
 ---
 
@@ -163,44 +185,24 @@ La regla simple: **hero y páginas de marca salen de la producción nueva; cada
 landing de sede muestra su propia sede.** Si en una página tenés que poner dos
 fotos juntas, que sean de la misma sede.
 
-Hoy esto está a medias en la home: "El método" ya muestra la foto nueva
-(`estiramiento-de-espaldas.jpg`) pero el manifiesto sigue con la vieja, porque
-es una de las tres que se pueden publicar. Se resuelve solo cuando lleguen los
-permisos.
+Hoy esto está a medias en la home: "El método" muestra la foto nueva
+(`estiramiento-de-espaldas.jpg`) y el hero y el manifiesto salen de la vieja.
+Ya no es un problema de permisos —están todos— sino de qué foto se elige: se
+resuelve reemplazando archivos, que es un cambio de una línea por foto.
 
 ---
 
 ## Consentimiento
 
-Es el bloqueante real de casi todo lo de acá. Publicar la cara de una alumna en
-un sitio comercial sin su permiso no es una decisión de diseño, así que cada
-foto declara en `src/lib/fotos.ts` si se puede publicar y, mientras esté en
-`false`, la sección muestra su degradado en vez de la foto.
+Era el bloqueante de casi todo lo de acá. **Llegó el 10-sep, para todas**, así
+que hoy no queda ninguna foto esperando permiso y ninguna sección muestra el
+degradado por ese motivo.
 
-**Las 4 que se publican hoy** no necesitan permiso porque no hay ninguna cara
-identificable:
+**El interruptor no se saca.** Cada foto sigue declarando en `src/lib/fotos.ts`
+si se puede publicar, y la próxima tanda entra igual: con `publicable: false`
+hasta que su permiso exista. Publicar la cara de una alumna en un sitio
+comercial sin su permiso no es una decisión de diseño, y que hoy la lista esté
+vacía es un estado, no el final de la historia.
 
-| Archivo | Por qué pasa |
-|---|---|
-| `franquicias/franquicias-belgrano.jpg` | sala vacía, no hay nadie |
-| `metodo/estiramiento-de-espaldas.jpg` | de espaldas y el pelo le tapa la cara |
-| `niveles/levelup.jpg` | de espaldas |
-| `marca/manifiesto.jpg` | la cara queda tapada por los brazos |
-
-**Las que esperan permiso**, con quién hay que pedírselo:
-
-| Archivo | Quién aparece |
-|---|---|
-| `hero/hero-sala.jpg` | varias alumnas, plano general |
-| `niveles/initial-nueva.jpg` | una alumna, de frente a cámara |
-| `niveles/levelup-nueva.jpg` | dos alumnas |
-| `marca/comunidad-alumnas.jpg` | dos alumnas |
-| `og/grupo-clase.jpg` | cuatro alumnas |
-| `metodo/metodo-correccion.jpg` | la instructora (de perfil y fuera de foco) y dos alumnas |
-
-`metodo-correccion.jpg` es la más fácil de destrabar de las seis: la persona
-identificable es la instructora, no una alumna. Y es la que más suma, porque es
-la prueba visual del argumento de los grupos chicos.
-
-Para habilitar una, una vez que llegue el permiso: `publicable: true` en
-`src/lib/fotos.ts`. No hay nada más que tocar.
+Para habilitar una foto nueva, una vez que llegue el permiso: `publicable: true`.
+No hay nada más que tocar.

@@ -182,8 +182,8 @@ están mergeados y se pueden cerrar.
       Mientras tanto: alguien de Belgrano puede leer Intense en la home, ir a
       buscar la clase y no encontrarla
 - [ ] **Intense no tiene foto.** `FOTOS` no tiene una entrada para el nivel, así
-      que su página muestra el degradado. No existe en ninguna producción: entra
-      en la lista de tomas junto con Academy y vestuarios
+      que su página muestra el degradado. Desde el 10-sep es —junto con Academy—
+      **la única sección sin foto por falta de material, no de permiso**
 - [ ] **Verificar el dominio en Search Console.** Necesita a Lucas. Conviene por
       DNS: así vale para el sitio nuevo sin tocar el viejo
 - [ ] **El apex redirige con `307`, no con `308`.** Va con el cambio de
@@ -345,26 +345,40 @@ estudios, que sale de la API.
 
 Pendientes que quedan de esta fase:
 
-- [ ] **Fotos: falta el consentimiento de las personas reconocibles.** Es el
-      bloqueante real, no la producción. Con las seis fotos nuevas del Drive
-      (04-sep) hoy se publican **4**: la sala vacía de Belgrano en
-      `/franquicias`, la de espaldas de Level Up en `/clases/level-up-pilates`,
-      la del manifiesto y —nueva— la de estiramiento de espaldas en la sección
-      "El método" de la home. Las cuatro pasan sin permiso porque en ninguna hay
-      una cara identificable: dos son de espaldas, una tiene la cara tapada por
-      el pelo y la otra es una sala sin nadie.
-      Las **4 que esperan consentimiento** son el hero, initial, comunidad y la
-      OG. Cada una es un `publicable: true` en `src/lib/fotos.ts`, sin tocar
-      nada más; mientras estén en `false` la sección muestra su degradado.
-      Hay dos tomas buenas que también esperan permiso y hoy no se usan:
-      `metodo/metodo-correccion.jpg` (la instructora corrigiendo, que es el
-      argumento de los grupos chicos) y `niveles/levelup-nueva.jpg`.
-      **Academy sigue sin foto en ninguna fuente**: hay que producirla, junto
-      con la de vestuarios (ver `public/fotos/_LEEME.md`).
-      La **OG de 1200×630 falta**: la que hay (`og/grupo-clase.jpg`) es
-      vertical, así que además del permiso necesita el recorte horizontal.
+- [x] ~~Fotos: falta el consentimiento de las personas reconocibles~~ —
+      **cerrado el 10-sep: llegó el permiso para todas.** Era el bloqueante real
+      de la parte visual del sitio. Ya no queda ninguna foto en
+      `publicable: false`, así que ninguna sección muestra el degradado por ese
+      motivo: **el hero de la home dejó de ser un degradado** y la página de
+      Inicial tiene su foto.
+      El interruptor **no se sacó**: la próxima tanda entra igual, con
+      `publicable: false` hasta que su permiso exista.
+- [x] ~~La OG de 1200×630 falta~~ — **hecha el 10-sep.** `public/og.jpg`, un
+      recorte del hero generado por `scripts/preparar-og.mjs` respetando el
+      punto focal, y declarada en el `openGraph` del layout, así que la heredan
+      todas las páginas que no traigan la suya.
+      Antes de esto el sitio **no tenía ninguna**: el link viajaba sin imagen, y
+      encima `twitter:card` decía `summary_large_image`, que es la variante
+      grande — la peor versión posible de no tener foto.
+- [ ] **Faltan tres fotos que no existen en ninguna fuente.** Ya no es un tema
+      de permisos, es de producción:
+      **(a) Academy** — una instructora formando a otra.
+      **(b) Intense** — una clase del nivel nuevo.
+      **(c) Vestuarios** — pero ojo: **el sitio no tiene un slot de vestuarios**.
+      Iría como una de las tres fotos de la galería de cada estudio, y **esas
+      salen del backend** (`sede.fotosDetalle`), o sea que se cargan desde el
+      backoffice de Clicnet, no desde este repo. Lo que falta ahí no es "una
+      foto de vestuarios": es que las once galerías hoy son heterogéneas y se
+      verían como una familia con el mismo set de tres por sede — fachada,
+      plano general y un detalle (ver `docs/fotos.md`). Si hay que elegir una
+      sola, la fachada es la que más sirve: es la que permite reconocer el
+      lugar al llegar.
       El brief original está en `docs/fotos.md` — cinco piezas, en orden de impacto, con
       qué tiene que mostrar cada una y cómo tienen que estar hechas
+- [ ] **Decidir dónde va `metodo/metodo-correccion.jpg`.** Es la mejor foto sin
+      usar que tenemos —la instructora corrigiendo, que es la prueba visual del
+      argumento de los grupos chicos— y ya tiene permiso. Sirve para "El
+      método" o para Academy, pero **no para las dos**: se nota
 - [ ] **Links de las tiendas** para la sección de la app: hoy los badges se ven
       pero no son links, porque no tenemos las URLs. Un botón que no lleva a
       ningún lado es peor que no tenerlo

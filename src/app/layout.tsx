@@ -42,6 +42,11 @@ export const metadata: Metadata = {
     title: SITIO.titulo,
     description: SITIO.descripcion,
     url: '/',
+    // La imagen que se ve al compartir el link. Se hereda en todas las páginas
+    // que no declaren la suya —hoy sólo la landing de sede, que muestra la foto
+    // de ese estudio— así que con esto ninguna URL del sitio viaja sin imagen.
+    // La genera `scripts/preparar-og.mjs` desde la foto del hero.
+    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: SITIO.titulo }],
   },
   twitter: { card: 'summary_large_image' },
   robots: NOINDEX ? { index: false, follow: false } : undefined,
