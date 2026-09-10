@@ -167,6 +167,23 @@ están mergeados y se pueden cerrar.
       proyecto, así que `typecheck` aparte sólo tiene sentido por lo que el
       `tsconfig` de build excluye — y hay que darle `NODE_OPTIONS` de memoria o
       se cae por OOM
+- [ ] **Intense se publica como si estuviera en todos los estudios, y hoy está
+      en uno.** Medido contra la grilla real el 10-sep: `Intense` aparece en
+      **Office Pilates** (11 clases) y en ninguna otra sede. `Inicial` está en 8
+      y `Level Up` en 7.
+      **Es una decisión tomada, no un descuido:** se eligió presentar los tres
+      niveles por igual, sin aclarar disponibilidad. Queda anotado porque es la
+      única parte del sitio que promete algo que no está en todos lados, y el
+      resto está construido sobre "lo que ves acá es lo que hay".
+      Se destraba solo de dos maneras: **(a)** que Intense llegue a más sedes,
+      que es lo natural si el plan es ese, o **(b)** calcular la disponibilidad
+      desde la grilla (`/api/public/sedes/:id/clases`) y mostrarla en la tarjeta
+      y en `/clases/intense`. La (b) no se hizo a propósito.
+      Mientras tanto: alguien de Belgrano puede leer Intense en la home, ir a
+      buscar la clase y no encontrarla
+- [ ] **Intense no tiene foto.** `FOTOS` no tiene una entrada para el nivel, así
+      que su página muestra el degradado. No existe en ninguna producción: entra
+      en la lista de tomas junto con Academy y vestuarios
 - [ ] **Verificar el dominio en Search Console.** Necesita a Lucas. Conviene por
       DNS: así vale para el sitio nuevo sin tocar el viejo
 - [ ] **El apex redirige con `307`, no con `308`.** Va con el cambio de
