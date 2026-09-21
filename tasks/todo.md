@@ -190,11 +190,15 @@ están mergeados y se pueden cerrar.
       DNS: así vale para el sitio nuevo sin tocar el viejo
 - [ ] **El apex redirige con `307`, no con `308`.** Va con el cambio de
       dominio (fase 8), no antes: hoy es config del deploy viejo
-- [ ] **La sede de prueba se está publicando, y se nota.** Hoy "Sede Test orig
-      · Calle Falsa 123 · $200" sale en la home y en /estudios, y el contador
-      dice 11 estudios. Por eso la home ya **no** publica un "clase de prueba
-      desde $X" agregado: ese $200 se convertía en el titular del sitio. Se
-      arregla apagando la sede desde el backoffice
+- [x] ~~La sede de prueba se está publicando, y se nota~~ — **cerrado el
+      21-sep**: Lucas la apagó desde el backoffice. Verificado contra la API con
+      el mismo filtro que usa el sitio (`tipo=PILATES&contexto=web`): vuelven
+      **10 sedes**, todas con slug, nombre y precio, sin rastro de "Sede Test
+      orig" ni de "Calle Falsa 123". El contador de la home dice 10.
+      Queda en pie la decisión de fondo: la home **no** publica un "clase de
+      prueba desde $X" agregado entre sedes, porque cualquier sede con precio
+      atípico se convierte en el titular del sitio. El precio se muestra por
+      estudio, que es donde además es verdad
 - [x] ~~Excluir las sedes de prueba del endpoint público~~ — **decidido el
       15-ago: no se excluyen.** Lucas usa las sedes de prueba para testear y las
       apaga desde el backoffice cuando terminan. El único interruptor es
@@ -407,9 +411,11 @@ nada.
 
 Pendientes de esta fase:
 
-- [ ] **`RESEND_API_KEY` en Railway.** Hasta que esté, los dos formularios
-      muestran el mail en vez de enviar. La key es la misma que usa el sitio
-      actual (está en su proyecto de Vercel)
+- [x] ~~`RESEND_API_KEY` en Railway~~ — **cargada el 10-sep** y verificada el
+      21-sep: `/api/contacto` devuelve `200` en vez del `503` de "formulario no
+      configurado". Los formularios de Academy y Franquicias envían.
+      La key se pegó en el chat, así que conviene rotarla en Resend cuando haya
+      un rato
 - [ ] **Confirmar el contenido de Academy y Franquicias.** Las dos páginas dicen
       sólo lo que podemos sostener. Falta que el dueño confirme, para poder
       publicarlas: duración, modalidad y precio de la formación; e inversión,
