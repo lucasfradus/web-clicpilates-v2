@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { ElegirClase } from '@/components/checkout/elegir-clase'
 import { ElegirHorarios } from '@/components/checkout/elegir-horarios'
@@ -20,6 +20,7 @@ import {
   type ErroresComprador,
 } from '@/lib/checkout/reglas'
 import { idsDeMeta } from '@/lib/medicion/meta'
+import { ventaEnviada, ventaIniciada, type TipoVenta } from '@/lib/medicion/venta'
 
 /**
  * El checkout: elegir qué se compra, dejar los datos y salir a Mercado Pago.
@@ -101,6 +102,30 @@ export function Checkout ({ sede, catalogo, clases, tipoId }: {
   const horarios: ResultadoHorarios | 'cargando' =
     cargados != null && cargados.planId === planIdHorarios ? cargados.resultado : 'cargando'
 
+  // Lo que se está comprando, para los eventos de venta. El nombre cambia por
+  // rama, el resto es la misma sede.
+  const venta = {
+    tipo: (modo === 'prueba' ? 'Trial' : 'Subscription') as TipoVenta,
+    nombre: modo === 'prueba'
+      ? claseElegida?.actividad.nombre ?? 'Clase de prueba'
+      : tipo?.nombre ?? 'Plan',
+    sede: sede.nombre,
+    sedeSlug: sede.slug,
+    precio,
+  }
+
+  // Abrir el checkout ya es una intención: la persona eligió qué quiere. Va una
+  // sola vez por visita, no en cada render.
+  const iniciada = useRef(false)
+  useEffect(() => {
+    if (iniciada.current) return
+    iniciada.current = true
+    ventaIniciada(venta)
+    // La venta se arma en cada render pero su contenido no cambia lo que hay
+    // que medir acá: el disparo es "entró al checkout", no "cambió algo".
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const completo = modo === 'prueba'
     ? claseElegida != null
     : flex || (necesarios > 0 && horarioIds.length === necesarios)
@@ -143,6 +168,9 @@ export function Checkout ({ sede, catalogo, clases, tipoId }: {
         const { initPoint } = await checkoutPrueba({
           claseId: claseElegida.id, sedeId: sede.id, ...persona,
         })
+        // Recién acá: el backend ya aceptó y creó la preferencia. Emitirlo
+        // antes contaría también los intentos que rechazó.
+        ventaEnviada({ ...venta, nombre: claseElegida.actividad.nombre })
         // `enviando` queda en true a propósito: el botón sigue diciendo que
         // está redirigiendo hasta que el navegador se va.
         window.location.href = initPoint
@@ -155,6 +183,7 @@ export function Checkout ({ sede, catalogo, clases, tipoId }: {
           ...(flex ? {} : { horarioIds }),
           ...persona,
         })
+        ventaEnviada(venta)
         window.location.href = initPoint
       }
     } catch (error) {
