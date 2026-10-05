@@ -12,8 +12,6 @@ import type { NextConfig } from 'next'
  * pidiendo `/assets/...` en la raíz del dominio y la página queda en blanco.
  * Ver docs/rewrites.md.
  */
-const RESERVAS_ORIGIN =
-  process.env.RESERVAS_ORIGIN ?? 'https://reservas-clientes-clic-v2-production.up.railway.app'
 const CLIENTES_ORIGIN =
   process.env.CLIENTES_ORIGIN ?? 'https://clientes.clicpilates.com'
 
@@ -26,7 +24,6 @@ const CLIENTES_ORIGIN =
  * De ahí estas dos variables: vacías contra un deploy, `/reservar` y
  * `/mi-cuenta` contra un dev server local. Ver docs/rewrites.md.
  */
-const RESERVAS_PREFIJO = process.env.RESERVAS_PREFIJO ?? ''
 const CLIENTES_PREFIJO = process.env.CLIENTES_PREFIJO ?? ''
 
 /**
@@ -53,10 +50,9 @@ const nextConfig: NextConfig = {
       ...(API_ORIGIN
         ? [{ source: '/api/:path*', destination: `${API_ORIGIN}/api/:path*` }]
         : []),
-      // La barra final del destino sin `:path*` no es cosmética: un `vite dev`
-      // sirve en `/reservar/` y devuelve 404 para `/reservar`.
-      { source: '/reservar', destination: `${RESERVAS_ORIGIN}${RESERVAS_PREFIJO}/` },
-      { source: '/reservar/:path*', destination: `${RESERVAS_ORIGIN}${RESERVAS_PREFIJO}/:path*` },
+      // `/reservar` ya no se reescribe: son páginas de este proyecto
+      // (`src/app/reservar/`). El portal sigue deployado como respaldo, pero
+      // nadie lo sirve desde acá.
       { source: '/mi-cuenta', destination: `${CLIENTES_ORIGIN}${CLIENTES_PREFIJO}/` },
       { source: '/mi-cuenta/:path*', destination: `${CLIENTES_ORIGIN}${CLIENTES_PREFIJO}/:path*` },
     ]

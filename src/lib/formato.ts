@@ -52,3 +52,28 @@ export function etiquetaDia (iso: string, ahora = new Date()): string {
 
   return diaLargo.format(new Date(iso))
 }
+
+const fechaCompleta = new Intl.DateTimeFormat('es-AR', {
+  timeZone: ZONA_HORARIA,
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+})
+
+/**
+ * "jueves 13 de agosto · 19:00", para confirmar una reserva.
+ *
+ * Acá no va "Hoy" ni "Mañana": es el dato que la persona va a mirar para
+ * acordarse cuándo tiene que ir, y mañana deja de ser mañana.
+ */
+export function fechaYHora (iso: string): string {
+  return `${fechaCompleta.format(new Date(iso))} · ${hora(iso)}`
+}
+
+/** "Ana P." — la última palabra es el apellido, no la segunda. */
+export function nombreConInicial (completo: string): string {
+  const partes = completo.trim().split(/\s+/).filter(Boolean)
+  if (partes.length <= 1) return completo.trim()
+  const apellido = partes[partes.length - 1]
+  return `${partes.slice(0, -1).join(' ')} ${apellido[0].toUpperCase()}.`
+}

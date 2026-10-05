@@ -11,10 +11,19 @@ import { zonaDe } from '@/lib/zona'
  * La foto usa `imagenFoco` como `object-position`: el backend guarda el punto
  * focal de cada imagen justamente para que el recorte no le corte la cabeza a
  * nadie en mobile.
+ *
+ * El destino es configurable porque la misma tarjeta sirve en dos lugares con
+ * intenciones distintas: en `/estudios` lleva a conocer el estudio, y en
+ * `/reservar` a reservar en él.
  */
-export function TarjetaSede ({ sede, prioridad = false }: { sede: Sede; prioridad?: boolean }) {
+export function TarjetaSede ({ sede, prioridad = false, href, cta }: {
+  sede: Sede
+  prioridad?: boolean
+  href?: string
+  cta?: string
+}) {
   return (
-    <Link className="sede" href={`/estudios/${sede.slug}`}>
+    <Link className="sede" href={href ?? `/estudios/${sede.slug}`}>
       <div className="sede__media">
         {sede.imagenUrl != null && (
           <Image
@@ -38,7 +47,7 @@ export function TarjetaSede ({ sede, prioridad = false }: { sede: Sede; priorida
             <p className="eyebrow">Clase de prueba</p>
             <p className="sede__price">{pesos(sede.precioPrueba)}</p>
           </div>
-          <span className="sede__cta">Ver horarios →</span>
+          <span className="sede__cta">{cta ?? 'Ver horarios'} →</span>
         </div>
       </div>
     </Link>
