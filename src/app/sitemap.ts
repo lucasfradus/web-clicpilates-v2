@@ -24,7 +24,6 @@ export default async function sitemap (): Promise<MetadataRoute.Sitemap> {
   const fijas = [
     { url: '/', priority: 1 },
     { url: '/estudios', priority: 0.9 },
-    { url: '/precios', priority: 0.8 },
     { url: '/clases/inicial', priority: 0.7 },
     { url: '/clases/level-up', priority: 0.7 },
     { url: '/clases/intense', priority: 0.7 },

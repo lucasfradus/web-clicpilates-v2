@@ -46,7 +46,9 @@ switch, y una que si se hace al revés deja el sitio fuera del índice.
    - `curl -I https://www.clicpilates.com/sede/nunez` → 301 a `/estudios/nunez`
    - `curl -I https://clicpilates.com/` → 301 a `https://www.clicpilates.com/`
    - `https://www.clicpilates.com/robots.txt` → sin `noindex`, con el sitemap
-   - `https://www.clicpilates.com/sitemap.xml` → 19 URLs
+   - `https://www.clicpilates.com/sitemap.xml` → 8 URLs fijas + una por
+     sede activa. No vale fijar el total: cambia cada vez que se prende o
+     apaga una sede
    - una landing cualquiera → sin `<meta name="robots" content="noindex">`
 5. **Los subdominios viejos**: `reservas.clicpilates.com` y
    `clientes.clicpilates.com` con `301` a `/reservar` y `/mi-cuenta`. Se hace
