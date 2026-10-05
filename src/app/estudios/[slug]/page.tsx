@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
+import { FotoFondoRemota } from '@/components/foto-fondo'
 import { JsonLd } from '@/components/json-ld'
 import { ViewContentSede } from '@/components/medicion/view-content'
 import { Migas } from '@/components/migas'
@@ -91,6 +92,11 @@ export default async function LandingSede ({ params }: PageProps<'/estudios/[slu
   return (
     <>
       <section className="subhero">
+        {/* La foto del propio estudio, no una de marca: es la que deja
+            reconocer el lugar y la que el franquiciado sube de su sede. */}
+        <div className="subhero__foto">
+          <FotoFondoRemota url={sede.imagenUrl} foco={sede.imagenFoco} prioridad sizes="100vw" />
+        </div>
         <div className="container subhero__in">
           <Migas migas={migas} />
           <p className="eyebrow eyebrow--light" style={{ marginTop: 26 }}>{sede.ciudad}</p>

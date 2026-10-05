@@ -17,14 +17,12 @@ export const MI_CUENTA = '/mi-cuenta'
 export const NAV_PRINCIPAL: EnlaceNav[] = [
   { href: RESERVAR, label: 'Reservar', spa: true },
   { href: '/estudios', label: 'Estudios' },
-  { href: '/precios', label: 'Precios' },
   { href: '/academy', label: 'Academy' },
   { href: '/franquicias', label: 'Franquicias' },
 ]
 
 export const NAV_FOOTER: EnlaceNav[] = [
   { href: RESERVAR, label: 'Reservar clase', spa: true },
-  { href: '/precios', label: 'Precios' },
   { href: '/estudios', label: 'Estudios' },
   { href: '/academy', label: 'Academy' },
   { href: '/franquicias', label: 'Franquicias' },
