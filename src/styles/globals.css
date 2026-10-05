@@ -12,3 +12,5 @@
 @import './sedes.css';
 @import './grilla.css';
 @import './selector.css';
+/* Después de grilla.css: el checkout reusa `.row*` y le agrega variantes. */
+@import './checkout.css';

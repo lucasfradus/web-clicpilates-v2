@@ -94,3 +94,27 @@ export function metaEvento (
     else window.fbq?.('trackSingle', pixel, nombre, parametros)
   }
 }
+
+/**
+ * Los identificadores que Meta deja en el navegador: `_fbp` (el browser) y
+ * `_fbc` (el click en el anuncio que trajo a la persona).
+ *
+ * Van en el cuerpo del checkout porque el backend los reenvía a la Conversions
+ * API, que es lo que permite atribuir una venta a su anuncio cuando el pixel no
+ * llega —bloqueador, iOS, pestaña cerrada antes de volver de Mercado Pago—. El
+ * backend ya los acepta en los dos endpoints y hasta ahora nadie se los mandó.
+ *
+ * Si no están, se omiten: la reserva funciona igual, sólo pierde atribución.
+ */
+export function idsDeMeta (): { fbp?: string; fbc?: string } {
+  if (typeof document === 'undefined') return {}
+
+  const leer = (nombre: string): string | undefined => {
+    const match = document.cookie.match(new RegExp(`(?:^|;\\s*)${nombre}=([^;]*)`))
+    return match != null ? decodeURIComponent(match[1]) : undefined
+  }
+
+  const fbp = leer('_fbp')
+  const fbc = leer('_fbc')
+  return { ...(fbp != null && { fbp }), ...(fbc != null && { fbc }) }
+}
