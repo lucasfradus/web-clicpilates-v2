@@ -36,7 +36,7 @@ Los tres problemas concretos que resuelve el proyecto:
 | Repo | Qué es | Rol en este proyecto |
 |---|---|---|
 | `Clicnet` | Backend Next.js + Prisma + PostgreSQL en Railway | Fuente de datos. Expone `/api/public/*` |
-| `reservas-clientes-clic-v2` | SPA de reservas (React + Vite) | **Fuente del design system.** Se sirve por rewrite |
+| `reservas-clientes-clic-v2` | SPA de reservas (React + Vite) | **Fuente del design system** y de los tipos. Su flujo se trajo acá el 5-oct; queda congelado como respaldo |
 | `clic-webapp-clientes` | Portal privado de clientes | Se sirve por rewrite |
 | `clic-pilates-landing` | El sitio actual que reemplazamos | Solo para migrar `/politicas` y los `301` |
 | `clic_app_v2` | App iOS/Android | Espeja el portal de clientes |
@@ -157,7 +157,7 @@ falta para el `LocalBusiness`. La migración está listada en `docs/plan.md` §3
 | Decisión | Motivo |
 |---|---|
 | Un solo dominio, `clicpilates.com` | `/reservar` y `/mi-cuenta` como rutas. Sesión de primera parte, nav única |
-| Rewrites a los SPAs, no reescritura | Los dos funcionan bien. El SEO vive en el proyecto nuevo |
+| ~~Rewrites a los SPAs, no reescritura~~ → **revertida el 5-oct para reservas** | El rewrite funcionaba, pero el portal dibujaba su propio header: la persona sentía haberse ido del sitio justo al pagar. El flujo de reserva y compra vive acá (`/reservar`). `/mi-cuenta` sigue por rewrite |
 | Web nueva de cero, no iterar la actual | Su arquitectura de one-pager es el problema |
 | Franquicias en embudo aparte | Es otra audiencia, otro tráfico, otro pixel |
 | Contenido SEO renderizado en servidor | Lo volátil (grilla, cupos) se difiere; lo indexable no |

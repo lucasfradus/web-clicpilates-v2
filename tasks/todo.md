@@ -186,6 +186,33 @@ están mergeados y se pueden cerrar.
       ancha y baja, así que entra una franja. Se probaron tres focos y el que
       quedó agarra las manos en alto y el aro. Lo que lo resuelve de verdad es
       una toma horizontal
+- [ ] **El corte del portal de reservas.** El flujo ya vive acá (`/reservar`),
+      probado de punta a punta contra la Sede Test el 5-oct: el POST devuelve
+      `200` y Mercado Pago acepta la preferencia. Falta el corte, en este orden:
+      **(a)** En **Clicnet**, `RESERVAS_PUBLIC_URL` →
+      `https://www.clicpilates.com/reservar`. Es una variable de entorno, sin
+      cambio de código, y es lo que define a dónde vuelve Mercado Pago. La URL
+      se graba en cada preferencia **al crearla**, así que las que ya están en
+      vuelo siguen volviendo a la vieja: por eso el portal queda prendido.
+      **(b)** `reservas.clicpilates.com` → `301` a `/reservar`, **preservando
+      path y query**: `/gracias?...` tiene que llegar a `/reservar/gracias?...`
+      o se pierde el detalle de la compra y la atribución.
+      **(c)** Recién después, apagar el portal
+- [ ] **Falta probar la compra de un plan de punta a punta.** La clase de prueba
+      sí se probó. El plan no, por dos motivos: la **Sede Test no tiene
+      catálogo**, así que habría que hacerlo contra una sede real; y a
+      diferencia del checkout de prueba —que no escribe nada— el de plan **crea
+      una `SolicitudCheckoutPlan` PENDIENTE** en la base de producción.
+      Es un registro inofensivo (queda igual que el de cualquiera que abandona
+      el checkout), pero es una escritura en producción y conviene decidirla, no
+      que aparezca sola.
+      Lo que falta verificar ahí es el payload: que el `planId` de la variante y
+      la cantidad exacta de `horarioIds` pasen la revalidación del backend
+- [ ] **El selector de medio de pago no se portó.** El portal mostraba "Pago
+      único" activo y "Débito automático — Próximamente" deshabilitado. Acá no
+      está: el checkout manda siempre `medio: 'online'`, que es lo único que el
+      backend acepta (con `debito` responde 400 antes de tocar la base).
+      Cuando el débito exista de verdad hay que volver a ponerlo
 - [ ] **Verificar el dominio en Search Console.** Necesita a Lucas. Conviene por
       DNS: así vale para el sitio nuevo sin tocar el viejo
 - [ ] **El apex redirige con `307`, no con `308`.** Va con el cambio de
