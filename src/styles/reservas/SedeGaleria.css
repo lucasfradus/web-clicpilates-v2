@@ -79,7 +79,8 @@
   background: rgba(253, 251, 250, 0.55);
   box-shadow: 0 1px 4px rgba(44, 47, 52, 0.3);
   transition: background 0.2s, transform 0.2s;
-  pointer-events: auto;
+  /* Ya no es un botón sino un <span>: sin esto no toma el ancho. */
+  display: block;
 }
 
 .sgaleria__dot--active {

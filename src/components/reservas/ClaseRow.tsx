@@ -20,21 +20,13 @@ export function ClaseRow({ clase, onElegir, elegida = false }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
-    // La fila entera es el control que elige la clase, pero adentro vive el
-    // toggle "+ info": un <button> dentro de otro <button> es HTML inválido,
-    // así que el contenedor se comporta como botón sin serlo.
+    // Tocar cualquier parte de la fila elige la clase (comodidad para el dedo).
+    // Para teclado y lector de pantalla, el control es "Reserva ahora": en el
+    // portal la fila entera era role="button" con el "+ info" adentro, un
+    // control dentro de otro, que el lector anuncia mal.
     <div
-      role="button"
-      tabIndex={0}
-      aria-pressed={elegida}
       className={`clase-row${open ? ' clase-row--open' : ''}${elegida ? ' clase-row--elegida' : ''}`}
       onClick={() => onElegir(clase)}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onElegir(clase);
-        }
-      }}
     >
       <div className="clase-row__time">{formatTime(clase.inicio)}</div>
       <div className="clase-row__body">
@@ -56,11 +48,23 @@ export function ClaseRow({ clase, onElegir, elegida = false }: Props) {
           {profe ? `con ${profe}` : 'Instructora a confirmar'}
         </p>
       </div>
-      <div className={`clase-row__cupos${cupos === 0 ? ' clase-row__cupos--agotado' : ''}`}>
+      <button
+        type="button"
+        className={`clase-row__cupos${cupos === 0 ? ' clase-row__cupos--agotado' : ''}`}
+        aria-pressed={elegida}
+        aria-label={`${clase.actividad.nombre}, ${formatTime(clase.inicio)}: ${
+          elegida ? 'elegida' : cupos > 0 ? 'reservar' : 'no disponible'
+        }`}
+        onClick={(e) => {
+          // La fila también escucha el click: sin esto se elegiría dos veces.
+          e.stopPropagation();
+          onElegir(clase);
+        }}
+      >
         <span className="clase-row__cupos-lbl">
           {elegida ? '✓ Elegida' : cupos > 0 ? 'Reserva ahora' : 'No disponible'}
         </span>
-      </div>
+      </button>
       <span className="clase-row__arrow" aria-hidden="true">→</span>
       {/* La descripción es hermana del cuerpo, no hija: abierta ocupa el ancho
           completo de la fila y empuja el botón de reservar abajo, en vez de

@@ -60,7 +60,7 @@
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 500;
-  color: var(--ink-mute);
+  color: var(--ink-soft);
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
@@ -168,7 +168,8 @@
   font-size: 11px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: var(--sage);
+  /* --sage-texto y no --sage: sobre el verde claro, --sage da 2.5:1. */
+  color: var(--sage-texto);
   font-weight: 600;
 }
 

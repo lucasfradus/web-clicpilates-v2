@@ -73,6 +73,9 @@ export function SedeGaleria({ images, sedeNombre, fallback }: Props) {
               sizes={SIZES}
               alt={`${sedeNombre} — foto ${i + 1} de ${visibles.length}`}
               loading={i === 0 ? 'eager' : 'lazy'}
+              // La primera es la imagen más grande de la pantalla (el LCP): sin
+              // esto el navegador la pide con prioridad baja, detrás de JS y CSS.
+              fetchPriority={i === 0 ? 'high' : 'auto'}
               decoding="async"
               onError={() => markBroken(index)}
             />
@@ -104,15 +107,15 @@ export function SedeGaleria({ images, sedeNombre, fallback }: Props) {
               <path d="M9 6l6 6-6 6" />
             </svg>
           </button>
-          <div className="sgaleria__dots">
+          {/* Los puntos sólo indican la posición. En el portal eran botones de
+              7px, muy chicos para tocarlos con el dedo (WCAG pide 24px); para
+              navegar están las flechas y el deslizamiento, y el lector de
+              pantalla ya anuncia "foto N de M" en cada imagen. */}
+          <div className="sgaleria__dots" aria-hidden="true">
             {visibles.map((foto, i) => (
-              <button
+              <span
                 key={foto.index}
-                type="button"
                 className={`sgaleria__dot${i === active ? ' sgaleria__dot--active' : ''}`}
-                onClick={() => scrollTo(i)}
-                aria-label={`Ir a la foto ${i + 1}`}
-                aria-current={i === active}
               />
             ))}
           </div>
