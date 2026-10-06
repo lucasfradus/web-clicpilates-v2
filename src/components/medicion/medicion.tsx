@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
 import { ga4PageView } from '@/lib/medicion/ga4'
-import { iniciarPixels, metaPageView } from '@/lib/medicion/meta'
+import { capturarFbclid, iniciarPixels, metaPageView } from '@/lib/medicion/meta'
 import { capturarUtms, conUtms } from '@/lib/medicion/utm'
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
@@ -31,8 +31,12 @@ export function Medicion ({ pixelesPorSede, activo }: {
   useEffect(() => {
     if (!activo) return
     capturarUtms(window.location.search)
+    // Antes de que el router reescriba la URL: el pixel recién arma la cookie
+    // `_fbc` en el `init`, y una redirección se puede llevar el parámetro.
+    capturarFbclid()
 
-    // El checkout vive en otro SPA: si las UTMs no cruzan, la venta aparece
+    // Ver utm.ts: con el checkout adentro esto es una red, no el mecanismo
+    // principal. Si las UTMs no cruzan, la venta aparece
     // como directa. En vez de tocar cada CTA del sitio, se resuelve en el
     // click, que es el único momento en que hay que saberlo.
     const alClickear = (e: MouseEvent) => {
@@ -55,9 +59,14 @@ export function Medicion ({ pixelesPorSede, activo }: {
       iniciado.current = true
     }
 
-    // La sede sale de la ruta: es la única pantalla donde el evento pertenece a
+    // La sede sale de la ruta: la landing del estudio o su página de reserva.
+    // En /reservar/gracias viene en `?sedeSlug=`, que lo pone el backend en el
+    // back_url de Mercado Pago. Son las pantallas donde el evento pertenece a
     // una cuenta publicitaria concreta.
-    const slug = pathname.match(/^\/estudios\/([^/]+)/)?.[1]
+    const slug = pathname.match(/^\/(?:estudios|reservar\/sede)\/([^/]+)/)?.[1] ??
+      (pathname.startsWith('/reservar/gracias')
+        ? new URLSearchParams(window.location.search).get('sedeSlug') ?? undefined
+        : undefined)
     metaPageView(slug)
     ga4PageView({ sedeSlug: slug })
   }, [activo, pathname, pixelesPorSede])

@@ -1,0 +1,212 @@
+.clase-row {
+  display: flex;
+  align-items: center;
+  /* La descripción es el cuarto hijo y baja a su propio renglón. Sin row-gap:
+     el aire entre renglones lo ponen los propios bloques, así la fila cerrada
+     no arrastra un hueco vacío. */
+  flex-wrap: wrap;
+  column-gap: 20px;
+  row-gap: 0;
+  padding: 18px 22px;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s, transform 0.15s, background 0.2s;
+  /* Es un div con role="button" (adentro vive el toggle "+ info"), así que el
+     cursor de mano no viene de serie. */
+  cursor: pointer;
+}
+
+.clase-row + .clase-row {
+  margin-top: 10px;
+}
+
+.clase-row:hover {
+  border-color: var(--taupe);
+  transform: translateX(2px);
+}
+
+.clase-row__time {
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+  line-height: 1;
+  min-width: 70px;
+  padding-right: 20px;
+  border-right: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.clase-row__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.clase-row__name {
+  font-size: 19px;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.clase-row__info-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  padding: 5px 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-mute);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.clase-row__info-btn:hover {
+  border-color: var(--taupe);
+  color: var(--ink-soft);
+}
+
+.clase-row__info-btn--open {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface);
+}
+
+.clase-row__info-btn--open:hover {
+  background: var(--ink-soft);
+  border-color: var(--ink-soft);
+  color: var(--surface);
+}
+
+/* Ocupa el renglón entero de la fila, debajo de hora / clase / cupo. Cerrada
+   mide cero: el aire lo pone el padding del texto, que queda clipeado. */
+.clase-row__desc-wrap {
+  flex: 0 0 100%;
+  order: 4;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.clase-row__desc-wrap--open {
+  grid-template-rows: 1fr;
+}
+
+/* La que ya venía elegida al volver del paso de datos. */
+.clase-row--elegida {
+  border-color: var(--ink);
+  background: var(--bg);
+}
+
+.clase-row--elegida .clase-row__cupos {
+  background: var(--ink);
+}
+
+.clase-row--elegida .clase-row__cupos-lbl {
+  color: var(--surface);
+}
+
+/* Abierta, la descripción necesita el ancho completo, así que el botón de
+   reservar baja a su propio renglón en vez de convivir apretado al costado. */
+.clase-row--open .clase-row__cupos {
+  order: 5;
+  flex: 0 0 100%;
+  justify-content: center;
+  margin-top: 14px;
+  padding: 11px 16px;
+}
+
+.clase-row--open .clase-row__arrow {
+  display: none;
+}
+
+.clase-row__desc-inner {
+  overflow: hidden;
+}
+
+.clase-row__desc {
+  padding-top: 10px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.25s ease 0.05s, transform 0.25s ease 0.05s;
+}
+
+.clase-row__desc-wrap--open .clase-row__desc {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.clase-row__meta {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.3px;
+}
+
+.clase-row__cupos {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--sage-bg);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.clase-row__cupos--agotado {
+  background: var(--bg);
+  opacity: 0.6;
+}
+
+.clase-row__cupos-lbl {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--sage);
+  font-weight: 600;
+}
+
+.clase-row__cupos--agotado .clase-row__cupos-lbl {
+  color: var(--ink-mute);
+}
+
+.clase-row__arrow {
+  font-size: 16px;
+  color: var(--ink-mute);
+  transition: transform 0.2s, color 0.2s;
+}
+
+.clase-row:hover .clase-row__arrow {
+  color: var(--ink);
+  transform: translateX(4px);
+}
+
+@media (max-width: 640px) {
+  .clase-row {
+    column-gap: 14px;
+    padding: 14px 16px;
+  }
+  .clase-row__time {
+    font-size: 20px;
+    min-width: 54px;
+    padding-right: 14px;
+  }
+  .clase-row__name {
+    font-size: 16px;
+  }
+  .clase-row__cupos {
+    padding: 6px 12px;
+  }
+  .clase-row__cupos-lbl {
+    font-size: 10px;
+  }
+  .clase-row__arrow {
+    display: none;
+  }
+}

@@ -83,6 +83,13 @@ const nextConfig: NextConfig = {
       { source: '/horarios/:slug', destination: '/estudios/:slug', statusCode: 301 },
       { source: '/grilla/:slug', destination: '/estudios/:slug', statusCode: 301 },
 
+      // Las rutas viejas del portal de reservas, que siguen vivas en campañas,
+      // QR impresos y links compartidos. Next arrastra el query string solo:
+      // `?tipo=` elige el plan y las UTMs atribuyen la venta.
+      { source: '/reservar/sede/:slug/precios', destination: '/reservar/sede/:slug', statusCode: 301 },
+      // El id de clase no dice de qué sede es: lo honesto es mandar a elegirla.
+      { source: '/reservar/reservar/:claseId', destination: '/reservar', statusCode: 301 },
+
       // El sitio es `www` (decisión de fase 1, ver src/lib/site.ts). El apex
       // redirige acá y no en el DNS para que la regla viva en el repo y no se
       // pierda en un panel.
