@@ -365,7 +365,10 @@ Pendientes que quedan de esta fase:
 - [ ] **`Sede.zona` no existe**: el mapa de barrios está a mano en
       `src/lib/zona.ts`. Va con la migración de `Sede`
 - [ ] **Texto propio por sede (~300 palabras).** Hoy la landing usa
-      `Sede.descripcion`, que es de una línea. Lo tiene que escribir el dueño
+      `Sede.descripcion`, que es de una línea. Lo tiene que escribir el dueño.
+      **6-oct:** borrador de los diez en `docs/textos-estudios.md`, con lo
+      que sale de la API ya escrito y lo local marcado [COMPLETAR]. Falta que
+      Lucas lo corrija; después se cablea en la landing
 
 
 ## Fase 4 — Home y marca ✅ (19-ago-2026)
