@@ -5,7 +5,7 @@ import { Medicion } from '@/components/medicion/medicion'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 import { getSedes } from '@/lib/api/sedes'
-import { NOINDEX, SITIO } from '@/lib/site'
+import { NOINDEX, SITIO, URL_BASE } from '@/lib/site'
 import '@/styles/globals.css'
 
 /* Poppins no es variable: hay que pedir los pesos. 300 es la voz "display" del
@@ -25,7 +25,7 @@ const prata = Prata({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITIO.url),
+  metadataBase: new URL(URL_BASE),
   title: {
     default: SITIO.titulo,
     template: `%s · ${SITIO.nombre}`,
