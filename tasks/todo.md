@@ -158,15 +158,14 @@ están mergeados y se pueden cerrar.
       deja de ser comparable con el histórico. No es un bug, pero hay que
       saberlo antes de leer el embudo — y conviene avisarlo antes de decidir
       pauta con esa métrica
-- [ ] **El repo no tiene CI.** No hay `.github/workflows/`, así que un PR acá no
-      corre ningún check y `main` deploya a Railway sin que nada haya validado
-      nada. Mientras se commiteaba directo era coherente; con PRs deja de serlo.
-      Los cuatro comandos ya existen en `package.json`: `typecheck`, `lint`,
-      `test` y `build`. Alcanza con un workflow que los corra en el PR.
-      Ojo con la lección de Clicnet#410: `next build` ya typechequea el
-      proyecto, así que `typecheck` aparte sólo tiene sentido por lo que el
-      `tsconfig` de build excluye — y hay que darle `NODE_OPTIONS` de memoria o
-      se cae por OOM
+- [x] ~~El repo no tiene CI~~ — **6-oct**: `.github/workflows/ci.yml` corre
+      `lint`, `test` y `build` en cada PR y en `main`. Sin `typecheck` aparte:
+      el `tsconfig` incluye todo, así que `next build` ya lo cubre (la lección
+      de Clicnet#410), y un `tsc` suelto falla sin los tipos de rutas que
+      genera el build.
+- [ ] **Hacer que el CI frene el merge.** Hoy avisa pero no bloquea: `main` no
+      tiene protección. Se activa en Settings → Branches marcando `checks`
+      como requerido. Railway igual deploya `main` sin mirar el CI
 - [ ] **Intense se publica como si estuviera en todos los estudios, y hoy está
       en uno.** Medido contra la grilla real el 10-sep: `Intense` aparece en
       **Office Pilates** (11 clases) y en ninguna otra sede. `Inicial` está en 8
@@ -267,6 +266,10 @@ cerrada: no se toca más** (ver la regla al principio de este archivo).
 - [x] Fuentes con `next/font`: Poppins (200-700) + Prata, self-hosted
 - [x] Layout: header con estados transparente/sólido, footer, nav mobile
 - [x] `next.config.ts` con rewrites de `/reservar/*` y `/mi-cuenta/*`
+      (reemplazados: `/reservar` se portó el 6-oct y `/mi-cuenta` pasó a un
+      redirect temporal `307` a `clientes.clicpilates.com`, porque el rewrite
+      apuntaba al portal de producción, que no buildea con el prefijo, y
+      quedaba en blanco)
 - [x] `base` configurable en el `vite.config.ts` de reservas y `basename` del router
 - [x] Ídem para el portal de clientes
 - [x] Logo SVG (vectorizado del PNG con `scripts/trace-logo.mjs`; el vectorial de verdad sigue pendiente)
@@ -506,9 +509,13 @@ Lo que queda, y no es de este repo:
 
 - [ ] **AddToCart, InitiateCheckout y Purchase** los emite ahora `/reservar`,
       con el código del portal portado (`src/lib/reservas/analytics.ts` y
-      `meta.ts`, que usa el pixel por sede de `src/lib/medicion/`). Falta
-      verificarlo en una build con los IDs de GA4 y Meta puestos: con
-      `NEXT_PUBLIC_NOINDEX` la medición está apagada
+      `meta.ts`, que usa el pixel por sede de `src/lib/medicion/`). Los IDs
+      ya están en Railway desde el 6-oct, los mismos del portal:
+      `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-HZH1WQX4RJ` y
+      `NEXT_PUBLIC_META_PIXEL_ID=903796155623619` (los de cada sede salen de
+      Clicnet). En staging no se cargan por `NEXT_PUBLIC_NOINDEX`, a propósito:
+      la propiedad y los pixels son los de producción. Verificar los eventos
+      el día del dominio, al sacar esa variable
 - [ ] **Conversions API desde el webhook de Mercado Pago**, con `event_id`
       compartido para deduplicar. Es backend (Clicnet) y sigue pendiente el
       token de CAPI de Clic Wellness

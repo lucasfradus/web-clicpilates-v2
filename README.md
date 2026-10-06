@@ -17,33 +17,21 @@ El puerto es 3005 y no 3000 porque 3000 es el backend de ClicNet corriendo local
 
 ## Entorno local completo
 
-Con esto se navega el sitio **y** los dos SPAs dentro del mismo dominio, contra
-la base de datos local. Cuatro procesos:
+Contra la base de datos local hacen falta dos procesos:
 
 | Qué | Dónde | Cómo se levanta |
 |---|---|---|
 | Backend ClicNet | `:3000` | `npm run dev` en el repo `Clicnet` (con su DB de Docker en `:5433`) |
 | Esta web | `:3005` | `npm run dev` |
-| SPA de reservas | `:5180` | `VITE_BASE_PATH=/reservar/ npx vite --port 5180` |
-| SPA de clientes | `:5181` | `VITE_BASE_PATH=/mi-cuenta/ npx vite --port 5181` |
 
 Y en `.env.local`:
 
 ```
-RESERVAS_ORIGIN=http://localhost:5180
-RESERVAS_PREFIJO=/reservar
-CLIENTES_ORIGIN=http://localhost:5181
-CLIENTES_PREFIJO=/mi-cuenta
 API_ORIGIN=http://localhost:3000
 ```
 
-Dos cosas que no son obvias y cuestan una tarde si no se saben:
-
-- **`vite dev` sirve todo debajo del prefijo**, y un build de Vite no: sirve en
-  la raíz aunque pida los assets con prefijo. Por eso los `*_PREFIJO`, que van
-  vacíos contra un deploy.
-- **Detrás del rewrite, los SPAs piden su API a este origen**, no al suyo, así
-  que el proxy de Vite deja de intervenir. De ahí `API_ORIGIN`.
+`/reservar` es parte de este proyecto (el portal de reservas portado, ver
+`src/components/reservas/`). `/mi-cuenta` redirige al portal de clientes.
 
 ## Dónde está cada cosa
 
@@ -54,7 +42,7 @@ Dos cosas que no son obvias y cuestan una tarde si no se saben:
 | `docs/plan.md` | El plan por fases |
 | `docs/seo.md` | SEO, publicidad y medición |
 | `docs/prototipo.html` | La especificación visual. Abrirlo en el navegador |
-| `docs/rewrites.md` | Cómo se sirven `/reservar` y `/mi-cuenta` |
+| `docs/rewrites.md` | Histórico: cómo se servían `/reservar` y `/mi-cuenta` por rewrite |
 | `tasks/todo.md` | Estado actual, fase por fase |
 
 ## Estructura
