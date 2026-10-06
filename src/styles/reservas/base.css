@@ -1,0 +1,90 @@
+/* ============================================================================
+   Base visual del portal de reservas, encapsulada en `.rsv`.
+
+   `/reservar` es el portal (reservas-clientes-clic-v2) portado adentro del
+   sitio, y tiene que verse idéntico. Su CSS de pantalla se copió tal cual a esta
+   carpeta; lo que no se podía copiar tal cual son sus utilidades globales
+   (`.container`, `.page`, `.t-display`...): algunas chocan con las de la web,
+   que tiene otro ancho de contenedor. Por eso viven acá, debajo de `.rsv`.
+
+   Ojo con la precedencia, que no es la intuitiva: en el bundle del portal estas
+   utilidades quedan DESPUÉS del CSS de cada pantalla, así que le ganan a las
+   reglas de una sola clase. Ejemplos que se ven: `.container` pisa el
+   `padding-top` de `.gracias`, y `.t-display` pisa la Prata de
+   `.gracias__title`. El prefijo `.rsv` reproduce eso por especificidad: gana
+   contra una clase sola, y empata (y pierde por orden) contra las reglas de
+   dos clases de las pantallas, igual que en el portal.
+
+   Fuente: reservas-clientes-clic-v2/src/styles/globals.css. Los tokens y el
+   reset ya son los mismos (ver tokens.css y base.css).
+   ========================================================================== */
+
+.rsv {
+  --container-max: 1040px;
+
+  /* El header del portal ocupaba lugar (sticky, 72px + borde); el de la web es
+     fijo y se superpone. Esto deja el contenido donde el portal lo dibujaba. */
+  padding-top: 72px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ===== Tipografía ===== */
+
+.rsv .t-display {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  letter-spacing: -0.6px;
+  line-height: 1.05;
+}
+
+.rsv .t-tag {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--taupe-dark);
+}
+
+.rsv .t-label {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--taupe-dark);
+}
+
+.rsv .t-muted {
+  color: var(--ink-soft);
+}
+
+/* ===== Layout ===== */
+
+.rsv .container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.rsv .page {
+  flex: 1;
+  padding: 48px 0 80px;
+}
+
+.rsv .stack-sm > * + * { margin-top: 8px; }
+.rsv .stack-md > * + * { margin-top: 16px; }
+.rsv .stack-lg > * + * { margin-top: 24px; }
+.rsv .stack-xl > * + * { margin-top: 40px; }
+
+/* ===== Mobile ===== */
+
+@media (max-width: 768px) {
+  /* El header del portal baja a 60px; el de la web queda en 66. */
+  .rsv { padding-top: 66px; }
+  .rsv .container { padding: 0 20px; }
+  .rsv .page { padding: 32px 0 64px; }
+}
