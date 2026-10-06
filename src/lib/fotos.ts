@@ -73,14 +73,15 @@ export const FOTOS = {
     publicable: true,
   },
 
+  // Horizontal, que es lo que pide el subhero (una banda ancha y baja): la fila
+  // entera en plancha sobre los reformers. La anterior (`intense.jpg`, vertical)
+  // queda como alternativa: de ella entraba sólo una franja.
+  // Ojo: mide 591×409, muy por debajo del ancho del subhero. Pasa porque el
+  // velo oscuro del subhero la tapa en un 62-94%; si llega la versión en
+  // resolución completa, reemplazarla.
   intense: {
-    src: '/fotos/niveles/intense.jpg',
-    alt: 'Alumna trabajando con el aro sobre el reformer, en una clase de Intense',
-    // Es vertical y el subhero es una banda ancha y baja, así que de la foto
-    // entra una franja finita. Probados tres focos: al medio quedaban sólo las
-    // piernas, más abajo un primer plano del torso. Éste agarra las manos en
-    // alto y el aro, que es lo que se parece a "más ritmo".
-    // Lo que de verdad falta es una toma horizontal de una clase de Intense.
+    src: '/fotos/niveles/intense-horizontal.jpg',
+    alt: 'Fila de alumnas en plancha sobre los reformers, en una clase de Intense',
     foco: { x: 50, y: 45 },
     publicable: true,
   },
