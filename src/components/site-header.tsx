@@ -70,7 +70,7 @@ export function SiteHeader () {
 
           <div className="hdr__actions">
             <a href={MI_CUENTA} className="hdr__login">Ingresar</a>
-            <a href={RESERVAR} className="btn btn--sm hdr__cta">Clase de prueba</a>
+            <Link href={RESERVAR} className="btn btn--sm hdr__cta">Clase de prueba</Link>
             <button
               type="button"
               className="hdr__burger"
@@ -103,7 +103,7 @@ export function SiteHeader () {
         </nav>
 
         <div className="mnav__foot" onClick={cerrarMenu}>
-          <a href={RESERVAR} className="btn btn--light btn--full">Reservá tu clase de prueba</a>
+          <Link href={RESERVAR} className="btn btn--light btn--full">Reservá tu clase de prueba</Link>
           <a href={MI_CUENTA} className="btn btn--ghost-light btn--full">Ingresar a mi cuenta</a>
         </div>
       </div>

@@ -12,5 +12,15 @@
 @import './sedes.css';
 @import './grilla.css';
 @import './selector.css';
-/* Después de grilla.css: el checkout reusa `.row*` y le agrega variantes. */
-@import './checkout.css';
+/* El portal de reservas portado (/reservar). Va al final: su CSS se copió tal
+   cual y sus utilidades están encapsuladas en .rsv. */
+@import './reservas/base.css';
+@import './reservas/Loading.css';
+@import './reservas/ErrorBanner.css';
+@import './reservas/SedeCard.css';
+@import './reservas/SedeGaleria.css';
+@import './reservas/ClaseRow.css';
+@import './reservas/GrillaClases.css';
+@import './reservas/Landing.css';
+@import './reservas/Planes.css';
+@import './reservas/Gracias.css';

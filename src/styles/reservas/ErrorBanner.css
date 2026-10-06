@@ -1,0 +1,45 @@
+.clic-error {
+  background: var(--terracotta-bg);
+  border: 1px solid var(--terracotta);
+  border-radius: var(--radius-md);
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.clic-error__body {
+  flex: 1;
+}
+
+.clic-error__title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--terracotta);
+  letter-spacing: 0.3px;
+}
+
+.clic-error__msg {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+.clic-error__retry {
+  padding: 10px 18px;
+  border: 1px solid var(--terracotta);
+  border-radius: var(--radius-pill);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  background: transparent;
+  flex-shrink: 0;
+}
+
+.clic-error__retry:hover {
+  background: var(--terracotta);
+  color: var(--surface);
+}

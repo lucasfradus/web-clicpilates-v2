@@ -1,0 +1,243 @@
+.gracias {
+  display: flex;
+  justify-content: center;
+  padding-top: 24px;
+}
+
+.gracias__card {
+  max-width: 520px;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  padding: 48px 44px 40px;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+
+/* ===== Status icon ===== */
+.gracias__icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gracias__icon--ok {
+  background: var(--sage-bg);
+  color: var(--sage);
+}
+
+.gracias__icon--error {
+  background: var(--terracotta-bg);
+  color: var(--terracotta);
+}
+
+.gracias__icon--pending {
+  background: var(--bg);
+  color: var(--taupe-dark);
+}
+
+/* ===== Head ===== */
+/* Prata, como los títulos editoriales del resto del micrositio. */
+.gracias__title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: 30px;
+  line-height: 1.15;
+  color: var(--ink-deep);
+}
+
+.gracias__sub {
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gracias__note {
+  margin-top: 18px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-mute);
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== Detail card (approved) ===== */
+/* Ink, igual que el resumen del checkout: cierra el circuito visual con lo que
+   la persona vio justo antes de pagar. */
+.gracias__detail {
+  margin-top: 28px;
+  padding: 26px 24px;
+  background: var(--ink-deep);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.gracias__actividad {
+  font-size: 24px;
+  color: var(--ink);
+}
+
+.gracias__fecha {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.gracias__loc {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+}
+
+.gracias__loc-pin {
+  color: var(--taupe-dark);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.gracias__loc-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.gracias__sede {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.gracias__dir {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+.gracias__wapp {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sage);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: opacity 0.2s;
+}
+
+.gracias__wapp:hover {
+  opacity: 0.7;
+}
+
+/* ===== Add to calendar ===== */
+.gracias__cal {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 14px 32px;
+  background: var(--ink);
+  color: var(--surface);
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.gracias__cal:hover {
+  background: #1f2226;
+}
+
+/* ===== Info box (approved) ===== */
+/* El beige salió de la paleta cuando el footer pasó a ink: acá también. */
+.gracias__info {
+  margin-top: 28px;
+  padding: 20px 22px;
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.gracias__info-title {
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+/* ===== Retry / back button (rejected) ===== */
+.gracias__btn {
+  display: inline-block;
+  margin-top: 26px;
+  padding: 15px 36px;
+  background: var(--ink);
+  color: var(--surface);
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.gracias__btn:hover {
+  background: #1f2226;
+}
+
+@media (max-width: 640px) {
+  .gracias__card {
+    padding: 36px 22px 30px;
+  }
+  .gracias__title {
+    font-size: 28px;
+  }
+  .gracias__actividad {
+    font-size: 21px;
+  }
+}
+
+/* La tarjeta de detalle es ink, igual que el resumen del checkout: cierra el
+   circuito visual con lo que la persona vio antes de pagar. */
+.gracias__detail .gracias__actividad {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  color: #fff;
+}
+.gracias__detail .gracias__fecha,
+.gracias__detail .gracias__sede,
+.gracias__detail .gracias__dir {
+  color: rgba(255, 255, 255, 0.7);
+}
+.gracias__detail .gracias__loc {
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+.gracias__detail .gracias__loc-pin {
+  color: rgba(255, 255, 255, 0.55);
+}
+.gracias__total {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  letter-spacing: -0.6px;
+  font-size: 30px;
+  color: #fff;
+}

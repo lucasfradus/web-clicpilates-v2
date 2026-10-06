@@ -186,6 +186,40 @@ están mergeados y se pueden cerrar.
       ancha y baja, así que entra una franja. Se probaron tres focos y el que
       quedó agarra las manos en alto y el aro. Lo que lo resuelve de verdad es
       una toma horizontal
+- [x] ~~`/reservar` idéntico al portal~~ — **6-oct.** El primer intento fue
+      un checkout propio con el diseño de la web; se reemplazó por el **portal
+      portado tal cual**: `src/components/reservas/`, `src/lib/reservas/` y
+      `src/styles/reservas/` son copias de `reservas-clientes-clic-v2` con los
+      mínimos cambios (router de Next, sede y catálogo resueltos en el servidor
+      con caché, clases pedidas desde el navegador). Comparado con capturas
+      lado a lado contra `reservas.clicpilates.com` en desktop y mobile:
+      landing, sede, prueba, datos, plan, horarios fijos, deep link `?tipo=` y
+      gracias. Lo único distinto a propósito: header y footer son los de la
+      web. **Mientras el portal siga prendido, un cambio en uno hay que
+      llevarlo al otro**
+- [ ] **El corte del portal de reservas.** El flujo ya vive acá (`/reservar`),
+      probado de punta a punta contra la Sede Test (5-oct, y de nuevo el 6-oct
+      ya portado): el POST devuelve `200` y Mercado Pago acepta la preferencia.
+      Falta el corte, en este orden:
+      **(a)** En **Clicnet**, `RESERVAS_PUBLIC_URL` →
+      `https://www.clicpilates.com/reservar`. Es una variable de entorno, sin
+      cambio de código, y es lo que define a dónde vuelve Mercado Pago. La URL
+      se graba en cada preferencia **al crearla**, así que las que ya están en
+      vuelo siguen volviendo a la vieja: por eso el portal queda prendido.
+      **(b)** `reservas.clicpilates.com` → `301` a `/reservar`, **preservando
+      path y query**: `/gracias?...` tiene que llegar a `/reservar/gracias?...`
+      o se pierde el detalle de la compra y la atribución.
+      **(c)** Recién después, apagar el portal
+- [ ] **Falta probar la compra de un plan de punta a punta.** La clase de prueba
+      sí se probó. El plan no, por dos motivos: la **Sede Test no tiene
+      catálogo**, así que habría que hacerlo contra una sede real; y a
+      diferencia del checkout de prueba —que no escribe nada— el de plan **crea
+      una `SolicitudCheckoutPlan` PENDIENTE** en la base de producción.
+      Es un registro inofensivo (queda igual que el de cualquiera que abandona
+      el checkout), pero es una escritura en producción y conviene decidirla, no
+      que aparezca sola.
+      Lo que falta verificar ahí es el payload: que el `planId` de la variante y
+      la cantidad exacta de `horarioIds` pasen la revalidación del backend
 - [ ] **Verificar el dominio en Search Console.** Necesita a Lucas. Conviene por
       DNS: así vale para el sitio nuevo sin tocar el viejo
 - [ ] **El apex redirige con `307`, no con `308`.** Va con el cambio de
@@ -252,9 +286,10 @@ Decisiones de esta fase, por si hay que revisarlas:
 - Los dos estados del header salen de variables CSS y un solo bloque de
   selectores, en vez de duplicar `.hdr--solid .algo` por cada hijo como hace el
   prototipo.
-- `/reservar` y `/mi-cuenta` se enlazan con `<a>` y no con `<Link>` (ver
+- `/mi-cuenta` se enlaza con `<a>` y no con `<Link>` (ver
   `src/components/enlace.tsx`): el routing de cliente de Next espera del otro
-  lado una respuesta que un Vite no devuelve.
+  lado una respuesta que un Vite no devuelve. (`/reservar` también, hasta el
+  6-oct: ahora es una página de acá y va con `<Link>`.)
 - El cambio de los SPAs quedó **commiteado y sin pushear**, en una rama
   `chore/base-path-rewrite` por repo, y es no-destructivo: sin la variable
   `VITE_BASE_PATH` el build sale idéntico al de hoy. Ver `docs/rewrites.md`.
@@ -469,9 +504,11 @@ el CTA a `/reservar` sale con ellas pegadas.
 
 Lo que queda, y no es de este repo:
 
-- [ ] **AddToCart, InitiateCheckout y Purchase** los emite el portal de reservas,
-      que ya los tiene (PR #307 y #311 de Clicnet). Hay que verificar que el
-      embudo se lea completo cuando los dos sitios compartan dominio
+- [ ] **AddToCart, InitiateCheckout y Purchase** los emite ahora `/reservar`,
+      con el código del portal portado (`src/lib/reservas/analytics.ts` y
+      `meta.ts`, que usa el pixel por sede de `src/lib/medicion/`). Falta
+      verificarlo en una build con los IDs de GA4 y Meta puestos: con
+      `NEXT_PUBLIC_NOINDEX` la medición está apagada
 - [ ] **Conversions API desde el webhook de Mercado Pago**, con `event_id`
       compartido para deduplicar. Es backend (Clicnet) y sigue pendiente el
       token de CAPI de Clic Wellness
