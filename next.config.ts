@@ -1,36 +1,19 @@
 import type { NextConfig } from 'next'
 
 /**
- * Los dos SPAs que ya funcionan se sirven por rewrite bajo el mismo dominio
- * (docs/plan.md §1). No se reescriben: el SEO vive en este proyecto y ellos
- * siguen siendo ellos, pero pasan a ser rutas de clicpilates.com. Eso da nav
- * única y, sobre todo, cookie de sesión de primera parte — hoy la sesión del
- * portal vive en `clientes.clicpilates.com` y Safari la castiga.
- *
- * Para que los assets resuelvan detrás del rewrite, cada SPA tiene que buildear
- * con `VITE_BASE_PATH=/reservar/` (o `/mi-cuenta/`). Sin eso el HTML vuelve
- * pidiendo `/assets/...` en la raíz del dominio y la página queda en blanco.
- * Ver docs/rewrites.md.
+ * `/mi-cuenta` manda al portal de clientes, que sigue siendo otro sitio. Se
+ * probó servirlo por rewrite bajo este dominio, pero el destino es el portal en
+ * producción, que no buildea con el prefijo, y la página quedaba en blanco.
+ * Hasta decidir si se porta o si se empuja la app, es un redirect: temporal,
+ * para que nadie lo guarde como definitivo.
  */
 const CLIENTES_ORIGIN =
   process.env.CLIENTES_ORIGIN ?? 'https://clientes.clicpilates.com'
 
 /**
- * Un build de Vite sirve sus archivos en la raíz del origen aunque los pida con
- * el prefijo, así que el rewrite se lo saca: `/reservar/assets/x.js` va a
- * `origen/assets/x.js`. Un `vite dev`, en cambio, sirve todo debajo del
- * prefijo, así que ahí hay que dejárselo puesto.
- *
- * De ahí estas dos variables: vacías contra un deploy, `/reservar` y
- * `/mi-cuenta` contra un dev server local. Ver docs/rewrites.md.
- */
-const CLIENTES_PREFIJO = process.env.CLIENTES_PREFIJO ?? ''
-
-/**
- * Proxy de `/api` hacia el backend. Es para desarrollo: los dos SPAs piden su
- * API al mismo origen que los sirve, y detrás del rewrite ese origen es este
- * sitio, no ellos. En producción no se define, porque ahí cada SPA buildea con
- * `VITE_API_BASE_URL` apuntando al backend real.
+ * Proxy de `/api` hacia el backend, para los pedidos que salen del navegador
+ * cuando `NEXT_PUBLIC_API_BASE_URL` apunta al propio sitio (ver
+ * src/lib/api/cliente.ts). Sin definir, el sitio le pega al backend público.
  */
 const API_ORIGIN = process.env.API_ORIGIN
 
@@ -46,20 +29,16 @@ const nextConfig: NextConfig = {
   },
 
   async rewrites () {
-    return [
-      ...(API_ORIGIN
-        ? [{ source: '/api/:path*', destination: `${API_ORIGIN}/api/:path*` }]
-        : []),
-      // `/reservar` ya no se reescribe: son páginas de este proyecto
-      // (`src/app/reservar/`). El portal sigue deployado como respaldo, pero
-      // nadie lo sirve desde acá.
-      { source: '/mi-cuenta', destination: `${CLIENTES_ORIGIN}${CLIENTES_PREFIJO}/` },
-      { source: '/mi-cuenta/:path*', destination: `${CLIENTES_ORIGIN}${CLIENTES_PREFIJO}/:path*` },
-    ]
+    return API_ORIGIN
+      ? [{ source: '/api/:path*', destination: `${API_ORIGIN}/api/:path*` }]
+      : []
   },
 
   async redirects () {
     return [
+      { source: '/mi-cuenta', destination: `${CLIENTES_ORIGIN}/`, permanent: false },
+      { source: '/mi-cuenta/:path*', destination: `${CLIENTES_ORIGIN}/:path*`, permanent: false },
+
       // Las URLs del sitio anterior. Se activan solas el día que el dominio
       // apunte acá; hasta entonces no molestan a nadie.
       //

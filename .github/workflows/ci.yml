@@ -1,0 +1,48 @@
+# Chequeos de cada PR, y de main después de mergear.
+#
+# Railway deploya main solo, sin mirar esto: el CI avisa, no frena. Para que
+# frene, hay que marcar el job "checks" como requerido en la protección de la
+# rama main (Settings → Branches).
+#
+# El build le pega a la API pública de ClicNet (app.clicpilates.com) para
+# prerenderizar las páginas con ISR, igual que el build de Railway. Es sólo
+# lectura de /api/public.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests
+        run: npm test
+
+      # `next build` también corre el chequeo de tipos, con los tipos de rutas
+      # (PageProps, LayoutProps) que genera él mismo: un `tsc` suelto antes del
+      # build falla por no tenerlos.
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
