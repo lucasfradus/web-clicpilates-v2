@@ -405,10 +405,12 @@ Pendientes que quedan de esta fase:
       encima `twitter:card` decía `summary_large_image`, que es la variante
       grande — la peor versión posible de no tener foto.
 - [ ] **Faltan dos fotos, y ninguna es de permisos: es producción.**
-      **(a) Una toma horizontal de Intense.** La que hay es vertical y el
-      subhero es una banda ancha y baja, así que entra una franja: se ve el aro
-      y los brazos, no la clase.
-      **(b) Academy propiamente dicha** — una instructora formando a otra. Lo
+      **(a) ~~Una toma horizontal de Intense~~** — llegó el 6-oct
+      (`niveles/intense-horizontal.jpg`, la fila en plancha). Pero mide
+      **591×409**, parece una captura: bajo el velo del subhero pasa, y si
+      aparece el original en resolución completa hay que reemplazarlo.
+      **(b) Academy propiamente dicha** — una instructora formando a otra (6-oct:
+      "de Academy no hay muchas fotos"; queda la actual). Lo
       que hay hoy (`academy/instructora-corrigiendo.jpg`) es una instructora
       corrigiendo en clase: funciona, pero muestra el oficio, no la formación.
       **Y lo de vestuarios no es lo que parecía**: el sitio **no tiene un slot
