@@ -1,5 +1,5 @@
 import { pesos } from '@/lib/formato'
-import { accionDePlan, accionDeSede } from '@/lib/api/contacto'
+import { accionDePlan } from '@/lib/api/contacto'
 import { precioPublicado, type CatalogoSede, type Sede } from '@/lib/api/tipos'
 import { EstadoSeccion } from '@/components/estados'
 
@@ -20,16 +20,19 @@ import { EstadoSeccion } from '@/components/estados'
  */
 export function Planes ({ sede, catalogo }: { sede: Sede; catalogo: CatalogoSede | null }) {
   if (catalogo == null || catalogo.tipos.length === 0) {
-    const accion = accionDeSede(sede)
+    // El "escribinos" tiene que llevar a algún lado aunque la sede reserve
+    // online: es el caso de un estudio que vende la clase de prueba por la web
+    // pero los planes sólo en persona (Nordelta, desde el 7-oct).
+    const whatsapp = sede.whatsappUrl != null && sede.whatsappUrl !== '' ? sede.whatsappUrl : null
     return (
       <EstadoSeccion
         tipo="vacio"
         titulo="Los planes de este estudio no están publicados"
         detalle="Escribinos y te pasamos los valores al día."
       >
-        {accion != null && !accion.reserva && (
-          <a className="btn btn--ghost btn--sm" href={accion.href} target="_blank" rel="noreferrer">
-            {accion.texto}
+        {whatsapp != null && (
+          <a className="btn btn--ghost btn--sm" href={whatsapp} target="_blank" rel="noreferrer">
+            Consultar por WhatsApp
           </a>
         )}
       </EstadoSeccion>

@@ -176,10 +176,19 @@ export default async function LandingSede ({ params }: PageProps<'/estudios/[slu
           <div className="section-head">
             <p className="eyebrow">Planes en {sede.nombre}</p>
             <h2>Elegí tu frecuencia.</h2>
-            <p>
-              Estos son los valores de este estudio. Cada sede publica su propia lista, y
-              cualquiera de estos planes se contrata desde acá.
-            </p>
+            {/* Sin catálogo, prometer que "se contrata desde acá" contradice el
+                recuadro de abajo. Pasa cuando la sede vende los planes en persona. */}
+            {catalogo != null && catalogo.tipos.length > 0 ? (
+              <p>
+                Estos son los valores de este estudio. Cada sede publica su propia lista, y
+                cualquiera de estos planes se contrata desde acá.
+              </p>
+            ) : (
+              <p>
+                En este estudio los planes se contratan en persona: escribinos y te pasamos
+                las opciones y los valores.
+              </p>
+            )}
           </div>
           <Planes sede={sede} catalogo={catalogo} />
         </div>

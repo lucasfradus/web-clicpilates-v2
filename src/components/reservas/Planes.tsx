@@ -437,6 +437,12 @@ export default function Planes({
 
   // ── Derivados ─────────────────────────────────────────────────────────
   const tipos = load.status === 'ok' ? load.tipos : [];
+  // Sin catálogo publicado, la sede vende sólo la clase de prueba: es el caso
+  // de un estudio que vende los planes en persona (Nordelta, desde el 7-oct;
+  // se configura con "Mostrar precios" apagado en Clicnet). Ahí desaparece todo
+  // lo de planes en vez de mostrar "No hay planes disponibles". El portal no
+  // lo contemplaba.
+  const venderPlanes = tipos.length > 0;
   const clases = load.status === 'ok' ? load.clases : [];
   const sede = load.status === 'ok' ? load.sede : undefined;
 
@@ -948,13 +954,15 @@ export default function Planes({
             >
               Reservar clase de prueba
             </button>
-            <button
-              type="button"
-              className="planes__hero-link"
-              onClick={scrollToPlanes}
-            >
-              Ver planes → Quiero adquirir mi membresía
-            </button>
+            {venderPlanes && (
+              <button
+                type="button"
+                className="planes__hero-link"
+                onClick={scrollToPlanes}
+              >
+                Ver planes → Quiero adquirir mi membresía
+              </button>
+            )}
 
             {(sede?.whatsappUrl || sede?.googleMapsUrl) && (
               <div className="planes__hero-links">
@@ -979,6 +987,7 @@ export default function Planes({
           </div>
         </section>
 
+        {venderPlanes && (<>
         {/* Divider */}
         <div className="planes__divider">
           <span className="planes__divider-line" />
@@ -1098,6 +1107,7 @@ export default function Planes({
           </button>{' '}
           — si te quedás, se descuenta de tu plan.
         </div>
+        </>)}
 
         {showSticky && (
           <div className="planes__sticky">
