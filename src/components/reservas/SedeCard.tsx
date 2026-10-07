@@ -38,7 +38,7 @@ export function SedeCard({ sede }: { sede: Sede }) {
       </div>
       <div className="sede-card__body">
         <p className="t-tag">{sede.ciudad}</p>
-        <h3 className="sede-card__name t-display">{sede.nombre}</h3>
+        <h2 className="sede-card__name t-display">{sede.nombre}</h2>
         <p className="sede-card__addr">{sede.direccion}</p>
         <div className="sede-card__foot">
           <div>

@@ -75,7 +75,7 @@
 
 .sede-card__price-label {
   font-size: 9px;
-  color: var(--taupe-dark);
+  color: var(--taupe-texto);
   letter-spacing: 1.5px;
   text-transform: uppercase;
   font-weight: 500;

@@ -195,7 +195,11 @@ están mergeados y se pueden cerrar.
       landing, sede, prueba, datos, plan, horarios fijos, deep link `?tipo=` y
       gracias. Lo único distinto a propósito: header y footer son los de la
       web. **Mientras el portal siga prendido, un cambio en uno hay que
-      llevarlo al otro**
+      llevarlo al otro**. Primera diferencia buscada (6-oct): accesibilidad.
+      Grises y verdes un poco más oscuros (contraste AA), los puntos de la
+      galería son indicadores y no botones de 7px, y en la grilla el control
+      accesible es "Reserva ahora" y no la fila entera. Lighthouse y axe en
+      100 / sin violaciones en todos los pasos
 - [ ] **El corte del portal de reservas.** El flujo ya vive acá (`/reservar`),
       probado de punta a punta contra la Sede Test (5-oct, y de nuevo el 6-oct
       ya portado): el POST devuelve `200` y Mercado Pago acepta la preferencia.

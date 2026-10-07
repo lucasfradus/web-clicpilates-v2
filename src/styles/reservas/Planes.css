@@ -7,7 +7,10 @@
 
   --pl-ink: #23222b;
   --pl-soft: #55534e;
-  --pl-mute: #8a8880;
+  /* Más oscuro que el del portal (#8a8880): ese no llegaba a 4.5:1 sobre el
+     fondo ni sobre las tarjetas blancas, el mínimo de WCAG AA para texto chico.
+     El cambio se nota apenas. */
+  --pl-mute: #66645e;
   --pl-surface: #f7f6f2;
   --pl-line: rgba(35, 34, 43, 0.1);
   --pl-green: #4a6741;
@@ -272,7 +275,7 @@
 }
 .planes__intro-sub {
   font-size: 12.5px;
-  color: #6d6b66;
+  color: #66645e;
   margin-top: 6px;
   text-wrap: pretty;
 }
@@ -611,7 +614,7 @@
 }
 .planes__co-sub {
   font-size: 12.5px;
-  color: #6d6b66;
+  color: #66645e;
   margin-top: -10px;
 }
 
@@ -662,7 +665,7 @@
 }
 .planes__mode-desc {
   font-size: 12px;
-  color: #6d6b66;
+  color: #66645e;
   line-height: 1.45;
 }
 
@@ -683,7 +686,7 @@
 }
 .planes__grid-sub {
   font-size: 12px;
-  color: #6d6b66;
+  color: #66645e;
 }
 .planes__days {
   display: flex;
@@ -1096,11 +1099,11 @@
 }
 .planes__success-addr {
   font-size: 12px;
-  color: #6d6b66;
+  color: #66645e;
 }
 .planes__success-app {
   font-size: 12.5px;
-  color: #6d6b66;
+  color: #66645e;
   text-wrap: pretty;
 }
 .planes__stores {
