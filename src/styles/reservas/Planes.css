@@ -1,4 +1,5 @@
-/* Landing de planes + checkout. Estética del prototipo "CLIC Landing planes":
+/* El checkout de /reservar (sin la portada del portal desde el 7-oct). Estética
+   del prototipo "CLIC Landing planes":
    columna mobile centrada, Prata para los títulos editoriales, Poppins light
    para el nombre de la sede y los importes, paleta taupe + ink. */
 .planes {
@@ -29,14 +30,9 @@
 }
 
 /* Prata queda para los títulos editoriales. */
-.pl-serif,
-.planes__intro-title,
-.planes__card-name,
 .planes__co-title,
 .planes__grid-title,
-.planes__summary-plan,
-.planes__success-title,
-.planes__success-first {
+.planes__summary-plan {
   font-family: var(--font-serif);
   font-weight: 400;
   letter-spacing: 0;
@@ -44,24 +40,10 @@
 
 /* El nombre de la sede y los importes van en Poppins light, igual que el resto
    de los números de la marca. */
-.planes__hero-name,
-.planes__hero-price,
-.planes__card-price,
 .planes__summary-total-val {
   font-family: var(--font-sans);
   font-weight: 300;
   letter-spacing: -0.6px;
-}
-
-.planes__eyebrow {
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--pl-mute);
-  font-weight: 500;
-}
-.planes__eyebrow--light {
-  color: rgba(255, 255, 255, 0.7);
 }
 
 /* ── Mensajes (notfound) ── */
@@ -80,354 +62,6 @@
   font-weight: 600;
   text-decoration: underline;
 }
-
-/* ── Hero ── */
-/* El hero ocupa la pantalla entera: se come el padding superior de .page y el
-   lateral de la columna, así llega a los bordes. `dvh` (y no `vh`) para que la
-   barra del navegador de mobile no le recorte el CTA. */
-.planes__hero {
-  position: relative;
-  margin: -32px -16px 0;
-  min-height: calc(100dvh - 60px); /* 60px = alto del header en mobile */
-  overflow: hidden;
-  background: var(--pl-ink);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  isolation: isolate;
-}
-/* La foto es el fondo del hero entero. El cuerpo se apoya abajo, así queda
-   libre la mitad de arriba para swipear entre las fotos del estudio. */
-.planes__hero-media {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #d8c4ad, #bcac9e);
-}
-/* Sostiene la legibilidad del texto sobre cualquier foto. */
-.planes__hero-media::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    var(--pl-ink) 0%,
-    rgba(35, 34, 43, 0.92) 38%,
-    rgba(35, 34, 43, 0.55) 58%,
-    rgba(35, 34, 43, 0.12) 80%,
-    rgba(35, 34, 43, 0.3) 100%
-  );
-  pointer-events: none;
-}
-.planes__hero-fallback {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-/* Vive antes del hero en el DOM (en desktop va arriba de la tarjeta), pero en
-   mobile flota sobre la foto. El margen negativo del hero arrastra al
-   contenedor, así que ambos arrancan en el mismo punto y `top` se mide igual
-   que cuando el link era hijo del hero. */
-.planes__back-link {
-  position: absolute;
-  top: 16px;
-  left: 20px;
-  z-index: 2;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  color: rgba(255, 255, 255, 0.8);
-  text-shadow: 0 1px 8px rgba(35, 34, 43, 0.5);
-}
-.planes__back-link:hover {
-  color: #fff;
-}
-/* La descripción de la sede solo entra en el hero de desktop. */
-.planes__hero-desc {
-  display: none;
-}
-/* Localidad y dirección en un solo renglón. */
-.planes__hero-place {
-  display: flex;
-  align-items: baseline;
-  gap: 7px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.75);
-  min-width: 0;
-}
-.planes__hero-city {
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-weight: 500;
-  white-space: nowrap;
-}
-.planes__hero-dot {
-  color: rgba(255, 255, 255, 0.45);
-}
-.planes__hero-links {
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 32px;
-  flex-wrap: wrap;
-}
-.planes__hero-links a {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
-  transition: color 0.2s;
-}
-.planes__hero-links a:hover {
-  color: #fff;
-}
-.planes__hero-body {
-  position: relative;
-  padding: 28px 22px 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-/* En desktop el header y el aire de la página son más altos. */
-@media (min-width: 769px) {
-  .planes__hero {
-    margin-top: -48px;
-    min-height: calc(100dvh - 72px);
-  }
-}
-.planes__hero-name {
-  font-size: 32px;
-  color: #fff;
-  line-height: 1.05;
-}
-.planes__hero-addr {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.75);
-}
-.planes__hero-gap {
-  margin-top: 18px;
-}
-.planes__hero-price {
-  font-size: 30px;
-  color: #fff;
-}
-.planes__hero-note {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.75);
-}
-.planes__hero-cta {
-  margin-top: 16px;
-  background: #fff;
-  color: var(--pl-ink);
-  border-radius: 999px;
-  text-align: center;
-  padding: 15px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.planes__hero-link {
-  margin-top: 12px;
-  text-align: center;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.85);
-  text-decoration: underline;
-}
-
-/* ── Divider ── */
-.planes__divider {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 30px 12px 6px;
-}
-.planes__divider-line {
-  flex: 1;
-  height: 1px;
-  background: rgba(35, 34, 43, 0.18);
-}
-.planes__divider-txt {
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--pl-mute);
-  font-weight: 500;
-}
-
-/* ── Intro planes ── */
-.planes__intro {
-  padding: 12px 0 8px;
-  text-align: center;
-  scroll-margin-top: 70px;
-}
-.planes__intro-title {
-  font-size: 27px;
-  line-height: 1.15;
-  text-wrap: pretty;
-}
-.planes__intro-sub {
-  font-size: 12.5px;
-  color: #66645e;
-  margin-top: 6px;
-  text-wrap: pretty;
-}
-
-/* ── Toggle ── */
-.planes__toggle-wrap {
-  padding: 14px 0 4px;
-}
-.planes__toggle {
-  display: flex;
-  background: var(--pl-ink);
-  border-radius: 999px;
-  padding: 4px;
-}
-.planes__toggle-opt {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  border-radius: 999px;
-  color: rgba(255, 255, 255, 0.7);
-}
-.planes__toggle-opt--active {
-  background: #fff;
-  color: var(--pl-ink);
-}
-.planes__toggle-pill {
-  font-size: 8.5px;
-  background: #d7d5cc;
-  color: var(--pl-ink);
-  border-radius: 999px;
-  padding: 2px 7px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-/* ── Cards ── */
-.planes__cards {
-  padding: 12px 0 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-/* Blancas y con sombra. Antes eran #f7f6f2 sobre un fondo #edece7: diez puntos
-   de diferencia por canal y un borde al 10% de opacidad, así que la tarjeta no
-   se despegaba de la página. La jerarquía de la destacada no la daba el color
-   sino el borde, el ribbon y el CTA sólido, que siguen intactos. */
-.planes__card {
-  position: relative;
-  background: #fff;
-  border: 1px solid rgba(35, 34, 43, 0.14);
-  border-radius: 20px;
-  padding: 24px 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  box-shadow:
-    0 1px 2px rgba(35, 34, 43, 0.04),
-    0 10px 22px -14px rgba(35, 34, 43, 0.22);
-}
-/* La destacada se levanta un escalón más. */
-.planes__card--top {
-  border: 1.5px solid var(--pl-ink);
-  box-shadow:
-    0 2px 4px rgba(35, 34, 43, 0.06),
-    0 16px 32px -16px rgba(35, 34, 43, 0.4);
-}
-.planes__card-ribbon {
-  position: absolute;
-  top: -11px;
-  left: 22px;
-  background: var(--pl-ink);
-  color: #fff;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 5px 12px;
-  border-radius: 999px;
-}
-.planes__card-name {
-  font-size: 24px;
-}
-.planes__card-freq {
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--pl-mute);
-  font-weight: 500;
-}
-.planes__card-copy {
-  font-size: 13px;
-  color: var(--pl-soft);
-  margin-top: 10px;
-  line-height: 1.5;
-  text-wrap: pretty;
-}
-.planes__card-price-row {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin-top: 14px;
-}
-.planes__card-price {
-  font-size: 30px;
-}
-.planes__card-per {
-  font-size: 11px;
-  color: var(--pl-mute);
-}
-.planes__card-save {
-  align-self: flex-start;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--pl-green-bg);
-  border-radius: 999px;
-  padding: 5px 11px;
-  margin-top: 6px;
-  font-size: 10.5px;
-  color: #3d5237;
-  font-weight: 500;
-}
-.planes__card-save-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--pl-green);
-}
-.planes__card-cta {
-  margin-top: 16px;
-  background: transparent;
-  color: var(--pl-ink);
-  border: 1.2px solid var(--pl-ink);
-  border-radius: 999px;
-  text-align: center;
-  padding: 14px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.planes__card-cta--primary {
-  background: var(--pl-ink);
-  color: #fff;
-}
-
 .planes__empty {
   padding: 24px 0;
   text-align: center;
@@ -438,114 +72,9 @@
   padding: 18px 0;
 }
 
-/* ── Beneficios ── */
-.planes__benefits {
-  list-style: none;
-  padding: 14px 14px 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-}
-.planes__benefit {
-  display: flex;
-  gap: 12px;
-  align-items: baseline;
-  font-size: 13px;
-  color: var(--pl-soft);
-}
-.planes__benefit-check {
-  font-size: 12px;
-  color: var(--pl-green);
-  font-weight: 700;
-}
-
-/* ── Trust ── */
-.planes__trust {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  padding: 22px 0;
-  font-size: 10.5px;
-  color: var(--pl-mute);
-  flex-wrap: wrap;
-}
-
 /* ── Grilla de clases dentro del checkout de prueba ── */
 .planes__co-grilla {
   margin-top: 18px;
-}
-
-/* ── Barra fija (mobile) ── */
-.planes__sticky {
-  display: none;
-}
-@media (max-width: 640px) {
-  /* Que la barra fija no tape el final de la página. */
-  .planes--landing {
-    padding-bottom: 84px;
-  }
-  .planes__sticky {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 12px 20px 16px;
-    background: var(--pl-surface);
-    border-top: 1px solid var(--pl-line);
-    box-shadow: 0 -8px 24px -8px rgba(35, 34, 43, 0.18);
-  }
-  .planes__sticky-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .planes__sticky-label {
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--pl-mute);
-  }
-  .planes__sticky-price {
-    font-family: var(--font-sans);
-    font-weight: 300;
-    letter-spacing: -0.6px;
-    font-size: 20px;
-    color: var(--pl-ink);
-  }
-  .planes__sticky-btn {
-    padding: 12px 24px;
-    background: var(--pl-ink);
-    color: #fff;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-}
-
-/* ── Recordatorio ── */
-.planes__reminder {
-  margin-top: 6px;
-  border: 1.2px dashed rgba(35, 34, 43, 0.3);
-  border-radius: 16px;
-  padding: 18px 20px;
-  text-align: center;
-  font-size: 13px;
-  color: var(--pl-soft);
-  text-wrap: pretty;
-}
-.planes__reminder-link {
-  color: var(--pl-ink);
-  text-decoration: underline;
-  font-weight: 500;
 }
 
 /* ══════════════ CHECKOUT ══════════════ */
@@ -835,8 +364,6 @@
   color: var(--terracotta, #b87560);
   margin-top: -4px;
 }
-
-/* ── Resumen ── */
 /* ── Resumen de compra ──────────────────────────────────────────────────
    Tarjeta oscura con filas etiqueta/valor, como el checkout del sitio actual.
    El contraste contra el formulario blanco de al lado es lo que separa "lo que
@@ -1041,15 +568,6 @@
   line-height: 1.5;
   text-wrap: pretty;
 }
-
-.planes__demo-note {
-  background: var(--pl-green-bg);
-  color: #3d5237;
-  border-radius: 12px;
-  padding: 12px 14px;
-  font-size: 11.5px;
-  line-height: 1.5;
-}
 .planes__co-error {
   margin: -4px 0;
 }
@@ -1057,71 +575,6 @@
   text-align: center;
   font-size: 11px;
   color: var(--pl-mute);
-}
-
-/* ── Éxito ── */
-.planes__success {
-  align-items: center;
-  text-align: center;
-  padding-top: 20px;
-}
-.planes__success-check {
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: var(--pl-ink);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-}
-.planes__success-title {
-  font-size: 27px;
-}
-.planes__success-sub {
-  font-size: 13px;
-  color: var(--pl-soft);
-  text-wrap: pretty;
-}
-.planes__success-card {
-  background: #fff;
-  border: 1px solid var(--pl-line);
-  border-radius: 16px;
-  padding: 18px 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  width: 100%;
-}
-.planes__success-first {
-  font-size: 20px;
-}
-.planes__success-addr {
-  font-size: 12px;
-  color: #66645e;
-}
-.planes__success-app {
-  font-size: 12.5px;
-  color: #66645e;
-  text-wrap: pretty;
-}
-.planes__stores {
-  display: flex;
-  gap: 10px;
-}
-.planes__store {
-  border: 1.2px solid var(--pl-ink);
-  border-radius: 999px;
-  padding: 10px 18px;
-  font-size: 11px;
-  font-weight: 600;
-}
-.planes__success-home {
-  font-size: 12px;
-  color: var(--pl-mute);
-  text-decoration: underline;
-  margin-top: 6px;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -1137,151 +590,7 @@
     max-width: 1040px;
     padding: 0 32px 64px;
   }
-
-  /* Los bloques de texto no acompañan el ancho de la página: un párrafo a
-     1120px no se lee. Se topean y se centran. */
-  .planes__intro,
-  .planes__trust,
-  .planes__reminder {
-    max-width: 640px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* ── Hero: tarjeta con la foto y el cuerpo lado a lado ────────────────
-     Ni a sangre ni a pantalla completa. El 100dvh es un recurso de mobile,
-     donde la primera pantalla tiene que vender sola; en un monitor obliga a
-     scrollear una pantalla entera para enterarse de que hay planes, y la foto
-     no gana nada por medir 828px de alto en vez de 460. */
-  .planes__hero {
-    margin: 0;
-    /* min-height y no height: el cuerpo tiene una línea más que el sitio viejo
-       (el link a planes) y con alto fijo el overflow del hero recortaba los
-       accesos de WhatsApp y mapa. */
-    min-height: 460px;
-    border-radius: 28px;
-    box-shadow:
-      0 2px 6px rgba(35, 34, 43, 0.06),
-      0 24px 48px -24px rgba(35, 34, 43, 0.45);
-    display: grid;
-    grid-template-columns: 44fr 56fr;
-    align-items: stretch;
-  }
-  /* Arriba de la tarjeta, no encima de la foto: sobre una foto clara no se
-     leía. */
-  .planes__back-link {
-    position: static;
-    display: inline-block;
-    margin-bottom: 16px;
-    color: var(--pl-mute);
-    text-shadow: none;
-  }
-  .planes__back-link:hover {
-    color: var(--pl-ink);
-  }
-  .planes__hero-desc {
-    display: block;
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
-    font-size: 13px;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.72);
-    max-width: 42ch;
-  }
-  .planes__hero-media {
-    position: relative;
-    inset: auto;
-    height: 100%;
-  }
-  .planes__hero-media::after {
-    background: linear-gradient(
-      to right,
-      transparent 60%,
-      rgba(35, 34, 43, 0.35) 100%
-    );
-  }
-  .planes__hero-body {
-    justify-content: center;
-    padding: 40px 44px;
-    gap: 4px;
-  }
-  .planes__hero-name {
-    font-size: 44px;
-  }
-  .planes__hero-price {
-    font-size: 34px;
-  }
-  .planes__hero-gap {
-    margin-top: 22px;
-  }
-  .planes__hero-place,
-  .planes__hero-note {
-    font-size: 13px;
-  }
-  /* El CTA a 430px ocupaba todo el ancho; a 560 queda desmesurado. */
-  .planes__hero-cta {
-    align-self: flex-start;
-    padding: 16px 40px;
-  }
-  .planes__hero-link {
-    align-self: flex-start;
-  }
-  .planes__hero-links {
-    justify-content: flex-start;
-    gap: 28px;
-  }
-  .planes__back-link {
-    top: 24px;
-    left: 32px;
-  }
-
-  /* ── Planes: las tres tarjetas en una fila ────────────────────────────
-     Con alturas distintas según la descripción, así que el CTA se despega
-     al piso con margin-top auto y las tres quedan alineadas abajo. */
-  .planes__toggle-wrap {
-    max-width: 420px;
-    margin: 0 auto;
-  }
-  .planes__cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    align-items: stretch;
-    gap: 20px;
-    padding-top: 24px;
-  }
-  .planes__card {
-    padding: 30px 26px;
-  }
-  .planes__card-cta {
-    margin-top: auto;
-  }
-  /* El precio y el ahorro se separan del CTA, que ahora queda abajo de todo. */
-  .planes__card-price-row {
-    margin-bottom: 4px;
-  }
-  .planes__card-save {
-    margin-bottom: 22px;
-  }
-
-  /* ── Beneficios a dos columnas ────────────────────────────────────── */
-  .planes__benefits {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 40px;
-    max-width: 760px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .planes__divider {
-    max-width: 640px;
-    margin: 0 auto;
-    padding-top: 56px;
-  }
 }
-
-/* ── Checkout: el resumen ── */
 /* En mobile solo se ve en el paso de pago; en el resto queda oculto y aparece
    recién en desktop, donde hay una columna para él. */
 .planes__co-aside--desk {
@@ -1331,10 +640,6 @@
     margin-bottom: 12px;
   }
 
-  /* La grilla de clases queda en una columna. Se probó a dos y no entra: con
-     el aside al lado, cada columna daba ~270px, la fila se apilaba y el clic
-     al centro caía sobre el botón "+ info" en vez de elegir la clase. */
-
   /* Los slots de horarios fijos tienen más lugar: seis por fila. */
   .planes__slots {
     grid-template-columns: repeat(6, 1fr);
@@ -1383,11 +688,6 @@
   color: var(--pl-mute);
   font-weight: 500;
 }
-.planes__field-opt {
-  letter-spacing: 0;
-  text-transform: none;
-  font-weight: 400;
-}
 .planes__fields {
   gap: 14px;
 }
@@ -1410,16 +710,5 @@
 .planes__form .planes__co-secure {
   margin-top: 12px;
   line-height: 1.5;
-}
-
-/* La barra fija flota sobre el final del documento y tapaba el footer. Se le
-   suma al body el alto de la barra, solo cuando la barra existe. */
-/* La barra flota sobre el final del documento y tapaba el texto del footer. El
-   aire tiene que quedar DESPUÉS del footer, así que va como padding suyo: en
-   <main> solo lo empujaba hacia abajo y seguía terminando debajo de la barra. */
-@media (max-width: 640px) {
-  body:has(.planes__sticky) .clic-footer {
-    padding-bottom: 108px;
-  }
 }
 

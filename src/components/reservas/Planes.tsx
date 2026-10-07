@@ -14,6 +14,7 @@ import {
   type FormEvent,
 } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   ApiError,
   checkout,
@@ -33,8 +34,6 @@ import type {
 import { Loading } from '@/components/reservas/Loading';
 import { ErrorBanner } from '@/components/reservas/ErrorBanner';
 import { GrillaClases } from '@/components/reservas/GrillaClases';
-import { SedeGaleria } from '@/components/reservas/SedeGaleria';
-import { Iso } from '@/components/reservas/Iso';
 import {
   diaSemanaDe,
   formatDayLong,
@@ -43,7 +42,7 @@ import {
   formatTime,
   nombreConInicial,
 } from '@/lib/reservas/format';
-import { trackEvent, trackVenta } from '@/lib/reservas/analytics';
+import { trackVenta } from '@/lib/reservas/analytics';
 import {
   guardarDatosClienteMeta,
   identificadoresMeta,
@@ -52,9 +51,10 @@ import {
 } from '@/lib/reservas/meta';
 
 /**
- * Home de la sede: landing de planes + grilla de clases + checkout. Port del
- * prototipo de Claude Design "CLIC Landing planes". Reemplaza las páginas
- * Precios, Reservar y Sede: es todo lo que hay en `/sede/:slug`.
+ * El checkout de una sede: clase de prueba o plan, hasta Mercado Pago. Port del
+ * portal de reservas, sin su portada (hero, tarjetas de planes, beneficios):
+ * desde el 7-oct esa información vive sólo en la landing del estudio
+ * (`/estudios/<slug>`), que es de donde salen los botones de compra.
  *
  * Dos caminos comparten la misma UI de checkout (`mode`):
  *  - 'prueba' → elegís UNA clase real y el pago es REAL vía checkout() → MP.
@@ -70,8 +70,6 @@ import {
  */
 
 type Mode = 'plan' | 'prueba';
-type Screen = 'landing' | 'checkout';
-type Periodo = 'MENSUAL' | 'TRIMESTRAL';
 type Modalidad = 'fijo' | 'flex';
 type Medio = 'online' | 'debito';
 
@@ -109,14 +107,6 @@ const DIA_INFO: Record<DiaSemana, { corto: string; orden: number }> = {
 
 /** "HH:MM:SS" → "HH:MM". */
 const hhmm = (s: string): string => s.slice(0, 5);
-
-const BENEFICIOS_FALLBACK = [
-  'Entrená fuerza, postura y movilidad',
-  'Clases por niveles: Inicial y Level Up',
-  'Horarios fijos o flexibles, como prefieras',
-  'Reservas y cambios desde la app',
-  'Tu clase de prueba se descuenta del plan',
-];
 
 /**
  * Precio de la venta online: el de "Transferencia MP", que es el que se publica
@@ -164,43 +154,6 @@ function variantePlan(
     return { planId: tipo.flexible.planId, precios: tipo.flexible.precios };
   }
   return { planId: tipo.fijo.planId, precios: tipo.precios };
-}
-
-/**
- * Cuánto se ahorra un trimestral contra pagar el mismo plan mes a mes.
- *
- * La comparación honesta de un trimestral no es contra el precio con tarjeta
- * del mismo plan (eso mide el recargo de la financiación, no la conveniencia
- * del trimestre): es contra tres meses del mensual equivalente. En las sedes
- * reales da entre 15% y 22%, contra el 13% que salía comparando medios de pago.
- *
- * El equivalente se busca por `ingresosPorSemana`, que es lo que define la
- * intensidad del plan (1, 2 o 3 clases por semana). Hot Clic no lo tiene
- * cargado en ninguna tarjeta, así que ahí se cae a `orden`, que en las 11 sedes
- * mantiene el mismo lugar en las dos frecuencias.
- */
-function ahorroVsMensual(
-  tipo: CatalogoTipoPlan,
-  tipos: CatalogoTipoPlan[],
-): number | null {
-  if (tipo.frecuencia !== 'TRIMESTRAL') return null;
-
-  const mensuales = tipos.filter((t) => t.frecuencia === 'MENSUAL');
-  const ips = tipo.fijo.ingresosPorSemana;
-  const candidatos =
-    ips != null
-      ? mensuales.filter((m) => m.fijo.ingresosPorSemana === ips)
-      : mensuales.filter((m) => m.orden === tipo.orden);
-  // Con más de uno no se puede saber cuál es el equivalente: mejor no afirmar.
-  if (candidatos.length !== 1) return null;
-
-  const mensual = precioLista(candidatos[0]);
-  const trimestral = precioLista(tipo);
-  if (mensual == null || trimestral == null || mensual <= 0) return null;
-
-  const tresMeses = mensual * 3;
-  if (trimestral >= tresMeses) return null;
-  return Math.round((1 - trimestral / tresMeses) * 100);
 }
 
 interface DatosResumen {
@@ -315,11 +268,7 @@ export default function Planes({
   tipoParam: string | null;
   inicial: DatosInicialesPlanes | null;
 }) {
-  const planesRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLElement>(null);
-  // Barra fija de mobile: aparece cuando el hero (con su CTA y su precio) se
-  // fue de pantalla, y solo en la landing.
-  const [showSticky, setShowSticky] = useState(false);
+  const router = useRouter();
 
   // Con los datos del servidor la pantalla arranca resuelta: el portal mostraba
   // un spinner de página entera mientras los pedía desde el navegador.
@@ -329,14 +278,21 @@ export default function Planes({
   const [clasesCargadas, setClasesCargadas] = useState(false);
 
   // ── Navegación interna ────────────────────────────────────────────────
-  const [screen, setScreen] = useState<Screen>('landing');
-  const [mode, setMode] = useState<Mode>('plan');
+  // Esto es sólo el checkout: la portada del portal (hero, planes, beneficios)
+  // se fue el 7-oct, porque repetía la landing del estudio (/estudios/<slug>),
+  // que es de donde sale todo botón de compra. Se arranca directo en el plan de
+  // `?tipo=` si existe, y si no en la clase de prueba. Se resuelve desde el
+  // primer render para no dibujar un paso y saltar a otro.
+  const tipoInicial =
+    inicial?.tipos.find((t) => t.id === Number(tipoParam)) ?? null;
+  const [mode, setMode] = useState<Mode>(tipoInicial ? 'plan' : 'prueba');
   const [step, setStep] = useState<1 | 2>(1);
-  const [periodo, setPeriodo] = useState<Periodo>('MENSUAL');
 
   // ── Selección de plan / horarios ──────────────────────────────────────
-  const [tipoId, setTipoId] = useState<number | null>(null);
-  const [modalidad, setModalidad] = useState<Modalidad | null>(null);
+  const [tipoId, setTipoId] = useState<number | null>(tipoInicial?.id ?? null);
+  const [modalidad, setModalidad] = useState<Modalidad | null>(
+    tipoInicial && esSoloPack(tipoInicial) ? 'flex' : null,
+  );
   const [medio, setMedio] = useState<Medio>('online');
   const [dia, setDia] = useState<string>(''); // diaSemana (plan-fijo) o dayKey (prueba)
   const [sel, setSel] = useState<string[]>([]); // plan: horarioId; prueba: claseId
@@ -426,77 +382,10 @@ export default function Planes({
     };
   }, [sedeIdInicial, slug]);
 
-  useEffect(() => {
-    const onScroll = () => {
-      const hero = heroRef.current;
-      if (hero) setShowSticky(hero.getBoundingClientRect().bottom < 0);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   // ── Derivados ─────────────────────────────────────────────────────────
   const tipos = load.status === 'ok' ? load.tipos : [];
   const clases = load.status === 'ok' ? load.clases : [];
   const sede = load.status === 'ok' ? load.sede : undefined;
-
-  // Se espera a que cargue el catálogo para poder mandar el nombre de la sede,
-  // que es como se la lee en los informes.
-  useEffect(() => {
-    if (!sede) return;
-    trackEvent('view_planes', { sede: sede.nombre, sede_slug: sede.slug });
-
-    // Vista de la sede (contenido + oferta). Abre el embudo de ecommerce de
-    // GA4 (view_item → begin_checkout → add_payment_info → purchase) y su
-    // equivalente en Meta. Vivía en la página de sede, que ahora es esta.
-    const params: Record<string, unknown> = {
-      content_name: sede.nombre,
-      content_category: 'Trial',
-      sede: sede.nombre,
-    };
-    if (sede.precioPrueba != null) {
-      params.value = sede.precioPrueba;
-      params.currency = 'ARS';
-    }
-    trackMetaEvent('ViewContent', params, undefined, sede.slug);
-
-    trackVenta('view_item', {
-      nombre: `Clase de prueba - ${sede.nombre}`,
-      categoria: 'Trial',
-      sede: sede.nombre,
-      sedeSlug: sede.slug,
-      precio: sede.precioPrueba,
-    });
-  }, [sede]);
-
-  const frecuenciasDisponibles = useMemo(
-    () => new Set(tipos.map((t) => t.frecuencia)),
-    [tipos],
-  );
-
-  // Alinear el período por defecto con lo que realmente exista.
-  useEffect(() => {
-    if (frecuenciasDisponibles.size === 0) return;
-    if (!frecuenciasDisponibles.has(periodo)) {
-      setPeriodo(frecuenciasDisponibles.has('MENSUAL') ? 'MENSUAL' : 'TRIMESTRAL');
-    }
-  }, [frecuenciasDisponibles, periodo]);
-
-  const planes = useMemo(
-    () =>
-      tipos
-        .filter((t) => t.frecuencia === periodo)
-        .sort((a, b) => a.orden - b.orden),
-    [tipos, periodo],
-  );
-
-  // El checklist es uno solo de la sede. Antes se juntaban las características
-  // de cada tarjeta, se deduplicaban y se cortaban en 6, porque las 6 tarjetas
-  // repetían la misma lista y no había forma de saber cuál era la buena.
-  const beneficios =
-    load.status === 'ok' && load.caracteristicas.length > 0
-      ? load.caracteristicas
-      : BENEFICIOS_FALLBACK;
 
   const tipoSel = useMemo(
     () => tipos.find((t) => t.id === tipoId) ?? null,
@@ -525,11 +414,11 @@ export default function Planes({
 
   // Fijar el día activo cuando aparece la grilla de horarios fijos.
   useEffect(() => {
-    if (screen !== 'checkout' || step !== 1) return;
+    if (step !== 1) return;
     if (mode !== 'plan' || modalidad !== 'fijo') return;
     if (dia && diasChips.some((d) => d.key === dia)) return;
     if (diasChips.length > 0) setDia(diasChips[0].key);
-  }, [screen, step, mode, modalidad, dia, diasChips]);
+  }, [step, mode, modalidad, dia, diasChips]);
 
   // Grilla semanal de la sede, como referencia en el pack flexible.
   //
@@ -606,7 +495,6 @@ export default function Planes({
     setSel([]);
     setDia('');
     setStep(1);
-    setScreen('checkout');
     trackVenta('begin_checkout', {
       nombre: 'Clase de prueba',
       categoria: 'Trial',
@@ -637,7 +525,6 @@ export default function Planes({
     setDia('');
     setHorarios({ status: 'idle' });
     setStep(1);
-    setScreen('checkout');
     // Misma venta que la prueba a ojos de GA4, pero con `categoria` distinta:
     // es lo único que después separa "cuántas pruebas vendí" de "cuántas
     // suscripciones vendí", tanto en los informes como en las campañas.
@@ -651,41 +538,24 @@ export default function Planes({
     scrollTop();
   };
 
-  // Entrada directa a un plan desde la web (`?tipo=<id>`).
-  //
-  // La web publica los precios de cada sede y ahora cada tarjeta linkea acá con
-  // el plan que la persona eligió. Sin esto, aterriza en la landing y tiene que
-  // volver a elegir lo que ya eligió.
-  //
-  // Es estrictamente aditivo: sin el parámetro —o con uno que no matchee— no
-  // hace nada y la página queda exactamente como estaba. Un id inexistente
-  // (plan dado de baja, o de otra sede) cae en la landing a propósito: es mejor
-  // que un error, porque la landing igual sirve para elegir.
+  // La entrada: abre el plan de `?tipo=` o, sin él (o con un id que ya no
+  // existe: plan dado de baja, o de otra sede), la clase de prueba. Es lo que
+  // dispara el begin_checkout, una sola vez.
   //
   // Corre una sola vez: si no, cada cambio de `tipos` volvería a arrastrar a la
-  // persona al checkout mientras navega.
-  const deepLinkAplicado = useRef(false);
+  // persona al principio mientras completa el checkout.
+  const entradaAplicada = useRef(false);
   useEffect(() => {
-    if (deepLinkAplicado.current) return;
+    if (entradaAplicada.current) return;
     if (load.status !== 'ok') return;
+    entradaAplicada.current = true;
 
-    const pedido = Number(tipoParam);
-    if (!Number.isFinite(pedido) || pedido <= 0) return;
-
-    const t = tipos.find((x) => x.id === pedido);
-    // Marcamos igual aunque no matchee: el catálogo ya cargó, así que no va a
-    // aparecer más adelante y reintentar sería quedarse esperando para siempre.
-    deepLinkAplicado.current = true;
-    if (!t) return;
-
-    // El período tiene que acompañar al plan: `planes` filtra por `periodo`, y
-    // si el elegido es trimestral mientras el filtro sigue en mensual, al
-    // volver del checkout la tarjeta no está en la lista.
-    setPeriodo(t.frecuencia);
-    empezarPlan(t);
-    // `empezarPlan` queda fuera de las dependencias a propósito: se redefine en
-    // cada render, así que incluirla volvería a disparar el efecto. Lo que
-    // garantiza que esto pase una sola vez es el guard de arriba, no la lista.
+    const t = tipos.find((x) => x.id === Number(tipoParam));
+    if (t) empezarPlan(t);
+    else abrirPrueba();
+    // `empezarPlan` y `abrirPrueba` quedan fuera de las dependencias a
+    // propósito: se redefinen en cada render. Lo que garantiza que esto pase una
+    // sola vez es el guard de arriba, no la lista.
   }, [load.status, tipoParam, tipos]);
 
   // Cargar los horarios reales de la sede al elegir modalidad. En "fijo" son
@@ -719,14 +589,12 @@ export default function Planes({
       : preciosPlanSel.debito
     : null;
 
-  const scrollToPlanes = () => {
-    planesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
+  // Desde el primer paso se vuelve a la página del estudio, que es la que
+  // tiene la información y los planes.
   const volver = () => {
     if (step === 1) {
-      setScreen('landing');
-      setSel([]);
+      router.push(`/estudios/${slug}`);
+      return;
     } else {
       setStep(1);
     }
@@ -889,237 +757,6 @@ export default function Planes({
     );
   }
 
-  // La imagen de cabecera abre el carrusel y la galería la continúa. Set
-  // dedupe por si el estudio subió la misma foto en ambos lados.
-  const heroImages = sede
-    ? Array.from(new Set([...(sede.imagenUrl ? [sede.imagenUrl] : []), ...sede.fotos]))
-    : [];
-
-  // ══════════════════════════════ LANDING ══════════════════════════════
-  if (screen === 'landing') {
-    return (
-      <div className="planes planes--landing">
-        {/* En mobile flota sobre la foto; en desktop, donde el hero es una
-            tarjeta acotada, va arriba de ella. */}
-        <Link href="/reservar" className="planes__back-link">
-          ← Ver todas las sedes
-        </Link>
-
-        {/* Hero. En mobile ocupa la pantalla entera, con la galería de fondo y
-            el cuerpo apoyado abajo sobre el degradado. En desktop es una
-            tarjeta con la foto y el cuerpo lado a lado. */}
-        <section className="planes__hero" ref={heroRef}>
-          <div className="planes__hero-media">
-            <SedeGaleria
-              key={sede?.id}
-              images={heroImages}
-              sedeNombre={sede?.nombre ?? ''}
-              fallback={
-                <div className="planes__hero-fallback">
-                  <Iso variant="white" size={72} />
-                </div>
-              }
-            />
-          </div>
-          <div className="planes__hero-body">
-            <p className="planes__hero-place">
-              <span className="planes__hero-city">{sede?.ciudad}</span>
-              <span className="planes__hero-dot" aria-hidden="true">·</span>
-              {sede?.direccion}
-            </p>
-            <h1 className="planes__hero-name">{sede?.nombre}</h1>
-            {/* Solo desktop: en mobile el hero no tiene lugar y se sacó. */}
-            {sede?.descripcion && (
-              <p className="planes__hero-desc">{sede.descripcion}</p>
-            )}
-
-            <span className="planes__eyebrow planes__eyebrow--light planes__hero-gap">
-              Tu clase de prueba en CLIC
-            </span>
-            <p className="planes__hero-price">{formatPrice(sede?.precioPrueba)}</p>
-            <p className="planes__hero-note">
-              Se descuenta de tu plan si te quedás
-            </p>
-
-            <button
-              type="button"
-              className="planes__hero-cta"
-              onClick={abrirPrueba}
-            >
-              Reservar clase de prueba
-            </button>
-            <button
-              type="button"
-              className="planes__hero-link"
-              onClick={scrollToPlanes}
-            >
-              Ver planes → Quiero adquirir mi membresía
-            </button>
-
-            {(sede?.whatsappUrl || sede?.googleMapsUrl) && (
-              <div className="planes__hero-links">
-                {sede?.whatsappUrl && (
-                  <a href={sede.whatsappUrl} target="_blank" rel="noreferrer">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                    </svg>
-                    WhatsApp
-                  </a>
-                )}
-                {sede?.googleMapsUrl && (
-                  <a href={sede.googleMapsUrl} target="_blank" rel="noreferrer">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z" />
-                    </svg>
-                    Cómo llegar
-                  </a>
-                )}
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Divider */}
-        <div className="planes__divider">
-          <span className="planes__divider-line" />
-          <span className="planes__divider-txt">O empezá directo</span>
-          <span className="planes__divider-line" />
-        </div>
-
-        {/* Encabezado planes */}
-        <div ref={planesRef} className="planes__intro">
-          <h2 className="planes__intro-title">Elegí cómo querés vivir CLIC</h2>
-          <p className="planes__intro-sub">
-            Encontrá el plan que mejor se adapte a tu rutina y reservá tus
-            clases desde la app.
-          </p>
-        </div>
-
-        {/* Toggle mensual / trimestral */}
-        {frecuenciasDisponibles.size > 0 && (
-          <div className="planes__toggle-wrap">
-            <div className="planes__toggle">
-              {(['MENSUAL', 'TRIMESTRAL'] as const).map((f) =>
-                frecuenciasDisponibles.has(f) ? (
-                  <button
-                    key={f}
-                    type="button"
-                    className={`planes__toggle-opt${periodo === f ? ' planes__toggle-opt--active' : ''}`}
-                    onClick={() => setPeriodo(f)}
-                  >
-                    {f === 'MENSUAL' ? 'Mensual' : 'Trimestral'}
-                    {f === 'TRIMESTRAL' && (
-                      <span className="planes__toggle-pill">+ ahorro</span>
-                    )}
-                  </button>
-                ) : null,
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Cards de planes */}
-        {planes.length === 0 ? (
-          <div className="planes__empty">
-            <p>No hay planes disponibles para esta opción.</p>
-          </div>
-        ) : (
-          <div className="planes__cards">
-            {planes.map((t) => {
-              const precio = precioLista(t);
-              // Solo los trimestrales muestran ahorro, contra pagar mes a mes.
-              // Los mensuales lo comparaban contra el precio con tarjeta de
-              // crédito, que en la venta online no se cobra nunca: Mercado Pago
-              // crea la preferencia con un solo importe, elija lo que elija la
-              // persona adentro. Era prometer un ahorro que no existe.
-              const ahorroPct = ahorroVsMensual(t, tipos);
-              return (
-                <article
-                  key={t.id}
-                  className={`planes__card${t.destacado ? ' planes__card--top' : ''}`}
-                >
-                  {t.destacado && (
-                    <span className="planes__card-ribbon">El más elegido</span>
-                  )}
-                  <h3 className="planes__card-name">{t.etiqueta || t.nombre}</h3>
-                  <p className="planes__card-freq">{t.subtitulo}</p>
-                  {t.descripcion && (
-                    <p className="planes__card-copy">{t.descripcion}</p>
-                  )}
-                  <div className="planes__card-price-row">
-                    <span className="planes__card-price">{formatPrice(precio)}</span>
-                    <span className="planes__card-per">
-                      {periodo === 'MENSUAL' ? '/mes' : '/trimestre'}
-                    </span>
-                  </div>
-                  {ahorroPct != null && ahorroPct > 0 && (
-                    <span className="planes__card-save">
-                      <span className="planes__card-save-dot" />
-                      Ahorrás {ahorroPct}% vs mes a mes
-                    </span>
-                  )}
-                  <button
-                    type="button"
-                    className={`planes__card-cta${t.destacado ? ' planes__card-cta--primary' : ''}`}
-                    onClick={() => empezarPlan(t)}
-                  >
-                    Empezar este plan
-                  </button>
-                </article>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Qué incluye */}
-        <ul className="planes__benefits">
-          {beneficios.map((b, i) => (
-            <li key={i} className="planes__benefit">
-              <span className="planes__benefit-check">✓</span>
-              {b}
-            </li>
-          ))}
-        </ul>
-
-        {/* Trust */}
-        <div className="planes__trust">
-          <span>Pagás online</span>
-          <span>·</span>
-          <span>Sin permanencia</span>
-          <span>·</span>
-          <span>Vence a los 30 días</span>
-        </div>
-
-        {/* Recordatorio prueba */}
-        <div className="planes__reminder">
-          ¿Primera vez en reformer?{' '}
-          <button type="button" className="planes__reminder-link" onClick={abrirPrueba}>
-            Reservá tu clase de prueba
-          </button>{' '}
-          — si te quedás, se descuenta de tu plan.
-        </div>
-
-        {showSticky && (
-          <div className="planes__sticky">
-            <div className="planes__sticky-info">
-              <span className="planes__sticky-label">Clase de prueba</span>
-              <span className="planes__sticky-price">
-                {formatPrice(sede?.precioPrueba)}
-              </span>
-            </div>
-            <button
-              type="button"
-              className="planes__sticky-btn"
-              onClick={abrirPrueba}
-            >
-              Reservar
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  }
-
   // ══════════════════════════════ CHECKOUT ══════════════════════════════
   const pasosDef = ['1 · Horarios', '2 · Tus datos'];
   const precioSel = tipoSel ? precioLista(tipoSel) : sede?.precioPrueba ?? null;
@@ -1177,7 +814,7 @@ export default function Planes({
           type="button"
           className="planes__co-back"
           onClick={volver}
-          aria-label={step === 1 ? 'Volver a la sede' : 'Volver al paso anterior'}
+          aria-label={step === 1 ? 'Volver al estudio' : 'Volver al paso anterior'}
         >
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M19 12H5" />
