@@ -426,9 +426,15 @@ Pendientes que quedan de esta fase:
       elegir una sola, la fachada gana: es la que permite reconocer el lugar al
       llegar.
       El brief está en `docs/fotos.md`
-- [ ] **Links de las tiendas** para la sección de la app: hoy los badges se ven
-      pero no son links, porque no tenemos las URLs. Un botón que no lleva a
-      ningún lado es peor que no tenerlo
+- [x] ~~Links de las tiendas~~ — **7-oct**: los badges llevan a la App Store y
+      a Google Play (`SITIO.apps`), en la home y en una sección nueva de
+      franquicias, con dos capturas reales de la app (`public/fotos/app/`,
+      recortadas por `scripts/preparar-capturas-app.mjs`). Las redes pasaron a
+      `@clic.pilates`.
+- [ ] **Las capturas de la tienda tienen dos detalles**: la de inicio saluda a
+      "Revisor" (la cuenta de revisión de Apple) y la de Cuenta muestra "0 / 4
+      clases · 3 restantes", que no cierra (por eso no se usa en la web). Si se
+      rehacen para la tienda, rehacer también estas
 - [ ] **Confirmar los números** para poder publicarlos: 4.9 en Google, máximo
       por clase, y cuántos estudios son de verdad
 

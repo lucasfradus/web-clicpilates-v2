@@ -15,8 +15,14 @@ export const SITIO = {
   claim: 'HACÉ EL CLIC',
   locale: 'es_AR',
   redes: {
-    instagram: 'https://www.instagram.com/clicstudiopilates',
-    tiktok: 'https://www.tiktok.com/@clicstudiopilates',
+    instagram: 'https://www.instagram.com/clic.pilates',
+    tiktok: 'https://www.tiktok.com/@clic.pilates',
+  },
+  /** La app propia. En la App Store figura como "Clic Fitness": es la misma
+   *  app para las tres marcas. */
+  apps: {
+    ios: 'https://apps.apple.com/ar/app/clic-fitness/id6806391392',
+    android: 'https://play.google.com/store/apps/details?id=com.clicestudio.app',
   },
 } as const
 

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import { BadgesTiendas, TelefonosApp } from '@/components/app-movil'
 import { FormularioContacto } from '@/components/formulario-contacto'
 import { FotoFondo } from '@/components/foto-fondo'
 import { JsonLd } from '@/components/json-ld'
@@ -62,7 +63,8 @@ const FAQS: Faq[] = [
     pregunta: '¿Cómo se maneja el estudio una vez abierto?',
     respuesta:
       'Con el mismo sistema de gestión que usamos nosotros: reservas, cobros, membresías y ' +
-      'reportes. Es el software con el que operan hoy todos los estudios de la red.',
+      'reportes, y con la app de CLIC para tus alumnas. Es el software con el que operan ' +
+      'hoy todos los estudios de la red.',
   },
 ]
 
@@ -70,7 +72,7 @@ export default async function Franquicias () {
   const sedes = await getSedes()
 
   const incluye = [
-    ['Sistema de gestión', 'El mismo software que usamos: reservas, cobros, membresías y reportes.'],
+    ['Sistema de gestión y app', 'El mismo software que usamos, y la app de CLIC para tus alumnas.'],
     ['Formación del equipo', 'Tus instructoras se certifican en CLIC Academy antes de abrir.'],
     ['Marca y método', 'El repertorio, los niveles y el criterio de clase de toda la red.'],
     ['Campañas por sede', 'Cada estudio corre las suyas, con su propio pixel y su medición.'],
@@ -111,6 +113,28 @@ export default async function Franquicias () {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Lo que afirma está acotado a lo que el sistema hace hoy en toda la red. */}
+      <section className="section app">
+        <div className="container app__grid">
+          <div>
+            <p className="eyebrow eyebrow--light">Tecnología propia</p>
+            <h2>Tu estudio, con su app.</h2>
+            <p>
+              Tus alumnas reservan, cancelan y se anotan en lista de espera desde la app de
+              CLIC, en iOS y Android. Ven su plan y sus próximas clases sin escribirle a
+              recepción.
+            </p>
+            <p>
+              Del otro lado, el mismo sistema con el que operan todos los estudios de la red:
+              la agenda y los horarios fijos, los cobros online con Mercado Pago y el débito
+              automático, la facturación electrónica y los reportes del estudio.
+            </p>
+            <BadgesTiendas />
+          </div>
+          <TelefonosApp />
         </div>
       </section>
 

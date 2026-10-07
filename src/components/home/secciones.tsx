@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+import { BadgesTiendas, TelefonosApp } from '@/components/app-movil'
 import { FotoFondo } from '@/components/foto-fondo'
 import { FOTOS } from '@/lib/fotos'
 import { SITIO } from '@/lib/site'
@@ -191,14 +192,9 @@ export function AppMovil () {
             Reservás, cancelás, ves tus créditos y tu historial. Lo mismo que hacés en la
             web, sin abrir el navegador.
           </p>
-          {/* Sin links: todavía no tenemos las URLs de las tiendas (tasks/todo.md).
-              Un botón que no lleva a ningún lado es peor que no tenerlo. */}
-          <div className="app__badges">
-            <span className="badge"><span><small>Descargar en</small><b>App Store</b></span></span>
-            <span className="badge"><span><small>Disponible en</small><b>Google Play</b></span></span>
-          </div>
+          <BadgesTiendas />
         </div>
-        <div />
+        <TelefonosApp />
       </div>
     </section>
   )
