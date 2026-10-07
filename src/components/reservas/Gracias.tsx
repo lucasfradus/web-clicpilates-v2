@@ -236,7 +236,7 @@ export default function Gracias() {
           <p className="gracias__sub">
             Hubo un problema con tu pago. Podés intentarlo de nuevo.
           </p>
-          <Link href="/reservar" className="gracias__btn">
+          <Link href="/estudios" className="gracias__btn">
             Volver a intentar
           </Link>
         </div>

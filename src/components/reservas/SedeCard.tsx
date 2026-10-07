@@ -13,7 +13,7 @@ export function SedeCard({ sede }: { sede: Sede }) {
 
   return (
     <Link
-      href={`/reservar/sede/${sede.slug}`}
+      href={`/estudios/${sede.slug}`}
       className="sede-card"
       onClick={() =>
         trackEvent('select_sede', {
@@ -40,13 +40,22 @@ export function SedeCard({ sede }: { sede: Sede }) {
         <p className="t-tag">{sede.ciudad}</p>
         <h2 className="sede-card__name t-display">{sede.nombre}</h2>
         <p className="sede-card__addr">{sede.direccion}</p>
+        {/* Una sede que no cobra online no ofrece la prueba en su página: la
+            tarjeta no la puede prometer. */}
         <div className="sede-card__foot">
-          <div>
-            <p className="sede-card__price-label">Clase de prueba</p>
-            <p className="sede-card__price">{formatPrice(sede.precioPrueba)}</p>
-          </div>
+          {sede.reservaOnline ? (
+            <div>
+              <p className="sede-card__price-label">Clase de prueba</p>
+              <p className="sede-card__price">{formatPrice(sede.precioPrueba)}</p>
+            </div>
+          ) : (
+            <div>
+              <p className="sede-card__price-label">Reservas</p>
+              <p className="sede-card__addr">Consultá por WhatsApp</p>
+            </div>
+          )}
           <span className="sede-card__cta">
-            Ver clases <span aria-hidden="true">→</span>
+            {sede.reservaOnline ? 'Ver clases' : 'Ver estudio'} <span aria-hidden="true">→</span>
           </span>
         </div>
       </div>

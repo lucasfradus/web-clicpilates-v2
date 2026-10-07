@@ -12,9 +12,7 @@ import { zonaDe } from '@/lib/zona'
  * focal de cada imagen justamente para que el recorte no le corte la cabeza a
  * nadie en mobile.
  *
- * El destino es configurable porque la misma tarjeta sirve en dos lugares con
- * intenciones distintas: en `/estudios` lleva a conocer el estudio, y en
- * `/reservar` a reservar en él.
+ * El destino es configurable, aunque hoy todas llevan a `/estudios/<slug>`.
  */
 export function TarjetaSede ({ sede, prioridad = false, href, cta }: {
   sede: Sede

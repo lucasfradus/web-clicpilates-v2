@@ -1,8 +1,3 @@
-/* ============================================================================
-   Landing de sede e índice de estudios.
-   Valores tomados de docs/prototipo.html, que es la especificación visual.
-   ========================================================================== */
-
 /* ===== Encabezado de sub-página ===== */
 
 .subhero {
@@ -154,194 +149,6 @@
   color: rgba(255, 255, 255, 0.68);
 }
 
-/* ===== Planes ===== */
-
-.plans {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
-  align-items: start;
-}
-
-.plan {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 34px 30px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-}
-
-.plan:hover {
-  transform: translateY(-4px);
-  border-color: var(--taupe);
-  box-shadow: var(--shadow-soft);
-}
-
-.plan--hot {
-  background: var(--ink-deep);
-  border-color: var(--ink-deep);
-  color: #fff;
-}
-
-.plan__badge {
-  position: absolute;
-  top: 18px;
-  right: 22px;
-  padding: 5px 12px;
-  border-radius: var(--radius-pill);
-  background: var(--taupe);
-  color: var(--ink-deep);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.plan__name {
-  margin-top: 12px;
-  font-family: var(--font-serif);
-  font-size: 26px;
-  font-weight: 400;
-}
-
-.plan__sub {
-  min-height: 34px;
-  margin-top: 8px;
-  font-size: 12px;
-  color: var(--ink-soft);
-}
-
-.plan--hot .plan__sub {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.plan__price {
-  margin-top: 22px;
-  padding-top: 22px;
-  border-top: 1px solid var(--line);
-  font-size: 38px;
-  font-weight: 300;
-  letter-spacing: -1px;
-  line-height: 1;
-}
-
-.plan--hot .plan__price {
-  border-top-color: rgba(255, 255, 255, 0.14);
-}
-
-.plan__per {
-  margin-top: 8px;
-  font-size: 12px;
-  color: var(--ink-soft);
-}
-
-.plan--hot .plan__per {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-/* El primer mes con la prueba descontada: el argumento comercial del negocio. */
-.plan__first {
-  margin-top: 18px;
-  padding: 14px 16px;
-  border-radius: var(--radius-sm);
-  background: var(--sage-bg);
-}
-
-.plan--hot .plan__first {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.plan__first span {
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--sage-texto);
-}
-
-.plan--hot .plan__first span {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.plan__first b {
-  display: block;
-  margin-top: 5px;
-  font-size: 24px;
-  font-weight: 300;
-  letter-spacing: -0.6px;
-  line-height: 1;
-  color: #31462b;
-}
-
-.plan--hot .plan__first b {
-  color: #fff;
-}
-
-.plan__first small {
-  display: block;
-  margin-top: 6px;
-  font-size: 11px;
-  color: var(--sage-texto);
-}
-
-.plan--hot .plan__first small {
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.plan ul {
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-  margin-top: 24px;
-  list-style: none;
-}
-
-.plan li {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  font-size: 13px;
-  color: var(--ink-soft);
-}
-
-.plan--hot li {
-  color: rgba(255, 255, 255, 0.72);
-}
-
-.plan li::before {
-  content: '—';
-  flex: none;
-  color: var(--taupe);
-}
-
-/* El `margin-top: auto` es lo que hace que los botones queden alineados entre
-   tarjetas de distinto alto: la tarjeta es flex en columna y el pie empuja
-   contra el fondo. Sin esto, cada CTA arranca donde termina su lista de
-   características y la fila queda escalonada. Viene del prototipo. */
-.plan__foot {
-  margin-top: auto;
-  padding-top: 30px;
-}
-
-/* ===== Galería ===== */
-
-.galeria {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
-
-.galeria__foto {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  border-radius: var(--radius-md);
-  background: var(--beige-soft);
-}
-
 /* ===== Preguntas frecuentes ===== */
 
 .faq {
@@ -422,10 +229,8 @@
 }
 
 @media (max-width: 1024px) {
-  .plans,
   .trial,
-  .info-grid,
-  .galeria {
+  .info-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -435,10 +240,8 @@
     padding: 104px 0 56px;
   }
 
-  .plans,
   .trial,
-  .info-grid,
-  .galeria {
+  .info-grid {
     grid-template-columns: 1fr;
   }
 
@@ -483,11 +286,6 @@
 
 .legal .sub {
   text-decoration: underline;
-}
-
-/* Franja del selector de estudio en la página de precios. */
-.price-picker {
-  margin-bottom: 34px;
 }
 
 /* ===== Formularios ===== */

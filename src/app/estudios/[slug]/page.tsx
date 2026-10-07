@@ -1,59 +1,53 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-import { FotoFondoRemota } from '@/components/foto-fondo'
 import { JsonLd } from '@/components/json-ld'
-import { ViewContentSede } from '@/components/medicion/view-content'
-import { Migas } from '@/components/migas'
-import { BloqueFaq } from '@/components/sede/faq'
-import { BloquePrueba } from '@/components/sede/bloque-prueba'
-import { Galeria } from '@/components/sede/galeria'
-import { GrillaEnVivo } from '@/components/sede/grilla-en-vivo'
-import { Planes } from '@/components/sede/planes'
-import { accionDeSede } from '@/lib/api/contacto'
-import { getCatalogo, getSedes } from '@/lib/api/sedes'
-import type { Sede } from '@/lib/api/tipos'
-import { faqsDeSede } from '@/lib/faqs'
+import Planes from '@/components/reservas/Planes'
+import { getCatalogo as getCatalogoWeb, getSedes as getSedesWeb } from '@/lib/api/sedes'
 import { pesos } from '@/lib/formato'
-import { grafo, migasDePan, negocioLocal, organizacion, paginaDeFaqs } from '@/lib/jsonld'
-import { NOINDEX } from '@/lib/site'
-import { sedesCerca, zonaDe } from '@/lib/zona'
-
-// Next exige que este valor sea un literal analizable estáticamente: no acepta
-// una constante importada. Tiene que coincidir con REVALIDAR de src/lib/api.
-export const revalidate = 3600
+import { grafo, migasDePan, negocioLocal, organizacion } from '@/lib/jsonld'
+import { getCatalogo, getSedes } from '@/lib/reservas/api'
+import type { Sede } from '@/lib/reservas/types'
+import { zonaDe } from '@/lib/zona'
 
 /**
- * La landing de sede: el activo de SEO del proyecto.
+ * La página de un estudio. Desde el 7-oct es una sola: la del portal de
+ * reservas (hero, planes y checkout de clase de prueba o de plan), que antes
+ * vivía en `/reservar/sede/<slug>` y convivía con una landing propia que
+ * repetía lo mismo.
  *
- * Todo lo indexable —H1 por zona, dirección, precios, FAQs, structured data—
- * sale en el HTML del servidor y se cachea una hora. Lo único que llega después
- * es la grilla, que cambia cada minuto.
+ * Lo que la landing aportaba para Google y el portal no tenía va sin cambiar lo
+ * que se ve: título y descripción por zona, imagen para compartir y el JSON-LD
+ * del negocio. Las FAQs no: Google pide que el FAQPage esté visible.
+ *
+ * La sede y su catálogo se resuelven acá, con caché. Las clases no: cambian
+ * cada minuto y las pide el navegador.
+ *
+ * `?tipo=<CatalogoTipoPlan.id>` abre directamente el checkout de ese plan.
  */
 
 async function buscarSede (slug: string): Promise<Sede | 'error' | null> {
-  const sedes = await getSedes()
-  if (sedes === null) return 'error'
-  return sedes.find((s) => s.slug === slug) ?? null
-}
-
-export async function generateStaticParams () {
-  const sedes = await getSedes()
-  return (sedes ?? []).map((sede) => ({ slug: sede.slug }))
+  try {
+    const sedes = await getSedes()
+    return sedes.find((s) => s.slug === slug) ?? null
+  } catch {
+    return 'error'
+  }
 }
 
 export async function generateMetadata ({ params }: PageProps<'/estudios/[slug]'>): Promise<Metadata> {
   const { slug } = await params
-  const sede = await buscarSede(slug)
-  if (typeof sede === 'string' || sede === null) return {}
+  const sede = (await getSedesWeb())?.find((s) => s.slug === slug)
+  if (sede == null) return {}
 
   const zona = zonaDe(sede)
   // Sin la marca: la agrega la plantilla del layout (`%s · CLIC studio pilates`).
   const titulo = `Pilates reformer en ${zona}`
   const descripcion =
     `Pilates Reformer en ${sede.direccion}, ${sede.ciudad}. ` +
-    `Horarios reales, grupos chicos y clase de prueba desde ${pesos(sede.precioPrueba)}.`
+    (sede.precioPrueba != null
+      ? `Horarios reales, grupos chicos y clase de prueba desde ${pesos(sede.precioPrueba)}.`
+      : 'Horarios reales y grupos chicos.')
 
   return {
     title: titulo,
@@ -68,20 +62,32 @@ export async function generateMetadata ({ params }: PageProps<'/estudios/[slug]'
   }
 }
 
-export default async function LandingSede ({ params }: PageProps<'/estudios/[slug]'>) {
+export default async function Estudio ({ params, searchParams }: PageProps<'/estudios/[slug]'>) {
   const { slug } = await params
-  const sede = await buscarSede(slug)
+  const { tipo } = await searchParams
+  const tipoParam = (Array.isArray(tipo) ? tipo[0] : tipo) ?? null
 
-  // Que el backend esté caído no puede convertir una sede real en un 404
-  // permanente: eso le enseñaría a Google que la página no existe.
-  if (sede === 'error') throw new Error(`No se pudo cargar la sede ${slug}`)
+  const sede = await buscarSede(slug)
   if (sede === null) notFound()
 
-  const [catalogo, todas] = await Promise.all([getCatalogo(sede.slug), getSedes()])
-  const zona = zonaDe(sede)
-  const faqs = faqsDeSede(sede, catalogo)
-  const cerca = sedesCerca(sede, todas ?? [])
-  const accion = accionDeSede(sede)
+  // Si el backend no contestó, la pantalla del portal muestra su propio error
+  // con "Reintentar", que vuelve a pedir todo desde el navegador.
+  if (sede === 'error') {
+    return (
+      <div className="rsv">
+        <div className="page">
+          <Planes slug={slug} tipoParam={tipoParam} inicial={null} />
+        </div>
+      </div>
+    )
+  }
+
+  const [catalogo, sedeWeb, catalogoWeb] = await Promise.all([
+    getCatalogo(slug).catch(() => []),
+    getSedesWeb().then((s) => s?.find((x) => x.slug === slug) ?? null),
+    getCatalogoWeb(slug),
+  ])
+  const cat = catalogo.find((c) => c.sedeSlug === slug) ?? catalogo[0]
 
   const migas = [
     { nombre: 'Inicio', href: '/' },
@@ -91,159 +97,24 @@ export default async function LandingSede ({ params }: PageProps<'/estudios/[slu
 
   return (
     <>
-      <section className="subhero">
-        {/* La foto del propio estudio, no una de marca: es la que deja
-            reconocer el lugar y la que el franquiciado sube de su sede. */}
-        <div className="subhero__foto">
-          <FotoFondoRemota url={sede.imagenUrl} foco={sede.imagenFoco} prioridad sizes="100vw" />
-        </div>
-        <div className="container subhero__in">
-          <Migas migas={migas} />
-          <p className="eyebrow eyebrow--light" style={{ marginTop: 26 }}>{sede.ciudad}</p>
-          <h1>Pilates reformer<br />en {zona}</h1>
-          <p>
-            CLIC {sede.nombre} — {sede.direccion}, {sede.ciudad}.
-            {sede.descripcion != null ? ` ${sede.descripcion}` : ' Pilates Reformer, en grupos chicos.'}
-          </p>
-          {accion != null && (
-            <div style={{ marginTop: 28 }}>
-              <a
-                className="btn btn--light"
-                href={accion.href}
-                {...(accion.reserva ? {} : { target: '_blank', rel: 'noreferrer' })}
-              >
-                {accion.texto}
-              </a>
-            </div>
-          )}
-        </div>
-      </section>
-
-      <div className="container">
-        <div className="info-grid">
-          <div className="info">
-            <p className="eyebrow">Clase de prueba</p>
-            <b>{pesos(sede.precioPrueba)}</b>
-            <span>Se abona al reservar y se descuenta del plan si seguís.</span>
-          </div>
-          <div className="info">
-            <p className="eyebrow">Dirección</p>
-            <b>{sede.direccion}</b>
-            <span>
-              {sede.googleMapsUrl != null
-                ? <a href={sede.googleMapsUrl} target="_blank" rel="noreferrer" className="sub">Abrir en Google Maps</a>
-                : sede.ciudad}
-            </span>
-          </div>
-          <div className="info">
-            <p className="eyebrow">Consultas</p>
-            <b>{sede.whatsappUrl != null ? 'WhatsApp' : sede.email ?? 'Por la web'}</b>
-            <span>
-              {sede.whatsappUrl != null
-                ? <a href={sede.whatsappUrl} target="_blank" rel="noreferrer" className="sub">Escribinos por WhatsApp</a>
-                : 'Horarios y planes, de lunes a sábado.'}
-            </span>
-          </div>
+      <div className="rsv">
+        <div className="page">
+          <Planes
+            slug={slug}
+            tipoParam={tipoParam}
+            inicial={{
+              sede,
+              tipos: cat?.tipos ?? [],
+              caracteristicas: cat?.caracteristicas ?? [],
+            }}
+          />
         </div>
       </div>
-
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <p className="eyebrow">Disponibilidad real</p>
-            <h2>Próximas clases en {sede.nombre}</h2>
-            <p>
-              Los cupos salen del mismo sistema con el que trabaja el estudio.
-              Lo que ves acá es lo que hay.
-            </p>
-          </div>
-          <GrillaEnVivo sede={sede} />
-        </div>
-      </section>
-
-      <section className="section" style={{ background: 'var(--surface)' }}>
-        <div className="container">
-          <div className="section-head">
-            <p className="eyebrow">Cómo empezás en {sede.nombre}</p>
-            <h2>Probás una vez, y si seguís no la pagás dos.</h2>
-          </div>
-          <BloquePrueba nombreSede={sede.nombre} precioPrueba={sede.precioPrueba} />
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <p className="eyebrow">Planes en {sede.nombre}</p>
-            <h2>Elegí tu frecuencia.</h2>
-            {/* Sin catálogo, prometer que "se contrata desde acá" contradice el
-                recuadro de abajo. Pasa cuando la sede vende los planes en persona. */}
-            {catalogo != null && catalogo.tipos.length > 0 ? (
-              <p>
-                Estos son los valores de este estudio. Cada sede publica su propia lista, y
-                cualquiera de estos planes se contrata desde acá.
-              </p>
-            ) : (
-              <p>
-                En este estudio los planes se contratan en persona: escribinos y te pasamos
-                las opciones y los valores.
-              </p>
-            )}
-          </div>
-          <Planes sede={sede} catalogo={catalogo} />
-        </div>
-      </section>
-
-      {sede.fotosDetalle.length > 0 && (
-        <section className="section section--tight" style={{ background: 'var(--surface)' }}>
-          <div className="container">
-            <div className="section-head">
-              <p className="eyebrow">El estudio</p>
-              <h2>Así es CLIC {sede.nombre}.</h2>
-            </div>
-            <Galeria fotos={sede.fotosDetalle} nombreSede={sede.nombre} />
-          </div>
-        </section>
+      {sedeWeb != null && (
+        <JsonLd
+          datos={grafo(organizacion(), negocioLocal(sedeWeb, catalogoWeb), migasDePan(migas))}
+        />
       )}
-
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <p className="eyebrow">Preguntas frecuentes</p>
-            <h2>Sobre entrenar en {zona}.</h2>
-          </div>
-          <BloqueFaq faqs={faqs} />
-
-          {cerca.length > 0 && (
-            <div style={{ marginTop: 56 }}>
-              <p className="eyebrow">Otros estudios cerca</p>
-              <div className="nearby">
-                {cerca.map((otra) => (
-                  <Link key={otra.id} href={`/estudios/${otra.slug}`}>
-                    CLIC {otra.nombre} <span style={{ color: 'var(--ink-soft)' }}>{otra.ciudad}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
-
-      <ViewContentSede
-        slug={sede.slug}
-        nombre={sede.nombre}
-        precioPrueba={sede.precioPrueba}
-        activo={!NOINDEX}
-      />
-
-      <JsonLd
-        datos={grafo(
-          organizacion(),
-          negocioLocal(sede, catalogo),
-          paginaDeFaqs(faqs),
-          migasDePan(migas),
-        )}
-      />
     </>
   )
 }

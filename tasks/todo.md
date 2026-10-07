@@ -200,12 +200,18 @@ están mergeados y se pueden cerrar.
       galería son indicadores y no botones de 7px, y en la grilla el control
       accesible es "Reserva ahora" y no la fila entera. Lighthouse y axe en
       100 / sin violaciones en todos los pasos.
-      **7-oct: se fue la portada del portal.** Repetía la landing del estudio
-      (foto, precio de la prueba, planes). Ahora `/estudios/<slug>` es la
-      página del estudio y `/reservar/sede/<slug>` es sólo el checkout: entra
-      directo en la clase de prueba, o en el plan de `?tipo=`, y la flecha del
-      primer paso vuelve al estudio. El `view_item`/`ViewContent` lo manda sólo
-      la landing del estudio (antes salía de las dos)
+      **7-oct, decisión de Lucas: una sola página por estudio, la del
+      portal, bajo `/estudios`.** La landing propia del estudio (grilla, FAQs,
+      bloques de información) se borró; `/estudios` es la lista del portal y
+      `/estudios/<slug>` su página de sede con el checkout. Lo invisible para
+      Google se mantiene (título y descripción por zona, OG, JSON-LD del
+      negocio); el FAQPage no, porque ya no se ven las preguntas. `/reservar` y
+      `/reservar/sede/*` redirigen con 301; `/reservar/gracias` queda (es la
+      vuelta de Mercado Pago). Una sede sin venta online aparece igual, con
+      WhatsApp en vez de la clase de prueba.
+      **El texto propio por estudio (PR #16) necesita lugar nuevo**: estaba
+      pensado para la landing que se borró. Hoy la página del portal sólo
+      muestra `Sede.descripcion`, y únicamente en desktop
 - [ ] **El corte del portal de reservas.** El flujo ya vive acá (`/reservar`),
       probado de punta a punta contra la Sede Test (5-oct, y de nuevo el 6-oct
       ya portado): el POST devuelve `200` y Mercado Pago acepta la preferencia.

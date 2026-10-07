@@ -3,7 +3,8 @@ import type { MetadataRoute } from 'next'
 import { NOINDEX, SITIO } from '@/lib/site'
 
 /**
- * `/reservar` y `/mi-cuenta` quedan fuera del índice: son embudo y cuenta, no
+ * `/reservar` (hoy sólo la vuelta de Mercado Pago) y `/mi-cuenta` quedan fuera
+ * del índice: son embudo y cuenta, no
  * aportan contenido indexable y sus URLs profundas son estados de una sesión.
  * `/api` tampoco.
  *
