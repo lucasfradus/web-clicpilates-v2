@@ -478,6 +478,40 @@
   line-height: 1.2;
 }
 
+/* Dos pantallas reales de la app, una adelante de la otra. El marco es CSS:
+   las capturas vienen recortadas a la pantalla, con las esquinas transparentes. */
+.telefonos {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 24px 0 40px;
+}
+
+.telefono {
+  width: min(240px, 44vw);
+  padding: 7px;
+  border-radius: 34px;
+  background: #0d0d10;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), var(--shadow-strong);
+}
+
+.telefono img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 28px;
+}
+
+.telefono--atras {
+  transform: translate(18%, -6%) rotate(5deg);
+  opacity: 0.85;
+}
+
+.telefono--frente {
+  margin-left: -22%;
+  transform: translateY(8%) rotate(-3deg);
+}
+
 /* ===== Academy / Franquicias ===== */
 
 .split {
