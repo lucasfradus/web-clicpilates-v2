@@ -25,6 +25,13 @@ export const SITIO = {
     instagram: 'https://www.instagram.com/clic.pilates',
     tiktok: 'https://www.tiktok.com/@clic.pilates',
   },
+  /** WhatsApp de CLIC Academy, para consultar por los próximos cursos. */
+  academyWhatsapp: {
+    numero: '+54 9 11 7151-4031',
+    url:
+      'https://wa.me/5491171514031?text=' +
+      encodeURIComponent('Hola! Quiero saber sobre los próximos cursos de CLIC Academy.'),
+  },
   /** La app propia. En la App Store figura como "Clic Fitness": es la misma
    *  app para las tres marcas. */
   apps: {

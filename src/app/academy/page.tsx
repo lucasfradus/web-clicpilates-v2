@@ -7,6 +7,7 @@ import { Migas } from '@/components/migas'
 import { getSedes } from '@/lib/api/sedes'
 import { FOTOS } from '@/lib/fotos'
 import { grafo, migasDePan, organizacion } from '@/lib/jsonld'
+import { SITIO } from '@/lib/site'
 
 // Literal por exigencia de Next; coincide con REVALIDAR de src/lib/api.
 export const revalidate = 3600
@@ -54,6 +55,11 @@ export default async function Academy () {
             Certificación con práctica supervisada en estudios que funcionan todos los días,
             y salida laboral concreta en la red CLIC.
           </p>
+          <div style={{ marginTop: 28 }}>
+            <a className="btn btn--light" href={SITIO.academyWhatsapp.url} target="_blank" rel="noreferrer">
+              Próximos cursos por WhatsApp
+            </a>
+          </div>
         </div>
       </section>
 
@@ -98,8 +104,11 @@ export default async function Academy () {
             estudios que están funcionando, acompañada por una instructora con experiencia.
           </p>
 
-          <div style={{ marginTop: 40 }}>
+          <div style={{ marginTop: 40, display: 'flex', flexWrap: 'wrap', gap: 14 }}>
             <a className="btn btn--primary" href="#contacto">Pedir información</a>
+            <a className="btn btn--ghost" href={SITIO.academyWhatsapp.url} target="_blank" rel="noreferrer">
+              Consultar por WhatsApp
+            </a>
           </div>
         </div>
       </section>
@@ -111,6 +120,11 @@ export default async function Academy () {
             <h2>Contanos de vos.</h2>
             <p>
               Te mandamos el programa, las fechas de la próxima camada y los valores al día.
+              ¿Preferís WhatsApp? Escribinos al{' '}
+              <a href={SITIO.academyWhatsapp.url} target="_blank" rel="noreferrer" style={{ textDecoration: 'underline' }}>
+                {SITIO.academyWhatsapp.numero}
+              </a>
+              .
             </p>
           </div>
           <FormularioContacto tipo="academy" emailContacto="info@clicpilates.com" />
