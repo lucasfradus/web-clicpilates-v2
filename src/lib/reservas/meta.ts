@@ -42,7 +42,7 @@ function slugGuardado(): string | null {
 /**
  * Sede de la pantalla actual, en orden de confiabilidad:
  *   1. `?sedeSlug=` — lo pone el backend en el back_url de Mercado Pago (/gracias)
- *   2. la ruta `/reservar/sede/:slug/...`
+ *   2. la ruta `/estudios/:slug`
  *   3. la última sede visitada
  *   4. null → no hay sede (la landing)
  */
@@ -50,7 +50,7 @@ export function slugDeRuta(pathname: string, search: string): string | null {
   const desdeQuery = new URLSearchParams(search).get('sedeSlug');
   if (desdeQuery) return desdeQuery;
 
-  const enRuta = pathname.match(/^\/reservar\/sede\/([^/]+)/);
+  const enRuta = pathname.match(/^\/estudios\/([^/]+)/);
   if (enRuta) return decodeURIComponent(enRuta[1]);
 
   return slugGuardado();

@@ -109,6 +109,7 @@ function normalizeSede(
   return {
     ...raw,
     precioPrueba: toNumber(raw.precioPrueba),
+    reservaOnline: raw.reservaOnline === true,
     // `fotos` puede faltar en respuestas cacheadas viejas: tratarlo como [].
     fotos: Array.isArray(raw.fotos)
       ? raw.fotos.filter((f): f is string => typeof f === 'string' && f !== '')
@@ -124,7 +125,9 @@ function normalizeSede(
 export async function getSedes(): Promise<Sede[]> {
   const raw = await request<
     Array<Sede & { precioPrueba: unknown; fotos?: unknown; metaPixelId?: unknown }>
-  >(`/api/public/sedes?tipo=${TIPO}`);
+    // `contexto=web`: toda sede activa, venda online o no. Sin él la API filtra
+    // las que no pueden cobrar, y en `/estudios` desaparecería su página.
+  >(`/api/public/sedes?tipo=${TIPO}&contexto=web`);
   return raw.map(normalizeSede);
 }
 

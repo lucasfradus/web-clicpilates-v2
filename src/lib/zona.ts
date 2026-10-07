@@ -26,16 +26,6 @@ export function zonaDe (sede: Pick<Sede, 'slug' | 'ciudad' | 'nombre'>): string 
   return ZONA[sede.slug] ?? sede.ciudad ?? sede.nombre
 }
 
-/**
- * Las otras sedes de la misma ciudad: enlazado interno entre landings locales,
- * que es de las pocas señales de SEO que dependen sólo de nosotros.
- */
-export function sedesCerca (sede: Sede, todas: Sede[], cuantas = 4): Sede[] {
-  const otras = todas.filter((s) => s.id !== sede.id)
-  const mismaCiudad = otras.filter((s) => s.ciudad === sede.ciudad)
-  return (mismaCiudad.length > 0 ? mismaCiudad : otras).slice(0, cuantas)
-}
-
 /** Sin acentos, sin mayúsculas y sin dobles espacios: para comparar, no para mostrar. */
 const normalizar = (s: string) =>
   s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim()

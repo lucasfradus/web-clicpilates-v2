@@ -16,6 +16,12 @@ export interface Sede {
    * publicitaria). null = usa el pixel general de la marca.
    */
   metaPixelId: string | null;
+  /**
+   * Si se puede reservar y pagar online (venta online, plan de prueba y cuenta
+   * de Mercado Pago). Agregado al portarlo a la web: el portal sólo listaba las
+   * sedes que cumplían esto, y `/estudios` lista todas.
+   */
+  reservaOnline: boolean;
 }
 
 export interface Actividad {

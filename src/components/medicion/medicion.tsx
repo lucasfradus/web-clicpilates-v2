@@ -43,7 +43,7 @@ export function Medicion ({ pixelesPorSede, activo }: {
       const enlace = (e.target as HTMLElement | null)?.closest?.('a')
       if (enlace == null) return
       const href = enlace.getAttribute('href')
-      if (href == null || !href.startsWith('/reservar')) return
+      if (href == null || !href.startsWith('/estudios')) return
       enlace.setAttribute('href', conUtms(href))
     }
 
@@ -63,7 +63,7 @@ export function Medicion ({ pixelesPorSede, activo }: {
     // En /reservar/gracias viene en `?sedeSlug=`, que lo pone el backend en el
     // back_url de Mercado Pago. Son las pantallas donde el evento pertenece a
     // una cuenta publicitaria concreta.
-    const slug = pathname.match(/^\/(?:estudios|reservar\/sede)\/([^/]+)/)?.[1] ??
+    const slug = pathname.match(/^\/estudios\/([^/]+)/)?.[1] ??
       (pathname.startsWith('/reservar/gracias')
         ? new URLSearchParams(window.location.search).get('sedeSlug') ?? undefined
         : undefined)

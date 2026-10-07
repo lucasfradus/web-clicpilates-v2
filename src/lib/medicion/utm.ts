@@ -1,8 +1,8 @@
 /**
  * UTMs.
  *
- * El embudo empieza en cualquier página y termina en el checkout de
- * `/reservar`. Si los parámetros de campaña se pierden en el salto, la venta
+ * El embudo empieza en cualquier página y termina en el checkout, que vive en
+ * `/estudios/<slug>`. Si los parámetros de campaña se pierden en el salto, la venta
  * aparece como directa y la pauta que la generó queda sin atribución — que es la
  * forma más cara de no medir. (Desde que el checkout es una página de acá, GA4
  * conserva la campaña porque es la misma sesión, y los `<Link>` de Next ignoran
@@ -11,7 +11,7 @@
  *
  * Dos cosas entonces: se guardan al llegar (la primera campaña gana, porque es
  * la que trajo a la persona) y se re-adjuntan a los links que salen a
- * `/reservar`.
+ * `/estudios`.
  */
 
 const CLAVE = 'clic:utm'

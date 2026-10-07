@@ -137,7 +137,7 @@ describe('accionDeSede', () => {
   it('manda a reservar cuando la sede puede cobrar online', () => {
     const accion = accionDeSede(SEDE)
     expect(accion).toEqual({
-      href: '/reservar/sede/nunez',
+      href: '/estudios/nunez',
       texto: 'Reservar clase de prueba',
       reserva: true,
     })
