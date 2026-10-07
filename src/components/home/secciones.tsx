@@ -9,8 +9,9 @@ import { SITIO } from '@/lib/site'
  * Las secciones de marca de la home.
  *
  * Regla de copy en todo este archivo: **ningún número sin confirmar**. La
- * cantidad de estudios sale de la API; el 4.9 de Google, el máximo por clase y
- * los testimonios están pendientes de que el dueño los confirme, así que hasta
+ * cantidad de estudios sale de la API y el máximo por clase de `CUPO_MAXIMO`
+ * (verificado contra la base); el 4.9 de Google y los testimonios están
+ * pendientes de que el dueño los confirme, así que hasta
  * entonces no se publican (ver `tasks/todo.md`). Es preferible una web que dice
  * menos a una que dice algo que no podemos sostener.
  */

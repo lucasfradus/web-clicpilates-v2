@@ -1,6 +1,13 @@
 /** Datos del sitio que no salen de la API y que se repiten en metadata, header,
  *  footer y JSON-LD. Un solo lugar para que no se desincronicen. */
 
+/**
+ * Cupo máximo de una clase de reformer. Verificado el 7-oct contra la base: las
+ * clases de los nueve estudios de reformer tienen cupo 10, sin excepciones. Hot
+ * Clic llega a 15, así que en lo que se arma por sede no se usa.
+ */
+export const CUPO_MAXIMO = 10
+
 export const SITIO = {
   nombre: 'CLIC studio pilates',
   /** Canónico. Decisión de fase 1: el sitio vive en `www`, y el apex redirige
@@ -8,7 +15,7 @@ export const SITIO = {
   url: 'https://www.clicpilates.com',
   titulo: 'Pilates reformer en Buenos Aires · CLIC studio pilates',
   descripcion:
-    'Pilates Reformer en grupos chicos, en Buenos Aires. ' +
+    `Pilates Reformer en grupos de hasta ${CUPO_MAXIMO} personas, en Buenos Aires. ` +
     'Reservá tu clase de prueba y mirá los horarios reales de tu estudio.',
   /** "Hacer el clic": el momento en que decidís priorizarte. Es el activo de
    *  marca más fuerte del negocio (docs/contexto.md §5). */

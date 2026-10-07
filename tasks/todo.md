@@ -441,8 +441,13 @@ Pendientes que quedan de esta fase:
       "Revisor" (la cuenta de revisión de Apple) y la de Cuenta muestra "0 / 4
       clases · 3 restantes", que no cierra (por eso no se usa en la web). Si se
       rehacen para la tienda, rehacer también estas
-- [ ] **Confirmar los números** para poder publicarlos: 4.9 en Google, máximo
-      por clase, y cuántos estudios son de verdad
+- [ ] **Confirmar los números** para poder publicarlos. **7-oct:** el máximo
+      por clase ya se publica (`CUPO_MAXIMO = 10`, verificado contra la base:
+      todas las clases de los nueve estudios de reformer tienen cupo 10; Hot
+      Clic llega a 15 y por eso no se usa en lo que se arma por sede). La
+      cantidad de estudios sale de la API: hoy cuenta 11 por la Sede Test, que
+      hay que **apagar en Clicnet antes del lanzamiento** (quedan 10). Falta el
+      **4.9 de Google**, que no se puede verificar desde acá
 
 
 ## Fase 5 — Resto de páginas ✅ (19-ago-2026)
