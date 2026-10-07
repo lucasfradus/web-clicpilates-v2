@@ -28,6 +28,9 @@ export function organizacion (): Json {
     '@id': ID_ORGANIZACION,
     name: SITIO.nombre,
     url: `${SITIO.url}/`,
+    // Lo que Google usa como logo de la marca en los resultados. Tiene que ser
+    // una imagen rastreable de al menos 112×112.
+    logo: `${SITIO.url}/brand/clic_logo_black.png`,
     sameAs: [SITIO.redes.instagram, SITIO.redes.tiktok],
   }
 }
