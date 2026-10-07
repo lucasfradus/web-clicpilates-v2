@@ -56,8 +56,9 @@ const FAQS: Faq[] = [
   {
     pregunta: '¿Tengo que saber de pilates?',
     respuesta:
-      'La parte técnica la cubre la red: las instructoras se forman en CLIC Academy y el ' +
-      'método, los niveles y el criterio de clase son los mismos en todos los estudios.',
+      'No. La parte técnica la cubre la red: el método, los niveles y el criterio de clase ' +
+      'son los mismos en todos los estudios, y las instructoras se capacitan en ese método ' +
+      'de forma constante. CLIC Academy, además, forma instructoras nuevas.',
   },
   {
     pregunta: '¿Cómo se maneja el estudio una vez abierto?',
@@ -73,7 +74,7 @@ export default async function Franquicias () {
 
   const incluye = [
     ['Sistema de gestión y app', 'El mismo software que usamos, y la app de CLIC para tus alumnas.'],
-    ['Formación del equipo', 'Tus instructoras se certifican en CLIC Academy antes de abrir.'],
+    ['Formación del equipo', 'Tus instructoras se capacitan en el método CLIC, y siguen haciéndolo.'],
     ['Marca y método', 'El repertorio, los niveles y el criterio de clase de toda la red.'],
     ['Campañas por sede', 'Cada estudio corre las suyas, con su propio pixel y su medición.'],
   ]

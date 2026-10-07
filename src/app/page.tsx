@@ -43,9 +43,9 @@ export default async function Home () {
               <p className="eyebrow eyebrow--light">Pilates reformer · Buenos Aires</p>
               <h1>Pilates reformer,<br /><em>tu horario.</em></h1>
               <p className="hero__sub">
-                Reformer en grupos de hasta {CUPO_MAXIMO}, con instructoras formadas en nuestra propia
-                academy. Elegís el estudio, ves los lugares que quedan y reservás en un
-                minuto.
+                Reformer en grupos de hasta {CUPO_MAXIMO}, con instructoras formadas y el mismo
+                método en cada estudio. Elegís el estudio, ves los lugares que quedan y
+                reservás en un minuto.
               </p>
 
               {/* El único número que publicamos es el que sale de la API. Un

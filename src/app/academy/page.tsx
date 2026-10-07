@@ -30,8 +30,9 @@ export const metadata: Metadata = {
  * Academy.
  *
  * Página deliberadamente breve: lo único que se afirma acá es lo que sabemos
- * —que las instructoras de la red se forman en la academy y que la práctica es
- * en estudios reales—. La duración, la modalidad, el precio y el programa
+ * —que la práctica es en estudios reales y que la red trabaja con un mismo
+ * método—. Ojo: no todas las instructoras de la red salen de la academy
+ * (aclarado el 7-oct), así que no se afirma eso. La duración, la modalidad, el precio y el programa
  * detallado los tiene que confirmar el dueño antes de publicarlos
  * (`tasks/todo.md`). Mientras tanto la página capta la búsqueda y pide el
  * contacto, que es lo que tiene que hacer.
@@ -73,8 +74,8 @@ export default async function Academy () {
             <b>La red CLIC</b>
             <span>
               {sedes != null && sedes.length > 0
-                ? `Las instructoras de los ${sedes.length} estudios se forman acá.`
-                : 'Las instructoras de la red se forman acá.'}
+                ? `Una vía de ingreso a los ${sedes.length} estudios de la red.`
+                : 'Una vía de ingreso a los estudios de la red.'}
             </span>
           </div>
         </div>
@@ -84,12 +85,13 @@ export default async function Academy () {
         <div className="container" style={{ maxWidth: 760 }}>
           <div className="section-head">
             <p className="eyebrow">Qué es</p>
-            <h2>Las instructoras de CLIC se forman en CLIC.</h2>
+            <h2>El método CLIC, de la base a la clase.</h2>
           </div>
           <p className="method__intro">
-            No contratamos instructoras y esperamos que compartan un criterio: lo formamos.
-            Por eso una clase en un estudio de la red se parece a la de cualquier otro — el
-            repertorio, las correcciones y la progresión son los mismos.
+            En todos los estudios de la red se respeta el mismo método: el repertorio, las
+            correcciones y la progresión son los mismos, y las instructoras se siguen
+            capacitando de forma constante. CLIC Academy es donde ese método se enseña desde
+            cero.
           </p>
           <p className="method__intro">
             La formación combina el trabajo teórico con horas de práctica supervisada en
