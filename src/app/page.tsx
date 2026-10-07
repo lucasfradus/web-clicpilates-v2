@@ -19,7 +19,7 @@ import { TarjetaSede } from '@/components/sede/tarjeta-sede'
 import { getSedes } from '@/lib/api/sedes'
 import { FOTOS } from '@/lib/fotos'
 import { grafo, organizacion } from '@/lib/jsonld'
-import { SITIO } from '@/lib/site'
+import { CUPO_MAXIMO, SITIO } from '@/lib/site'
 
 // Literal por exigencia de Next; coincide con REVALIDAR de src/lib/api.
 export const revalidate = 3600
@@ -43,7 +43,7 @@ export default async function Home () {
               <p className="eyebrow eyebrow--light">Pilates reformer · Buenos Aires</p>
               <h1>Pilates reformer,<br /><em>tu horario.</em></h1>
               <p className="hero__sub">
-                Reformer en grupos chicos, con instructoras formadas en nuestra propia
+                Reformer en grupos de hasta {CUPO_MAXIMO}, con instructoras formadas en nuestra propia
                 academy. Elegís el estudio, ves los lugares que quedan y reservás en un
                 minuto.
               </p>
@@ -58,6 +58,10 @@ export default async function Home () {
                   <div className="hero__stat">
                     <b>{sedes.length}</b>
                     <span>Estudios</span>
+                  </div>
+                  <div className="hero__stat">
+                    <b>{CUPO_MAXIMO}</b>
+                    <span>Máximo por clase</span>
                   </div>
                 </div>
               )}

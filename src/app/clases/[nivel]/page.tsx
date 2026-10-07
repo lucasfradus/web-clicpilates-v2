@@ -8,6 +8,7 @@ import { Migas } from '@/components/migas'
 import { grafo, migasDePan, organizacion, paginaDeFaqs } from '@/lib/jsonld'
 import type { Faq } from '@/lib/faqs'
 import { FOTOS, type Foto } from '@/lib/fotos'
+import { CUPO_MAXIMO } from '@/lib/site'
 
 // Literal por exigencia de Next; coincide con REVALIDAR de src/lib/api.
 export const revalidate = 3600
@@ -66,8 +67,8 @@ const NIVELES: Nivel[] = [
         pregunta: '¿Necesito estar en forma para empezar Inicial?',
         respuesta:
           'No. El método se adapta a tu cuerpo: la instructora ajusta los resortes y la ' +
-          'versión del ejercicio según lo que necesitás ese día. Por eso trabajamos en ' +
-          'grupos chicos.',
+          'versión del ejercicio según lo que necesitás ese día. Por eso las clases son ' +
+          `de hasta ${CUPO_MAXIMO} personas.`,
       },
       {
         pregunta: '¿Cuánto tardo en pasar a Level Up?',
