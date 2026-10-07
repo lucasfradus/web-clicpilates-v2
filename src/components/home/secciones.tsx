@@ -92,10 +92,11 @@ export function Metodo () {
             <div className="method__item">
               <p className="method__num">02</p>
               <div>
-                <h3>Instructoras de nuestra academy</h3>
+                <h3>Instructoras formadas, siempre aprendiendo</h3>
                 <p>
-                  Todas se forman en CLIC Academy y siguen capacitándose. El mismo criterio
-                  en todos los estudios.
+                  Todas tienen formación en reformer y se siguen capacitando de forma
+                  constante. Y en todos los estudios se respeta el mismo método: el
+                  repertorio, las correcciones y la progresión.
                 </p>
               </div>
             </div>

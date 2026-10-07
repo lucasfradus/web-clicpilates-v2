@@ -24,7 +24,7 @@ export function SiteFooter ({ sedes = [] }: { sedes?: Sede[] }) {
             <Logo className="ftr__logo" titulo={SITIO.nombre} />
             <p className="ftr__bio">
               Pilates Reformer en Buenos Aires. Grupos chicos, instructoras
-              formadas en casa.
+              formadas y el mismo método en todos los estudios.
             </p>
           </div>
 
