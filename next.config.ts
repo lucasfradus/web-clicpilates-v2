@@ -50,17 +50,17 @@ const nextConfig: NextConfig = {
       // va antes de la regla genérica: Next aplica la primera que matchea.
       { source: '/sede/office', destination: '/estudios/office-pilates', statusCode: 301 },
       { source: '/horarios/office', destination: '/estudios/office-pilates', statusCode: 301 },
-      { source: '/grilla/office', destination: '/estudios/office-pilates', statusCode: 301 },
+      { source: '/grilla/office', destination: '/grilla/office-pilates', statusCode: 301 },
       // `prueba` era una página de test del sitio viejo: va al índice.
       { source: '/sede/prueba', destination: '/estudios', statusCode: 301 },
       { source: '/horarios/prueba', destination: '/estudios', statusCode: 301 },
       { source: '/grilla/prueba', destination: '/estudios', statusCode: 301 },
 
       { source: '/sede/:slug', destination: '/estudios/:slug', statusCode: 301 },
-      // Los horarios y la grilla eran páginas aparte; ahora la grilla vive
-      // dentro de la landing de cada estudio.
+      // `/horarios` era una tabla aparte que leía una planilla: va a la landing.
+      // `/grilla/:slug` NO se redirige: sigue siendo la grilla semanal suelta,
+      // el link que se comparte (src/app/grilla/[slug]).
       { source: '/horarios/:slug', destination: '/estudios/:slug', statusCode: 301 },
-      { source: '/grilla/:slug', destination: '/estudios/:slug', statusCode: 301 },
 
       // Reservar vive en /estudios desde el 7-oct: el portal de reservas portado
       // es la página de cada estudio. Esto cubre las URLs que tuvo en este sitio
