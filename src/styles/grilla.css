@@ -1,0 +1,284 @@
+/* ============================================================================
+   Grilla semanal suelta (/grilla/<slug>). Portada del sitio anterior: mismos
+   colores de estado y de actividad, sobre los tokens de esta web.
+   ========================================================================== */
+
+.grilla {
+  /* El header es fijo y acá no hay hero: arranca debajo. */
+  padding: 110px 0 72px;
+
+  --grilla-d: #2e8a52;
+  --grilla-d-texto: #1a6b3e;
+  --grilla-b: #c97c22;
+  --grilla-b-texto: #875200;
+  --grilla-n: #c43030;
+  --grilla-n-texto: #8a1c1c;
+}
+
+.grilla__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 20px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.grilla__titulo {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.grilla__direccion {
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.grilla__vacio {
+  padding: 48px 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+/* ===== Leyenda y estados ===== */
+
+.grilla__leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  padding: 10px 16px;
+  margin-bottom: 14px;
+  list-style: none;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.grilla__estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.grilla__leyenda .grilla__estado {
+  color: var(--ink);
+}
+
+.grilla__punto {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.grilla__estado--d { color: var(--grilla-d-texto); }
+.grilla__estado--b { color: var(--grilla-b-texto); }
+.grilla__estado--n { color: var(--grilla-n-texto); }
+.grilla__estado--d .grilla__punto { background: var(--grilla-d); }
+.grilla__estado--b .grilla__punto { background: var(--grilla-b); }
+.grilla__estado--n .grilla__punto { background: var(--grilla-n); }
+
+/* ===== Contenido de una franja ===== */
+
+.grilla__contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.grilla__actividad {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.grilla__actividad--inicial { background: var(--beige-soft); color: var(--taupe-texto); }
+.grilla__actividad--levelup { background: var(--sage-bg); color: var(--sage-texto); }
+.grilla__actividad--embarazadas { background: var(--terracotta-bg); color: var(--terracotta-texto); }
+.grilla__actividad--otra { background: #e8e4dd; color: #5a4f45; }
+
+.grilla__hora {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.grilla__hora--chica {
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+.grilla__sin {
+  color: var(--ink-mute);
+}
+
+/* ===== Celular: un día por vez ===== */
+
+.grilla__escritorio {
+  display: none;
+}
+
+.grilla__tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.grilla__tab {
+  padding: 9px 18px;
+  border: 0;
+  border-radius: 22px;
+  font: inherit;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+  background: var(--beige-soft);
+  color: var(--ink-soft);
+  transition: background 0.2s, color 0.2s;
+}
+
+.grilla__tab[aria-selected='true'] {
+  font-weight: 600;
+  background: var(--ink);
+  color: var(--surface);
+}
+
+.grilla__dia {
+  padding: 16px 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.grilla__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+}
+
+.grilla__tarjeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 72px;
+  padding: 13px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.grilla__tarjeta .grilla__contenido {
+  flex: 1;
+}
+
+/* ===== Escritorio: la semana como calendario ===== */
+
+@media (min-width: 768px) {
+  .grilla__movil { display: none; }
+  .grilla__escritorio { display: block; }
+  .grilla__titulo { font-size: 36px; }
+}
+
+.grilla__scroll {
+  overflow-x: auto;
+}
+
+.grilla__calendario {
+  min-width: 912px; /* 72 de eje + 6 días × 140 */
+  color: var(--ink);
+}
+
+.grilla__cabecera {
+  display: grid;
+  height: 40px;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.grilla__cabecera > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--beige);
+}
+
+.grilla__cabecera > div + div {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.grilla__cuerpo {
+  position: relative;
+  display: grid;
+  background: var(--surface);
+}
+
+.grilla__columna {
+  grid-row: 1 / -1;
+  border-left: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--hora-px) - 1px),
+    var(--line) calc(var(--hora-px) - 1px),
+    var(--line) var(--hora-px)
+  );
+}
+
+.grilla__eje {
+  grid-column: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 4px 8px 0 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.grilla__bloque {
+  position: relative;
+  z-index: 1;
+  padding: 6px;
+}
+
+.grilla__bloque-in {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: #faf7f4;
+}
