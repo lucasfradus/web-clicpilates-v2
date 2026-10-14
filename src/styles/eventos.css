@@ -1,0 +1,184 @@
+/* Eventos: /eventos y /eventos/<slug>. El formulario y la vuelta de MP reusan
+   las clases del checkout de planes (.planes__form…) y de Gracias (.gracias…). */
+
+.evento {
+  padding-top: 24px;
+  padding-bottom: 64px;
+}
+.evento__volver {
+  display: inline-block;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+.evento__volver:hover { color: var(--ink); }
+
+.evento__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .evento__grid { grid-template-columns: 1fr; gap: 28px; }
+}
+
+.evento__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: linear-gradient(135deg, #d8c4ad, #bcac9e);
+  margin-bottom: 24px;
+}
+.evento__img { object-fit: cover; }
+
+.evento__eyebrow {
+  color: var(--taupe-texto);
+  margin: 0 0 8px;
+}
+.evento__titulo {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.1;
+  color: var(--ink-deep);
+  margin: 0 0 20px;
+}
+
+.evento__datos {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: grid;
+  gap: 10px;
+  font-size: 15px;
+  color: var(--ink);
+}
+.evento__datos li { display: flex; gap: 12px; flex-wrap: wrap; }
+.evento__dato-lbl {
+  min-width: 64px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding-top: 2px;
+}
+.evento__desc {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0 0 24px;
+  white-space: pre-line;
+}
+
+.evento__precios {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.evento__precio {
+  flex: 1 1 140px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  background: var(--surface);
+  display: grid;
+  gap: 2px;
+}
+.evento__precio-lbl { font-size: 13px; color: var(--ink-mute); }
+.evento__precio-num {
+  font-weight: 300;
+  font-size: 26px;
+  color: var(--ink-deep);
+}
+
+.evento__compra {
+  position: sticky;
+  top: 96px;
+  /* Las clases del formulario de planes leen estas variables, que viven en
+     `.planes` (Planes.css). Se repiten acá sin traer el layout de `.planes`. */
+  --pl-ink: #23222b;
+  --pl-soft: #55534e;
+  --pl-mute: #66645e;
+  --pl-surface: #f7f6f2;
+  --pl-line: rgba(35, 34, 43, 0.1);
+  --pl-green: #4a6741;
+  --pl-green-bg: #e2e8dd;
+}
+@media (max-width: 860px) {
+  .evento__compra { position: static; }
+}
+.evento__quedan {
+  display: inline-block;
+  margin: 0 0 12px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--terracotta-bg);
+  color: var(--terracotta-texto);
+  font-size: 13px;
+}
+
+/* ── Listado ── */
+.eventos {
+  padding-top: 32px;
+  padding-bottom: 64px;
+}
+.eventos__titulo {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 5vw, 48px);
+  color: var(--ink-deep);
+  margin: 4px 0 28px;
+}
+.eventos__vacio { color: var(--ink-soft); }
+.eventos__lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+.eventos__card {
+  display: block;
+  height: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.15s ease;
+}
+.eventos__card:hover { transform: translateY(-2px); }
+.eventos__card-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: linear-gradient(135deg, #d8c4ad, #bcac9e);
+}
+.eventos__card-body { padding: 16px 18px 20px; position: relative; }
+.eventos__card-fecha {
+  font-size: 13px;
+  color: var(--taupe-texto);
+  margin: 0 0 6px;
+}
+.eventos__card-nombre {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  line-height: 1.2;
+  color: var(--ink-deep);
+  margin: 0 0 6px;
+}
+.eventos__card-lugar { font-size: 14px; color: var(--ink-soft); margin: 0 0 10px; }
+.eventos__card-precio { font-size: 14px; color: var(--ink); margin: 0; }
+.eventos__card-agotado {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  font-size: 12px;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--terracotta-bg);
+  color: var(--terracotta-texto);
+}
