@@ -61,8 +61,20 @@ GitHub renderiza las imágenes:
 | Convención: rama y PR en este repo | [#1](https://github.com/lucasfradus/web-clicpilates-v2/pull/1) | ✅ Mergeado (8-sep) |
 | Comprar el plan desde la web | [#2](https://github.com/lucasfradus/web-clicpilates-v2/pull/2) | ✅ Mergeado (8-sep) y en el staging |
 | Deep-link `?tipo=` en el portal | [reservas-clientes-clic-v2#19](https://github.com/lucasfradus/reservas-clientes-clic-v2/pull/19) | ✅ Mergeado (8-sep) y **verificado en producción** |
+| Eventos: backend (venta de entradas por MP) | [Clicnet#501](https://github.com/lucasfradus/Clicnet/pull/501) | 🟡 Abierto (14-oct) |
+| Eventos: `/eventos` y `/eventos/<slug>` | rama `feat/eventos` de este repo | 🟡 Abierto (14-oct). Mergear **después** de Clicnet#501 |
 
-**No queda ningún PR abierto de este proyecto.**
+### Eventos — pendiente (14-oct)
+
+- [ ] `EVENTOS_PUBLIC_URL` en el backend (Railway, Clicnet) = `https://web-clicpilates-v2-production.up.railway.app`
+      **hasta el cambio de dominio**. Sin ella, el backend arma el link público y la vuelta de MP
+      contra `clicpilates.com`, que todavía es la landing vieja y no tiene `/eventos`. El día del
+      cambio de dominio, pasarla a `https://clicpilates.com` (o borrarla: es el default).
+- [ ] Link a `/eventos` en el menú y en el `sitemap` (no se agregó: decidir si va antes de que haya
+      eventos publicados).
+- [ ] Medición: `InitiateCheckout`/`Purchase` de Meta y GA4 para las entradas (los checkouts de
+      clase y plan lo tienen; el de eventos todavía no).
+- [ ] Verificar en staging con un pago real de MP (local se probó con la cuenta de MP simulada).
 
 Verificación del 8-sep en `reservas.clicpilates.com`, después de mergear el #19
 —que es el único que toca producción—, contra la línea de base tomada antes:

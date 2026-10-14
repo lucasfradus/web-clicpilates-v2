@@ -50,7 +50,7 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+export async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let res: Response;
   // Del lado del servidor, los GET se cachean (ver arriba). En el navegador
   // no aplica: `next.revalidate` sólo lo entiende el fetch de Next.

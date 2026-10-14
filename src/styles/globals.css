@@ -24,3 +24,5 @@
 @import './reservas/Landing.css';
 @import './reservas/Planes.css';
 @import './reservas/Gracias.css';
+/* Eventos: después del portal, porque reusa sus clases de formulario y de Gracias. */
+@import './eventos.css';
