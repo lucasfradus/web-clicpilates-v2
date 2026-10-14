@@ -66,10 +66,8 @@ GitHub renderiza las imágenes:
 
 ### Eventos — pendiente (14-oct)
 
-- [ ] `EVENTOS_PUBLIC_URL` en el backend (Railway, Clicnet) = `https://web-clicpilates-v2-production.up.railway.app`
-      **hasta el cambio de dominio**. Sin ella, el backend arma el link público y la vuelta de MP
-      contra `clicpilates.com`, que todavía es la landing vieja y no tiene `/eventos`. El día del
-      cambio de dominio, pasarla a `https://clicpilates.com` (o borrarla: es el default).
+- [x] Link público y vuelta de MP: el backend los arma contra `https://clicpilates.com` (default de
+      `EVENTOS_PUBLIC_URL`), que ya sirve esta web (verificado 14-oct). Nada que configurar.
 - [ ] Link a `/eventos` en el menú y en el `sitemap` (no se agregó: decidir si va antes de que haya
       eventos publicados).
 - [ ] Medición: `InitiateCheckout`/`Purchase` de Meta y GA4 para las entradas (los checkouts de
