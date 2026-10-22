@@ -564,6 +564,30 @@ Lo que queda, y no es de este repo:
 - [ ] Cargar `NEXT_PUBLIC_META_PIXEL_ID` y `NEXT_PUBLIC_GA_MEASUREMENT_ID` en
       Railway el día del lanzamiento (en staging no hacen falta: está apagada)
 
+### Eventos perdidos en la carga completa (22-oct-2026)
+
+Lo destapó la campaña `1026_Meta_Soho_Venta_Web`: 259 visitas a la página y
+59 ViewContent. React corre los efectos de la página antes que los del layout,
+así que en una carga completa de `/estudios/:slug` o `/reservar/gracias` el
+evento salía antes de que existieran `fbq`/`gtag` (o antes del `init`) y se
+descartaba en silencio. Sólo llegaban los de quien navegaba adentro del sitio.
+
+- [x] `metaEvento` y `ga4Evento` encolan hasta que el layout arranca la
+      medición; el layout vacía la cola detrás del PageView. Verificado con un
+      build local (IDs falsos): entrada directa a `/estudios/soho` → PageView +
+      ViewContent y page_view + view_planes + view_item; `/reservar/gracias`
+      aprobado → Purchase con eventID y purchase de GA4
+- [ ] Después del deploy: comparar en Events Manager ViewContent contra
+      PageView de `/estudios/*`, y las `purchase` de GA4 contra las ventas web
+      de Clicnet. Desde el 7-oct (`ea5616d`) el purchase de GA4 que se dispara
+      al volver de Mercado Pago muy probablemente no llegaba, y no tiene
+      respaldo server-side
+- [ ] PageView duplicados (también en prod): una navegación interna manda 2-3
+      PageView por ruta, y algunos van a TODOS los pixels. Sospecha: el
+      seguimiento automático de `pushState` de fbevents, que ignora
+      `trackSingle` (le llega al pixel de Hot Clic el tráfico de todas las
+      sedes). Probar `fbq.disablePushState = true` antes del `init`
+
 
 ## Fase 8 — QA ✅ (19-ago-2026) · el lanzamiento queda listo para ejecutar
 

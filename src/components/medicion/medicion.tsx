@@ -4,8 +4,8 @@ import Script from 'next/script'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
-import { ga4PageView } from '@/lib/medicion/ga4'
-import { capturarFbclid, iniciarPixels, metaPageView } from '@/lib/medicion/meta'
+import { ga4PageView, ga4VaciarPendientes } from '@/lib/medicion/ga4'
+import { capturarFbclid, iniciarPixels, metaPageView, metaVaciarPendientes } from '@/lib/medicion/meta'
 import { capturarUtms, conUtms } from '@/lib/medicion/utm'
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
@@ -69,6 +69,10 @@ export function Medicion ({ pixelesPorSede, activo }: {
         : undefined)
     metaPageView(slug)
     ga4PageView({ sedeSlug: slug })
+    // Los eventos que la página pidió antes de este punto (en una carga
+    // completa, todos los de su primer render) salen ahora, detrás del PageView.
+    metaVaciarPendientes()
+    ga4VaciarPendientes()
   }, [activo, pathname, pixelesPorSede])
 
   if (!activo) return null
