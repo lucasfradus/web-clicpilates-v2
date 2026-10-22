@@ -28,7 +28,23 @@ export function ga4PageView (params: { sede?: string; sedeSlug?: string } = {}) 
   })
 }
 
+/**
+ * Eventos pedidos antes de que exista `gtag`; `null` cuando ya está. Mismo
+ * problema que en meta.ts: en una carga completa los efectos de la página
+ * corren antes que el script de GA, y el view_item o el purchase se perdían.
+ */
+let pendientes: Array<() => void> | null = []
+
+/** Manda lo que quedó esperando. Lo llama el layout, después del page_view. */
+export function ga4VaciarPendientes () {
+  const cola = pendientes
+  pendientes = null
+  cola?.forEach((enviar) => enviar())
+}
+
 export function ga4Evento (nombre: string, params: Record<string, unknown> = {}) {
-  if (GA_ID == null || GA_ID === '' || typeof window.gtag !== 'function') return
-  window.gtag('event', nombre, params)
+  if (GA_ID == null || GA_ID === '') return
+  const enviar = () => window.gtag?.('event', nombre, params)
+  if (pendientes != null) pendientes.push(enviar)
+  else enviar()
 }

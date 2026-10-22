@@ -75,6 +75,25 @@ function destinos (slug: string | null | undefined, aTodos: boolean): string[] {
   return PIXEL_GENERAL != null && PIXEL_GENERAL !== '' ? [PIXEL_GENERAL] : []
 }
 
+/**
+ * Eventos pedidos antes de que arranquen los pixels; `null` cuando ya
+ * arrancaron.
+ *
+ * React corre los efectos de la página antes que los del layout, así que en una
+ * carga completa el ViewContent de `/estudios/:slug` y el Purchase de
+ * `/reservar/gracias` llegan antes del `init`: `fbq` todavía no existe (o el
+ * pixel no está iniciado y `trackSingle` lo descarta). Se perdían justo los de
+ * quien llega desde un anuncio o vuelve de Mercado Pago.
+ */
+let pendientes: Array<() => void> | null = []
+
+/** Manda lo que quedó esperando. Lo llama el layout, después del PageView. */
+export function metaVaciarPendientes () {
+  const cola = pendientes
+  pendientes = null
+  cola?.forEach((enviar) => enviar())
+}
+
 export function metaPageView (slug?: string | null) {
   for (const pixel of destinos(slug, true)) {
     window.fbq?.('trackSingle', pixel, 'PageView')
@@ -94,10 +113,14 @@ export function metaEvento (
   opciones?: { eventID?: string },
   slug?: string | null,
 ) {
-  for (const pixel of destinos(slug, false)) {
-    if (opciones != null) window.fbq?.('trackSingle', pixel, nombre, parametros, opciones)
-    else window.fbq?.('trackSingle', pixel, nombre, parametros)
+  const enviar = () => {
+    for (const pixel of destinos(slug, false)) {
+      if (opciones != null) window.fbq?.('trackSingle', pixel, nombre, parametros, opciones)
+      else window.fbq?.('trackSingle', pixel, nombre, parametros)
+    }
   }
+  if (pendientes != null) pendientes.push(enviar)
+  else enviar()
 }
 
 

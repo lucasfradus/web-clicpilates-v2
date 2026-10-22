@@ -5,15 +5,14 @@
 // así que acá quedan sólo los eventos. Sin NEXT_PUBLIC_GA_MEASUREMENT_ID (staging,
 // desarrollo) todo es no-op, igual que en el portal.
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+import { ga4Evento } from '@/lib/medicion/ga4';
 
 /** Registra un evento personalizado (ej: reserva, selección de sede). */
 export function trackEvent(
   name: string,
   params: Record<string, unknown> = {},
 ): void {
-  if (!GA_ID || typeof window.gtag !== 'function') return;
-  window.gtag('event', name, params);
+  ga4Evento(name, params);
 }
 
 /** Pasos del embudo de venta, con los nombres estándar de ecommerce de GA4. */
@@ -62,8 +61,6 @@ export function trackVenta(
   item: ItemVenta,
   opciones: { transactionId?: string } = {},
 ): void {
-  if (!GA_ID || typeof window.gtag !== 'function') return;
-
   const params: Record<string, unknown> = {
     tipo_venta: item.categoria,
     items: [
@@ -86,5 +83,5 @@ export function trackVenta(
   }
   if (opciones.transactionId) params.transaction_id = opciones.transactionId;
 
-  window.gtag('event', evento, params);
+  ga4Evento(evento, params);
 }
