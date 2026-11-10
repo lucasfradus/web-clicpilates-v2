@@ -3,10 +3,10 @@
  * que corresponde.
  *
  * Los originales de la producción vienen de 4000-6000 px y 6-9 MB. El sitio no
- * sirve nunca más de 2048 px de ancho (ver `deviceSizes` en next.config.ts), así
+ * sirve nunca más de 2000 px de ancho (ver `deviceSizes` en next.config.ts), así
  * que todo lo que exceda 2560 px es peso que se arrastra en el repo para
- * siempre sin que nadie lo vea: `next/image` genera los tamaños chicos al vuelo
- * desde lo que haya.
+ * siempre sin que nadie lo vea: los tamaños chicos los genera
+ * `scripts/generar-variantes.mjs` en el build, desde lo que haya.
  *
  * Uso: node scripts/preparar-fotos.mjs <origen> <destino>
  */

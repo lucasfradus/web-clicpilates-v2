@@ -12,10 +12,12 @@ node scripts/preparar-fotos.mjs originales/DSC07087.jpeg public/fotos/metodo/est
 
 Achica el lado mayor a 2560 px y reescribe el JPEG. No es una optimización
 cosmética: los originales de cámara pesan entre 6 y 9 MB, el sitio no sirve
-nunca más de 2048 px de ancho (ver `deviceSizes` en `next.config.ts`) y un
-binario commiteado queda en la historia de git para siempre. `next/image`
-genera los tamaños chicos al vuelo desde lo que haya, así que todo lo que
-exceda 2560 px es peso que nadie llega a ver. Las seis de la tanda del 4-sep
+nunca más de 2000 px de ancho (ver `deviceSizes` en `next.config.ts`) y un
+binario commiteado queda en la historia de git para siempre. Los tamaños chicos
+(WebP de 640, 1280 y 2000 px, en `public/_v`) los genera
+`scripts/generar-variantes.mjs` antes de `dev` y de `build`, desde lo que haya,
+así que todo lo que exceda 2560 px es peso que nadie llega a ver. Al reemplazar
+una foto no hay que correr nada más. Las seis de la tanda del 4-sep
 pasaron de 41 MB a 1,7 MB.
 
 Los originales van en `originales/`, que está en `.gitignore`.

@@ -116,6 +116,12 @@ están mergeados y se pueden cerrar.
 
 ## Pendientes sueltos (no son de una fase)
 
+- [ ] **Medir la memoria en Railway después de `fix/memoria-railway`** (10-nov).
+      Antes: 0,92-0,97 GB clavado (~$9,50/mes), con sharp optimizando imágenes
+      dentro de `next start`. Ahora el sitio corre standalone y sin optimizador.
+      Mirar 24-48 h de `MEMORY_USAGE_GB` del servicio: si no baja de ~400 MB, el
+      piso es otra cosa (caché de ISR, Turbopack) y hay que seguir buscando
+
 - [x] ~~Deploy del sitio nuevo en Railway~~ — hecho el 19-ago:
       `web-clicpilates-v2-production.up.railway.app`, con `NEXT_PUBLIC_NOINDEX=true`,
       deploy automático desde `main`
