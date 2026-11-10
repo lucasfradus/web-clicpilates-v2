@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/generar-variantes.mjs",
     "dev": "next dev -p 3005",
+    "prebuild": "node scripts/generar-variantes.mjs",
     "build": "next build",
-    "start": "next start",
+    "postbuild": "node scripts/preparar-standalone.mjs",
+    "start": "node scripts/start.mjs",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"

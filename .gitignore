@@ -48,3 +48,7 @@ next-env.d.ts
 
 # Originales de camara (6-9 MB). Al sitio va la version de scripts/preparar-fotos.mjs.
 /originales
+
+# Variantes WebP de public/fotos. Las genera scripts/generar-variantes.mjs antes
+# de dev y de build.
+/public/_v
