@@ -173,7 +173,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 32px;
+  /* Con tres links, 32px los partía en dos renglones en un celular de 375. */
+  gap: 12px 22px;
   flex-wrap: wrap;
 }
 .planes__hero-links a {

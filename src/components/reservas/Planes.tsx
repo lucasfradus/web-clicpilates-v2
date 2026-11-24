@@ -984,8 +984,16 @@ export default function Planes({
               </button>
             )}
 
-            {(sede?.whatsappUrl || sede?.googleMapsUrl) && (
+            {sede && (
               <div className="planes__hero-links">
+                {/* La grilla semanal suelta del estudio (/grilla/<slug>), que
+                    ya trae su botón para volver a reservar. */}
+                <Link href={`/grilla/${sede.slug}`}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm.5-13H11v6l5.2 3.1.8-1.2-4.5-2.7V7z" />
+                  </svg>
+                  Ver horarios
+                </Link>
                 {sede?.whatsappUrl && (
                   <a href={sede.whatsappUrl} target="_blank" rel="noreferrer">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
